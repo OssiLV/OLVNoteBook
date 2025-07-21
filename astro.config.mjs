@@ -58,6 +58,13 @@ export default defineConfig({
 					autogenerate: { directory: 'reference' },
 				},
 			],
+
+			customCss: [
+				'./src/styles/font.css',
+				// Fontsource files for to regular and semi-bold font weights.
+				'@fontsource/ibm-plex-sans/400.css',
+				'@fontsource/ibm-plex-sans/600.css',
+			],
 		}),
 	],
 });
