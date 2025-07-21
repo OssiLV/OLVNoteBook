@@ -1,36 +1,54 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
+title: Welcome to OssiLV learning hub
+description: Get started to learning the new things in DevOps field
 template: splash
 hero:
-  tagline: Congrats on setting up a new Starlight project!
+  tagline: Get started to learning the new things in DevOps roadmap
   image:
+    alt:   hero logo
     file: ../../assets/houston.webp
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: Start your roadmap
+      link: /introduction/introduction/
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
+    - text: My Portfolio
+      link: https://ossilv.github.io
       icon: external
       variant: minimal
 ---
+
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
 ## Next steps
 
 <CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
+    <Card title="1. Networking" icon="setting">
+        Learn about TCP/IP, HTTP/HTTPS, DNS, SSH, ports, IP addresses, firewalls, etc.
+    </Card>
+    <Card title="2. Linux" icon="linux">
+        Master the file system, permissions, bash scripting, cron jobs, and systemd.
+    </Card>
+    <Card title="3. Git & GitHub" icon="seti:git">
+        Use Git, manage branches, pull requests, and workflows with GitHub.
+    </Card>
+    <Card title="4. CI/CD" icon="random">
+        Automate build, test, and deployment with Jenkins, GitHub Actions, and more.
+    </Card>
+    <Card title="5. Tools" icon="puzzle">
+        Learn and use Docker, Jenkins, Kubernetes, and other DevOps tools.
+    </Card>
+    <Card title="6. Cloud - AWS" icon="cloudflare">
+        Work with EC2, S3, IAM, VPC, RDS, EKS, and CloudWatch on AWS.
+    </Card>
+    <Card title="7. Monitoring & Logging" icon="magnifier">
+        Set up system monitoring using Prometheus, Grafana, and the ELK stack.
+    </Card>
+    <Card title="8. DevSecOps" icon="rocket">
+        Secure CI/CD pipelines, scan images, and manage secrets with Vault, Checkov, and Trivy.
+    </Card>
 </CardGrid>
+
+<footer style="text-align: center; font-size: 0.9rem; color: #888; padding: 1rem;">
+    Built with <a href="https://astro.build/" target="_blank" rel="noopener noreferrer" style="color: #555; text-decoration: underline;">Astro</a> 🚀
+</footer>

@@ -1,6 +1,13 @@
 ---
-title: Example Guide
+title: Linux Guide
 description: A guide in my new Starlight docs site.
+lastUpdated: false
+prev:
+  link: /prev-page/
+  label: Prev page
+next:
+  link: /next-page/
+  label: Next page
 ---
 
 Guides lead a user through a specific task they want to accomplish, often with a sequence of steps.

@@ -1,0 +1,56 @@
+---
+title: Chào mừng đến với trung tâm học tập OssiLV
+description: Bắt đầu tìm hiểu những điều mới trong lĩnh vực DevOps
+template: splash
+hero:
+  tagline: Bắt đầu tìm hiểu những điều mới trong lĩnh vực DevOps
+  image:
+    alt:   hero logo
+    file: ../../../assets/houston.webp
+  actions:
+    - text: Bắt đầu lộ trình của bạn
+      link: /vi/introduction/introduction/
+      icon: right-arrow
+    - text: Portfolio của tôi
+      link: https://ossilv.github.io
+      icon: external
+      variant: minimal
+---
+
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Next steps
+
+<CardGrid stagger>
+    <Card title="1. Networking" icon="setting">
+        Học về TCP/IP, HTTP/HTTPS, DNS, SSH, port, IP, firewall, v.v.
+    </Card>
+    <Card title="2. Linux" icon="linux">
+        Nắm vững hệ thống file, quyền truy cập, bash script, cron, systemd.
+    </Card>
+    <Card title="3. Git & GitHub" icon="seti:git">
+        Sử dụng Git, quản lý branch, pull request, workflow với GitHub.
+    </Card>
+    <Card title="4. CI/CD" icon="random">
+        Tự động hóa build, test, deploy với Jenkins, GitHub Actions...
+    </Card>
+    <Card title="5. Tools" icon="puzzle">
+        Docker, Jenkins, Kubernetes, và các công cụ DevOps khác.
+    </Card>
+    <Card title="6. Cloud - AWS" icon="cloudflare">
+        Làm việc với EC2, S3, IAM, VPC, RDS, EKS và CloudWatch.
+    </Card>
+    <Card title="7. Monitoring & Logging" icon="magnifier">
+        Thiết lập giám sát hệ thống với Prometheus, Grafana, ELK stack.
+    </Card>
+    <Card title="8. DevSecOps" icon="rocket">
+        Bảo mật CI/CD, scan image, quản lý secrets với Vault, Checkov, Trivy.
+    </Card>
+</CardGrid>
+
+<footer style="text-align: center; font-size: 0.9rem; color: #888; padding: 1rem;">
+    Xây dựng bởi <a href="https://astro.build/" target="_blank" rel="noopener noreferrer" style="color: #555; text-decoration: underline;">Astro</a> 🚀
+</footer>
+
+
