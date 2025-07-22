@@ -1,0 +1,734 @@
+---
+title: OSI & TCP/IP Models
+description: OSI & TCP/IP Models
+lastUpdated: 2025-07-22
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import { Steps } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+In this lesson, we will learn about **two fundamental network models**:
+
+1. **OSI Model**
+2. **TCP/IP Protocol Suite**
+
+---
+
+## What is a Network Model?
+
+Simply put, a **network model is a way to categorize and organize networking protocols**.
+
+Each network protocol is a set of rules that define how devices communicate with each other — including how data is sent, received, and processed. For example:
+
+- **Ethernet** is a network protocol.
+- Standards for data transmission over **copper cables** or **fiber optics** also fall into this domain.
+
+A protocol is not a physical standard but rather a **logical set of rules** — like a "language" that devices use to understand and communicate with each other.
+
+---
+
+### The Role of Network Models
+
+You can think of a network model as a **map that categorizes different types of protocols**.
+Each group of protocols is assigned to a specific "layer" — for example:
+
+- **Physical Layer**: Handles the transmission of raw bits over physical media like cables or radio waves.
+- **Network Layer**: Responsible for routing and forwarding packets across networks.
+- **Transport Layer**: Ensures reliable data transmission, including error control and flow control.
+
+These models help standardize protocols so that **devices from different vendors** can communicate in a consistent and interoperable manner.
+
+---
+
+### What Happens Without a Common Standard?
+
+Imagine this:
+
+- Dell creates its own unique network model with custom protocols.
+- Apple (iMac) develops a completely different model.
+
+\=> The result?
+
+- Dell machines can only talk to other Dell machines.
+- iMacs can only communicate with other iMacs.
+- Dell and iMac? ❌ No communication possible!
+
+In today’s world, where the **Internet connects everything globally**, this is clearly **unacceptable**.
+
+We need **a universal standard** so that all devices can “speak the same language” — and that’s exactly why the **OSI model** and the **TCP/IP model** were created.
+
+---
+## What is the OSI Model?
+
+The OSI model was developed by the **ISO – International Organization for Standardization**.
+
+Time of creation: **late 1970s** to early **1980s**.
+
+OSI stands for **Open Systems Interconnection**.
+
+- "Open" means it is an **open standard** – meaning anyone or any company can implement it.
+- It is **not a proprietary technology** created and owned by a single company.
+
+<Aside>
+    The OSI model was the **first major effort to standardize network communication**.
+    Even though it is **no longer used directly** today, it remains:
+
+    - **Highly important from a theoretical standpoint**.
+    - A fundamental framework that **network engineers rely on to learn and analyze networks**.
+
+    It serves as a conceptual backbone to help us understand how data “travels” from one computer to another.
+</Aside>
+
+### OSI is a Conceptual Model
+
+The OSI model is **not a piece of software or hardware** — it's a **conceptual framework**.
+
+It was created to standardize and categorize functions within a network system.
+
+- This model helps developers, engineers, and hardware manufacturers understand the **role of each component** in the process of data transmission across a network.
+
+### How Many Layers Does the OSI Model Have?
+
+There are a total of **7 layers**, with each layer representing a specific set of network functions:
+
+1. **Physical Layer**: Transmits raw physical signals over media such as cables or radio waves.
+2. **Data Link Layer**: Ensures error-free data transfer between directly connected nodes, using MAC addresses.
+3. **Network Layer**: Routes and forwards packets using IP addresses.
+4. **Transport Layer**: Manages reliable data transmission, including segmentation and reassembly.
+5. **Session Layer**: Establishes, manages, and terminates communication sessions.
+6. **Presentation Layer**: Translates and encodes data between application formats and network formats.
+7. **Application Layer**: Interfaces directly with user applications and supports protocols like HTTP, HTTPS.
+
+<Tabs>
+    <TabItem label="Layer 7">
+        #### Layer 7 – Application Layer
+
+        > The highest layer in the OSI model – Layer 7: the Application Layer.
+
+        This is the **closest layer to the user**, as it directly interacts with the applications you use every day, such as:
+
+        - Web browsers: Chrome, Firefox, Brave, ...
+        - Email applications
+        - Chat applications, etc.
+
+        <Aside type="caution">
+            Layer 7 is **not** the software itself (like Chrome), but rather the **communication protocols** that these apps use.
+        </Aside>
+
+        ##### What protocols operate at Layer 7?
+
+        - **HTTP / HTTPS** – Protocols used by browsers to access websites.
+        - **Example**: When you visit https://cisco.com, you're using HTTPS – a Layer 7 protocol.
+
+        ##### How does Layer 7 work?
+
+        Some of the main functions of this layer include:
+
+        - **Identifying communication targets** – e.g., which server your computer will connect to.
+        - **Synchronizing communication** – ensuring both parties understand and coordinate at the right time.
+
+        **Example**: Imagine two computers want to communicate over a network:
+
+        <Steps>
+            1. On the left computer, you open a browser and enter a website address.
+
+            2. The browser interacts with the Application Layer (Layer 7) and sends the data.
+
+            3. That data travels down through each OSI layer, from Layer 7 to Layer 1.
+
+            4. Each layer adds its own information to the data for specific purposes. This process is called:
+
+                > **Encapsulation** – Packaging data
+
+            5. Once it reaches Layer 1 (Physical Layer), the data is converted into electrical signals or light pulses and transmitted through cables.
+
+            6. The other computer receives the signals, and the reverse process occurs:
+
+                > **De-encapsulation** – Unpacking data
+
+                Each layer strips off its corresponding information until the original data reaches the Application Layer on the receiving side.
+        </Steps>
+
+        <Aside>
+            **Two types of interaction in the OSI model**
+
+            - **Adjacent-layer interaction**:
+                - Example: Layer 7 sends data to Layer 6, then Layer 6 to Layer 5, and so on.
+
+            - **Same-layer interaction**:
+                - Example: Application Layer on computer A exchanges information with the Application Layer on computer B.
+
+            > It’s this **same-layer interaction** that allows two applications to "speak the same language" – e.g., a browser and a web server can communicate using HTTP/HTTPS.
+        </Aside>
+    </TabItem>
+
+    <TabItem label="Layer 6">
+        #### Layer 6 – Presentation Layer
+
+        After data passes through the Application Layer (Layer 7), it moves to the **Presentation Layer (Layer 6)** – this layer plays a key role in **“translating” data**.
+
+        ##### So what does this layer actually "translate"?
+
+        Imagine the following:
+
+        - A web browser or app only understands data in its own way (called **application format**).
+        - But to transmit that data over a network, it needs to be converted into **network format**.
+        - And when receiving the data, the reverse must happen so the other machine can understand.
+
+        > ➡️ That’s the job of the Presentation Layer.
+
+        ##### A few concrete examples:
+
+        - **Format conversion**:
+            - E.g., converting image data from JPEG to another format, or text from Unicode to ASCII.
+        - **Encryption & Decryption**:
+            - When sending sensitive information (like passwords), this layer:
+                - **Encrypts** the data before transmission – so it’s unreadable to eavesdroppers.
+                - **Decrypts** it upon arrival – so the real recipient can understand.
+
+        <Aside>
+            ##### Summary of Layer 6's role:
+
+            - Translates data between application and network formats
+            - Converts formats between different software systems
+            - Encrypts/decrypts data to ensure security
+
+            > ➡️ In simple terms: if the Application Layer is the “communication brain,” then the Presentation Layer is the “interpreter” – making sure both sides understand each other even if they use different formats.
+        </Aside>
+    </TabItem>
+    <TabItem label="Layer 5">
+        #### Layer 5 – Session Layer
+
+        The Session Layer is responsible for managing communication sessions between two devices or applications.
+
+        Think of it like this:
+
+        > When you open your browser (e.g., Chrome) and access YouTube, a **session** is established between your application and YouTube’s server.
+
+        The Session Layer will:
+
+        - **Establish** the communication session.
+        - **Manage** the session during the entire data transmission.
+        - **Terminate** the session once the task is complete.
+
+        ##### A real-world example:
+
+        Imagine millions of users are watching videos on YouTube. How does the YouTube server know:
+
+        - Who is watching which video?
+        - Which data belongs to which session?
+        - When to disconnect a session?
+
+        ➡️ That’s the job of the Session Layer — to distinguish and manage each **individual conversation**.
+
+        <Aside>
+            ##### In summary, Layer 5 is responsible for:
+
+            - Establishing connections between two remote applications.
+            - Synchronizing and maintaining session state between communicating devices.
+            - Terminating sessions when completed or on error.
+        </Aside>
+
+        <Aside>
+            Although the top layers (7, 6, 5) are crucial for understanding networking theory, in practice:
+
+            - **Network engineers** don’t usually work directly with these layers.
+            - **Application developers** are the ones who typically deal with them — building applications like browsers, video calls, etc.
+        </Aside>
+
+        <Aside type="caution">
+            ##### Data Flow Sequence
+
+            - After passing through the top 3 layers (**Application → Presentation → Session**), the data is sent to the **lower 4 layers (Transport → Network → Data Link → Physical)**.
+            - Starting from Layer 4, each layer begins to add a **header** to prepare the data for network transmission.
+
+            ➡️ Next comes **Layer 4 – Transport Layer**, which handles data segmentation, assigns port numbers, and ensures reliable delivery.
+        </Aside>
+    </TabItem>
+
+    <TabItem label="Layer 4">
+        #### Layer 4 – Transport Layer
+
+        The Transport Layer is responsible for **segmenting** and **reassembling** data to ensure reliable and efficient delivery between end devices.
+
+        ##### Why segment data?
+
+        Imagine you’re watching a video online.
+
+        - If the video is sent as one huge chunk of data, even a tiny error could cause the entire video to fail.
+        - But if it’s broken into smaller parts, a small error only affects a piece, and the video continues smoothly.
+
+        Segmenting helps:
+
+        - Increase reliability.
+        - Reduce transmission risks.
+        - Optimize bandwidth and performance.
+
+        In addition to segmentation, the Transport Layer also handles:
+
+        - **End-to-end communication**: ensuring data goes from the sender’s app to the correct app on the receiver’s device.
+        - **Process-to-process communication**: e.g., your browser connecting to YouTube’s web service.
+
+        <Aside type="caution">
+            ##### Data Handling Process
+
+            1. Data is prepared by the top 3 layers (**Application → Presentation → Session**).
+            2. Layer 4 adds a special header — the **Layer 4 header**.
+            3. At this point, the data + header is called a **segment**.
+
+            **If the data is large**: It will be split into multiple segments, and each will get its own header for easier management.
+
+            **After segmentation**: The segments are passed down to **Layer 3 – Network Layer** to continue their journey across the network.
+        </Aside>
+    </TabItem>
+    <TabItem label="Layer 3">
+        #### Layer 3 – Network Layer
+
+        The Network Layer is responsible for connecting end hosts located on different networks—for example, from your home computer to a server in the U.S. via the Internet.
+
+        ##### Key Functions of Layer 3:
+
+        1. **Logical Addressing**
+            - Layer 3 uses IP addresses to identify devices on the network.
+            - These are addresses you often see, like 192.168.1.1 or 8.8.8.8.
+            - 👉 IP addresses allow the sending and receiving devices to locate each other on a global network.
+
+        2. **Path Selection / Routing**
+            - Data doesn’t travel in a straight line from point A to point B.
+            - There may be multiple routes through various intermediate devices.
+            - Layer 3 selects the most optimal path (based on speed, cost, or reliability).
+            - 👉 Routers perform this function and operate at Layer 3.
+
+        <Aside type="caution">
+            ##### Data Encapsulation Process
+
+            1. Data is prepared by the upper layers (Application → Presentation → Session).
+            2. The Transport Layer (Layer 4) adds its header, creating a **segment**.
+            3. The Network Layer (Layer 3) adds its own header, including:
+                - Source IP address
+                - Destination IP address
+
+            At this point, the data + Layer 4 header + Layer 3 header is called a **Packet**.
+        </Aside>
+    </TabItem>
+    <TabItem label="Layer 2">
+        #### Layer 2 – Data Link Layer
+
+        Layer 2 is responsible for connecting and transferring data between adjacent devices, such as:
+        - From a PC to a switch
+        - From a switch to a router
+        - From a router to another router (if directly connected)
+
+        ##### What Does Layer 2 Do?
+
+        1. **Node-to-Node Connectivity**
+
+        Unlike Layer 3 (end-to-end connectivity across networks), Layer 2 handles data transfer between two directly connected devices.
+
+        2. **Data Formatting for Physical Transmission**
+
+        Since Layer 2 is just above Layer 1 (Physical Layer), it defines how data is formatted for transmission over physical media, such as:
+            - Copper cables (UTP)
+            - Fiber optic cables
+            - Radio waves (Wi-Fi)
+
+        3. **Error Detection and Correction**
+
+            Layer 2 can detect errors that occur during data transmission over cables or waves (e.g., due to electromagnetic interference) and, in some cases, correct minor errors.
+
+        4. **MAC Address Usage**
+
+        - Layer 2 uses MAC addresses to identify devices. These are tied to the network interface card (NIC).
+
+            ```txt
+            00:1A:2B:3C:4D:5E
+            ```
+
+        MAC addresses are distinct from IP addresses:
+            - IP is like a home address on a map (changeable).
+            - MAC is like a device’s serial number (unique, usually fixed).
+
+        5. **Switches Operate at Layer 2**
+
+            Switches are the primary devices at this layer. They read the destination MAC address in each packet to determine which port to forward it to.
+
+        <Aside type="caution">
+            ##### Data Encapsulation Process – Overview:
+
+            <Steps>
+                1. The Application Layer prepares the data.
+
+                2. The Transport Layer (L4) adds its header → creates a **segment**.
+
+                3. The Network Layer (L3) adds an IP header → creates a **packet**.
+
+                4. The Data Link Layer (L2):
+                    - Adds an L2 header (containing source and destination MAC addresses)
+                    - Adds an L2 trailer (often a CRC for error checking)
+            </Steps>
+
+            At this stage, the entire structure is called a **Frame**.
+
+            ##### Where Does the Data Go Next?
+
+            The **Frame** is sent to Layer 1 (Physical Layer):
+            - Converted into electrical signals over copper cables
+            - Or radio waves for Wi-Fi
+
+            → Sent to another device.
+        </Aside>
+    </TabItem>
+    <TabItem label="Layer 1">
+        #### Layer 1 – Physical Layer
+
+        Layer 1 is the lowest layer in the OSI model, responsible for the actual physical transmission of signals between devices.
+
+        Simply put:
+        - 👉 This layer converts binary data (bits) into electrical signals (for wired connections) or radio waves (for Wi-Fi) for transmission.
+
+        ##### What Does Layer 1 Define?
+
+        This layer focuses on hardware and signal aspects:
+
+        | Component                        | Role                                            |
+        |---------------------------------|-------------------------------------------------|
+        | 🔌 **Voltage**                   | Which voltage levels represent bit 0 or bit 1   |
+        | 📏 **Maximum Transmission Distance** | E.g., Cat5e Ethernet cables up to ~100 meters  |
+        | 🔗 **Physical Connector Standards** | RJ45 ports, fiber optic ports, etc.            |
+        | 🧵 **Cable Types & Characteristics** | UTP, STP, fiber optic, etc.                   |
+        | 📶 **Transmission Signals**       | Electrical signals (wired), radio waves (wireless) |
+
+        > Anything you can “see, touch, or measure” belongs to Layer 1.
+
+        <Aside type="caution">
+            ##### Data Transmission – From the Physical Layer
+
+            When a device wants to send data:
+
+            1. The frame is fully encapsulated by the upper layers (L2, L3, L4…).
+            2. Layer 1 converts the frame into electrical signals or radio waves and sends it over the physical medium (e.g., cables or air).
+            3. The data is transmitted to the receiving device (switch, router, PC…).
+        </Aside>
+
+        <Aside type="caution">
+            ##### De-encapsulation Process
+
+            When the receiving device gets the signal:
+
+            1. Layer 1 converts the signal back into a bit stream.
+            2. Layer 2 uses these bits to reconstruct the frame.
+            3. Layer 2 removes its header/trailer → leaves a **packet** (L3).
+            4. Layer 3 removes its header → leaves a **segment** (L4).
+            5. Layer 4 removes its header → leaves the original data created by the Application Layer.
+
+            > This is the **de-encapsulation** process—unpacking the layers to retrieve the original data.
+        </Aside>
+    </TabItem>
+</Tabs>
+
+---
+---
+### Protocol Data Units – What is a PDU?
+
+Before moving forward, let’s review some key terms related to how data is prepared and sent over a network.
+
+#### When an application starts sending data…
+
+1. The application interacts with the Application Layer (Layer 7) → prepares data for transmission.
+2. This data is gradually encapsulated as it moves down through each OSI layer below – with each layer adding its own “wrapper” called a header (and a trailer at Layer 2).
+
+#### Key Terms to Remember
+
+| OSI Layer               | When Header is Added                 | What is the Data Unit (PDU) Called? |
+|------------------------|--------------------------------------|-------------------------------------|
+| **Layer 4 – Transport** | Adds TCP/UDP header                  | **Segment**                         |
+| **Layer 3 – Network**   | Adds IP header                       | **Packet**                          |
+| **Layer 2 – Data Link** | Adds MAC header + trailer            | **Frame**                           |
+| **Layer 1 – Physical**  | Converts to electrical signals or waves | **Bit**                          |
+
+#### So, What is a PDU?
+
+A PDU (Protocol Data Unit) is the general term used to refer to the data unit at each network layer.
+
+> For example:
+> - Segment = PDU of the Transport Layer
+> - Packet = PDU of the Network Layer
+> - Frame = PDU of the Data Link Layer
+> - Bit = PDU of the Physical Layer
+
+👉 When you see the term “PDU,” remember it’s just the way we refer to the "data unit corresponding to each layer."
+#### Summary of the Data Encapsulation Process
+
+Imagine you’re sending a message:
+
+1. The Application Layer creates the data.
+2. The Transport Layer adds a TCP/UDP header → becomes a **Segment**.
+3. The Network Layer adds an IP header → becomes a **Packet**.
+4. The Data Link Layer adds a MAC header/trailer → becomes a **Frame**.
+5. The Physical Layer converts the frame into bits and sends them over wires or waves.
+
+➡️ This process is called **encapsulation** – “wrapping” the data through each layer.
+
+#### Reverse Process – When Data is Received
+
+When the receiving device gets the data, it does the opposite:
+
+Bits → Frame → Packet → Segment → Original Data → This process is called **de-encapsulation** – “unwrapping” the data.
+
+### Tips to Remember the 7 OSI Layers with Acronyms
+
+#### From Layer 7 → Layer 1 (Top to Bottom)
+
+Phrase: "All People Seem To Need Data Processing"
+
+| Layer | Acronym    | Layer Name    |
+|-------|------------|---------------|
+| 7     | All        | Application   |
+| 6     | People     | Presentation  |
+| 5     | Seem       | Session       |
+| 4     | To         | Transport     |
+| 3     | Need       | Network       |
+| 2     | Data       | Data Link     |
+| 1     | Processing | Physical      |
+
+⏬ This is the order in which data is encapsulated when sent.
+
+#### From Layer 1 → Layer 7 (Bottom to Top)
+
+Phrase: "Please Do Not Teach Students Pointless Acronyms"
+
+| Layer | Acronym   | Layer Name    |
+|-------|-----------|---------------|
+| 1     | Please    | Physical      |
+| 2     | Do        | Data Link     |
+| 3     | Not       | Network       |
+| 4     | Teach     | Transport     |
+| 5     | Students  | Session       |
+| 6     | Pointless | Presentation  |
+| 7     | Acronyms  | Application   |
+
+⏫ This is the order in which data is processed when received.
+
+---
+## TCP/IP Model – The Practical Networking Model
+
+After understanding the OSI model, let’s now explore a more practical and widely used model today: the TCP/IP model.
+
+Like OSI, TCP/IP is a conceptual model consisting of a set of communication protocols that enable devices in a network to exchange data. However, there are some key differences:
+
+- TCP/IP is used in the real-world Internet today.
+- It has fewer layers than the OSI model.
+- Most importantly, it’s not just theoretical—TCP/IP is the model that powers the Internet today.
+
+### Origin of TCP/IP
+
+TCP/IP was developed by the U.S. Department of Defense, specifically through DARPA (Defense Advanced Research Projects Agency).
+
+The two core protocols that form the foundation of this system are:
+
+- **TCP (Transmission Control Protocol)** – a protocol for controlling data transmission.
+- **IP (Internet Protocol)** – a protocol for network routing.
+
+Hence, the model is named TCP/IP.
+
+## OSI vs. TCP/IP: Do You Need to Learn Both?
+
+- TCP/IP is the practical model used in today’s networks and the Internet.
+- However, the OSI model remains crucial for deeply understanding how networks function and how their operations are divided into layers.
+- In practice, network engineers often use the OSI model for troubleshooting, technical communication, or certifications (e.g., CCNA).
+
+**In Summary**: OSI helps you understand deeply – TCP/IP helps you implement practically.
+
+---
+## Comparison of OSI and TCP/IP Models
+
+### Layer Comparison
+
+| **OSI Model**          | **TCP/IP Model**        |
+|------------------------|-------------------------|
+| Layer 7 – Application  | Layer 4 – Application   |
+| Layer 6 – Presentation | *(merged into Application)* |
+| Layer 5 – Session      | *(merged into Application)* |
+| Layer 4 – Transport    | Layer 3 – Transport     |
+| Layer 3 – Network      | Layer 2 – Internet      |
+| Layer 2 – Data Link    | Layer 1 – Link          |
+| Layer 1 – Physical     | *(merged into Link)*    |
+
+> In the TCP/IP model, the top three OSI layers (Application, Presentation, Session) are combined into a single Application layer.
+>
+> The lower layers are fairly equivalent:
+>
+> - Transport (L4) remains the same.
+> - OSI’s Network layer corresponds to TCP/IP’s Internet layer.
+> - OSI’s Data Link and Physical layers are combined into TCP/IP’s Link layer.
+
+### How People Talk in Practice
+
+An important thing to remember: although we use the TCP/IP model to operate real networks, technical discussions often refer to OSI layer numbers.
+
+**Example**:
+
+- If a network engineer says:
+> “There’s an issue at Layer 4”
+  >
+  > → They mean OSI Layer 4 (Transport layer),
+  >
+  > NOT TCP/IP’s Layer 4 (Application layer!).
+- Similarly:
+> “Layer 2 issue”
+  >
+  > → Refers to OSI’s Data Link layer, not TCP/IP’s Layer 2.
+
+Therefore, you need to understand both models, especially OSI, to follow technical conversations, documentation, and certifications like CCNA.
+
+### Variations in Terminology
+
+In practice, some TCP/IP layers may have different names depending on the documentation or curriculum:
+
+- The Link layer may be called:
+- Network Access Layer
+- Network Interface Layer
+
+> Don’t worry too much about different naming conventions—understanding the meaning and function is what matters most.
+
+### The 5-Layer TCP/IP Model (Common in Teaching)
+
+A more common version of the TCP/IP model used in education is the 5-layer model, which separates the lower two layers:
+
+| **TCP/IP 5-Layer Model** | **Corresponding OSI Layers** |
+|--------------------------|-----------------------------|
+| 5. Application           | OSI L5–L7 (combined)        |
+| 4. Transport             | OSI Layer 4                 |
+| 3. Network / Internet    | OSI Layer 3                 |
+| 2. Data Link             | OSI Layer 2                 |
+| 1. Physical              | OSI Layer 1                 |
+
+Personally, I prefer this division because:
+
+- It combines the higher layers, which network engineers rarely deal with directly.
+- It keeps Data Link and Physical separate, as these layers have distinct roles in physical network operations.
+
+---
+## Simulation of Data Transmission from Host A to Host B
+
+The diagram illustrates the process of Host A sending data to Host B, with two routers in between.
+
+We have:
+
+- Host A → Router 1 → Router 2 → Host B
+- Each device has a TCP/IP stack (protocol stack).
+
+> **Note**: The two routers only need to handle the lower layers, specifically the Internet layer (Layer 3) and the Link layer (Layer 2).
+>
+> They do not process data at the Application or Transport layers.
+
+### Data Transmission Process from Host A to Host B
+
+<Steps>
+    1. An application on Host A wants to communicate with an application on Host B.
+
+        **Example**: A Skype call – Host A sends video and audio data to Host B.
+
+    2. Skype operates at the Application layer, and the data is encapsulated through the layers:
+
+        - Transport (e.g., TCP/UDP)
+        - Internet (IP)
+        - Link (Ethernet)
+
+    3. The data is then sent to the first router (typically via an Ethernet UTP cable).
+</Steps>
+
+### Role of Routers
+
+- Routers operate at Layer 3 – the Internet Layer.
+- They need to know the destination IP address to determine the data’s routing path.
+
+**At each router**:
+
+- The data is de-encapsulated at the Link layer.
+- The router then reads the destination IP at the Internet layer.
+- The data is re-encapsulated into a Frame and sent to the next router (e.g., via a long-distance fiber optic cable).
+
+### Data Reception Process at Host B from Host A
+
+<Steps>
+    1. The data arrives at Host B, where the de-encapsulation process continues:
+
+        - Link Layer: Removes header/trailer → leaves a **Packet**
+        - Internet Layer: Removes IP header → leaves a **Segment**
+        - Transport Layer: Removes TCP/UDP header → leaves the original data
+
+    2. The data is finally delivered to the Skype application on Host B.
+
+        **Result**: Skype on Host A successfully communicates with Skype on Host B → this is called process-to-process communication.
+</Steps>
+
+> This process is repeated multiple times in both directions throughout the Skype call.
+
+---
+## Concepts of Same-Layer Interaction and Host-to-Host Communication
+
+<Tabs>
+    <TabItem label="same-layer interaction">
+        #### Definition:
+
+        **Same-layer interaction** refers to the **logical communication between corresponding layers** (with the same name) on two different devices in the TCP/IP or OSI model.
+
+        **Example**:
+
+        - The Application layer on Host A logically communicates with the Application layer on Host B.
+        - The Transport layer on Host A logically communicates with the Transport layer on Host B.
+
+        Although these layers **do not directly transmit data to each other**, they **communicate logically** through the processes of encapsulation and de-encapsulation.
+
+        #### Specific Example:
+
+        Suppose you’re making a Skype call from Computer A to Computer B:
+
+        - The Application layer on Computer A generates data (video, audio).
+        - This data is encapsulated through the Transport → Internet → Link layers.
+        - When it reaches Computer B, the data is de-encapsulated layer by layer until it reaches the Application layer.
+        - The Application layer on Computer B interprets the data as if it came **directly** from the Application layer on Computer A.
+
+        This is **same-layer interaction**: logical communication between corresponding layers of two devices.
+    </TabItem>
+    <TabItem label="host-to-host communication">
+        #### Definition:
+
+        **Host-to-host communication** is the process of **direct communication between two end devices (hosts)** in a network—typically computers, servers, or phones.
+
+        In the TCP/IP model, the **Transport layer** is responsible for this type of communication. It ensures:
+
+        - Data from the sending application reaches the correct application on the receiving end.
+        - The sequence of packets is maintained correctly.
+        - Error checking and retransmission if packets are lost.
+
+        #### Specific Example:
+
+        When you send a file from Computer A to Computer B over the Internet:
+
+        - The Transport layer on Computer A encapsulates the data into segments.
+        - These segments are sent through intermediate routers (which only handle IP at the Internet layer).
+        - The Transport layer on Computer B receives the data, reassembles it in the correct order, checks for errors, and passes it to the Application layer.
+
+        This is host-to-host communication—meaning the two hosts can communicate reliably and accurately, even across a complex network with multiple intermediaries.
+    </TabItem>
+</Tabs>
+
+---
+
+## Protocol Standards Enable Communication Between Different Devices
+
+A key point: TCP/IP protocols are industry standards used by all network device manufacturers.
+
+→ This allows:
+
+- An Apple iMac to communicate with
+- A Cisco router, then to
+- A Juniper router, then to
+- A Dell PC
+
+→ And everything works seamlessly.
+
+This is the power of protocol standards—**interoperability**.

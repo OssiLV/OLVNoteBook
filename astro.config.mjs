@@ -52,7 +52,7 @@ export default defineConfig({
 							},
 							items: [
 								{
-									label: 'OSI Model & TCP/IP',
+									label: 'OSI & TCP/IP Models',
 									translations: {
 										'vi': 'Mô hình OSI & TCP/IP'
 									},
