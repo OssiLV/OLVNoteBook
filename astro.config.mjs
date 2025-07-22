@@ -60,17 +60,8 @@ export default defineConfig({
 								}
 							]
 						},
-						// Each item here is one entry in the navigation menu.
-						// { label: 'Network', slug: 'network/example' },
 					],
 				},
-				// {
-				// 	label: 'Linux',
-				// 	items: [
-				// 		// Each item here is one entry in the navigation menu.
-				// 		{ label: 'Introducing File System in Linux', slug: 'linux/file_system' },
-				// 	],
-				// },
 			],
 			customCss: [
 				'./src/styles/font.css',

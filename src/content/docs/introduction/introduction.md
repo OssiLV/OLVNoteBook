@@ -3,10 +3,6 @@ title: Introduction
 description: ''
 tableOfContents: false
 lastUpdated: 2025-07-21
-prev: false
-next:
-  link: /network/
-  label: Network
 ---
 
 ## Welcome to My DevOps Journey!
