@@ -59,6 +59,13 @@ export default defineConfig({
 										'vi': 'Mô hình OSI & TCP/IP'
 									},
 									slug: 'networking/osi_model_tcp_ip'
+								},
+								{
+									label: 'IPv4 Addressing',
+									translations: {
+										'vi': 'Địa chỉ IPv4'
+									},
+									slug: 'networking/ipv4_addressing'
 								}
 							]
 						},
