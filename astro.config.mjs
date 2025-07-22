@@ -30,7 +30,8 @@ export default defineConfig({
 					},
 					items: [
 						// Each item here is one entry in the navigation menu.
-						{ label: 'Introduction',
+						{
+							label: 'Introduction',
 							translations: {
 								'vi': 'Giới thiệu'
 							},
@@ -38,14 +39,31 @@ export default defineConfig({
 						},
 					],
 				},
-
-				// {
-				// 	label: 'Network',
-				// 	items: [
-				// 		// Each item here is one entry in the navigation menu.
-				// 		{ label: 'Network', slug: 'network/example' },
-				// 	],
-				// },
+				{
+					label: 'Networking',
+					translations: {
+						'vi': 'Mạng'
+					},
+					items: [
+						{
+							label: 'Basic',
+							translations: {
+								'vi': 'Cơ bản'
+							},
+							items: [
+								{
+									label: 'OSI Model & TCP/IP',
+									translations: {
+										'vi': 'Mô hình OSI & TCP/IP'
+									},
+									slug: 'networking/osi_model_tcp_ip'
+								}
+							]
+						},
+						// Each item here is one entry in the navigation menu.
+						// { label: 'Network', slug: 'network/example' },
+					],
+				},
 				// {
 				// 	label: 'Linux',
 				// 	items: [
@@ -53,12 +71,7 @@ export default defineConfig({
 				// 		{ label: 'Introducing File System in Linux', slug: 'linux/file_system' },
 				// 	],
 				// },
-				{
-					label: 'Reference',
-					autogenerate: { directory: 'reference' },
-				},
 			],
-
 			customCss: [
 				'./src/styles/font.css',
 				// Fontsource files for to regular and semi-bold font weights.

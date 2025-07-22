@@ -1,10 +1,8 @@
 ---
-title: Linux Guide
+title: OSI Model & TCP/IP
 description: A guide in my new Starlight docs site.
 lastUpdated: false
-prev:
-  link: /prev-page/
-  label: Prev page
+prev: false
 next:
   link: /next-page/
   label: Next page

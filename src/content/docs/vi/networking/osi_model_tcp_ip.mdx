@@ -1,0 +1,746 @@
+---
+title: Mô hình OSI & TCP/IP
+description: Mô hình OSI & TCP/IP
+lastUpdated: 2025-07-22
+prev: false
+next: false
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import { Steps } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Trong bài học này, chúng ta sẽ tìm hiểu về **hai mô hình mạng cơ bản**:
+
+1. **Mô hình OSI**
+2. **Bộ giao thức TCP/IP**
+
+---
+
+## Mô hình mạng là gì?
+
+Hiểu đơn giản, **mô hình mạng là cách chúng ta phân loại và tổ chức các giao thức mạng**.
+
+Mỗi giao thức mạng là một tập hợp các quy tắc xác định cách các thiết bị giao tiếp với nhau – từ việc gửi dữ liệu, nhận dữ liệu, tới cách xử lý dữ liệu. Ví dụ như:
+
+* **Ethernet** là một giao thức mạng.
+* Các chuẩn truyền dữ liệu qua **cáp đồng** hay **cáp quang** cũng nằm trong phạm vi này.
+
+Giao thức không phải là tiêu chuẩn vật lý, mà là **quy tắc logic** – giống như “ngôn ngữ” để các thiết bị có thể hiểu và nói chuyện với nhau.
+
+---
+
+### Vai trò của mô hình mạng
+
+Bạn có thể tưởng tượng mô hình mạng giống như **bản đồ phân loại các loại giao thức**.
+Mỗi nhóm giao thức sẽ được phân theo từng "lớp" khác nhau – ví dụ:
+
+- **Lớp vật lý (Physical Layer)**: Xử lý việc truyền tín hiệu vật lý qua các phương tiện như cáp, sóng vô tuyến.
+- **Lớp mạng (Network Layer)**: Đảm nhiệm việc định tuyến (routing) và chuyển tiếp gói tin giữa các mạng.
+- **Lớp truyền tải (Transport Layer)**: Đảm bảo việc truyền dữ liệu đáng tin cậy, ví dụ: kiểm soát lỗi và luồng dữ liệu.
+
+Chúng giúp chuẩn hóa các giao thức để **các thiết bị của nhiều hãng khác nhau** có thể giao tiếp với nhau một cách nhất quán và dễ dàng.
+
+---
+
+### Điều gì xảy ra nếu không có chuẩn chung?
+
+Hãy thử tưởng tượng:
+
+* Dell làm ra một mô hình mạng riêng với giao thức riêng.
+* Apple (iMac) cũng làm một mô hình khác.
+
+\=> Hậu quả là:
+
+* Máy Dell chỉ nói chuyện được với máy Dell.
+* Máy iMac chỉ giao tiếp được với iMac.
+* Còn giữa Dell và iMac? ❌ Không thể giao tiếp!
+
+Trong thế giới ngày nay, nơi mà **Internet kết nối toàn cầu**, điều đó là **không thể chấp nhận được**.
+
+Chúng ta cần **một chuẩn chung** để mọi thiết bị có thể “nói cùng một ngôn ngữ” – và đó là lý do mà **mô hình OSI** và **TCP/IP** ra đời.
+
+---
+
+## Mô hình OSI là gì?
+
+OSI được phát triển bởi tổ chức **ISO – International Organization for Standardization**.
+
+Thời điểm ra đời: cuối những năm **1970** đến đầu **1980**.
+
+OSI là viết tắt của cụm từ: **Open Systems Interconnection** – tạm dịch: Liên kết các hệ thống mở.
+
+- Open (mở) có nghĩa là nó là một tiêu chuẩn mở – tức là bất kỳ ai, bất kỳ công ty nào cũng có thể áp dụng.
+- Nó không phải là một công nghệ độc quyền (proprietary) do một công ty cá nhân nào phát triển riêng cho họ.
+
+<Aside>
+    Mô hình OSI là **nỗ lực đầu tiên để chuẩn hóa giao tiếp mạng**.
+    Dù hiện nay nó **không còn được sử dụng trực tiếp**, nhưng:
+
+    - Nó vẫn **rất quan trọng về mặt lý thuyết**.
+    - Các kỹ sư mạng vẫn **dựa vào mô hình này để học và phân tích mạng**.
+
+    Nó như một khung sườn lý thuyết giúp chúng ta hiểu cách mà dữ liệu "chạy" từ máy tính này đến máy khác.
+
+</Aside>
+
+### OSI là mô hình khái niệm
+
+OSI không phải là phần mềm hay thiết bị, mà là một mô hình khái niệm (conceptual model).
+
+Nó được tạo ra để chuẩn hóa và phân loại các chức năng trong một hệ thống mạng.
+
+- Mô hình này giúp các nhà phát triển, kỹ sư và nhà sản xuất thiết bị hiểu rõ vai trò của từng phần trong quá trình truyền dữ liệu qua mạng.
+
+### Mô hình OSI có bao nhiêu tầng?
+
+Có tổng cộng **7 tầng** – mỗi tầng đại diện cho một nhóm chức năng cụ thể trong mạng.
+
+1. **Tầng vật lý (Physical Layer)**: Truyền tín hiệu vật lý qua phương tiện như cáp, sóng vô tuyến.
+2. **Tầng liên kết dữ liệu (Data Link Layer)**: Đảm bảo truyền dữ liệu không lỗi giữa các nút liền kề, sử dụng địa chỉ MAC.
+3. **Tầng mạng (Network Layer)**: Định tuyến và chuyển tiếp gói tin, sử dụng địa chỉ IP.
+4. **Tầng truyền tải (Transport Layer)**: Quản lý truyền dữ liệu đáng tin cậy, phân đoạn và tái hợp dữ liệu.
+5. **Tầng phiên (Session Layer)**: Thiết lập, quản lý và chấm dứt các phiên giao tiếp.
+6. **Tầng trình bày (Presentation Layer)**: Chuyển đổi và mã hóa dữ liệu giữa định dạng ứng dụng và mạng.
+7. **Tầng ứng dụng (Application Layer)**: Tương tác trực tiếp với ứng dụng người dùng, hỗ trợ giao thức như HTTP, HTTPS.
+
+<Tabs>
+    <TabItem label="Tầng 7">
+        #### Layer 7 – Application Layer (Tầng Ứng Dụng)
+
+        > Tầng cao nhất – Layer 7 trong mô hình OSI: Application Layer.
+
+        Đây là tầng gần với người dùng nhất, vì nó là nơi tương tác với các phần mềm mà bạn sử dụng hàng ngày, ví dụ như:
+
+        - Trình duyệt web: Chrome, Firefox, Brave,...
+        - Ứng dụng email
+        - Ứng dụng chat,…
+
+        <Aside type="caution">
+            Layer 7 không phải là phần mềm (như Chrome) mà là **các giao thức giao tiếp** mà phần mềm đó sử dụng.
+        </Aside>
+
+        ##### Giao thức nào ở Layer 7?
+
+        - **HTTP / HTTPS** – Giao thức trình duyệt dùng để truy cập web.
+        - **Ví dụ**: Khi bạn truy cập https://cisco.com, bạn đang sử dụng HTTPS – đây chính là giao thức tầng 7.
+
+        ##### Layer 7 hoạt động như thế nào?
+
+        Một vài chức năng chính của tầng này:
+
+        - **Xác định đối tượng giao tiếp** – ví dụ: máy bạn sẽ kết nối với máy chủ nào?
+        - **Đồng bộ hóa quá trình giao tiếp** – đảm bảo 2 bên hiểu nhau và phối hợp đúng thời điểm.
+
+        **Ví dụ**: Hãy tưởng tượng có hai máy tính đang muốn giao tiếp qua mạng:
+
+        <Steps>
+            1. Trên máy bên trái, bạn mở một trình duyệt và gõ địa chỉ web.
+
+            2. Trình duyệt sẽ tương tác với Application Layer (tầng 7) và gửi dữ liệu đi.
+
+            3. Dữ liệu này sẽ đi qua từng tầng của mô hình OSI, từ tầng 7 xuống tầng 1.
+
+            4. Mỗi tầng thêm một phần thông tin riêng vào dữ liệu để phục vụ mục đích cụ thể. Quá trình này gọi là:
+
+                > Encapsulation – Đóng gói dữ liệu
+
+            5. Khi đến tầng 1 (Physical Layer), dữ liệu sẽ được biến thành tín hiệu điện hoặc ánh sáng và truyền qua dây cáp.
+
+            6. Máy bên kia nhận được tín hiệu, và quá trình ngược lại xảy ra:
+
+                > De-encapsulation – Gỡ lớp dữ liệu
+
+                Từng tầng sẽ gỡ phần dữ liệu của tầng đó ra, cho đến khi thông tin "gốc" đến được Application Layer bên kia.
+        </Steps>
+
+        <Aside>
+            **Hai kiểu tương tác trong mô hình OSI**
+
+            - **Adjacent-layer interaction (Tương tác giữa các tầng liền kề)**:
+            - Ví dụ: Layer 7 gửi dữ liệu xuống Layer 6, rồi Layer 6 xuống Layer 5,...
+            - **Same-layer interaction (Tương tác giữa cùng tầng trên 2 máy)**
+            - Ví dụ: Application Layer trên máy A trao đổi thông tin với Application Layer trên máy B.
+
+            > Chính **same-layer interaction** là thứ giúp hai phần mềm hiểu nhau – ví dụ: trình duyệt và máy chủ web có thể "nói cùng một ngôn ngữ" thông qua HTTP/HTTPS.
+        </Aside>
+    </TabItem>
+    <TabItem label="Tầng 6">
+        #### Layer 6 – Presentation Layer (Tầng Trình Bày)
+
+        Sau khi dữ liệu đi qua Application Layer (tầng 7), nó sẽ được chuyển đến Presentation Layer (tầng 6) – tầng này có một vai trò rất quan trọng: **"dịch" dữ liệu**.
+
+        ##### Vậy tầng này "dịch" cái gì?
+
+        Hãy tưởng tượng như sau:
+
+        - Trình duyệt web hay ứng dụng chỉ hiểu dữ liệu theo cách riêng của nó (gọi là application format).
+        - Nhưng để truyền dữ liệu đó qua mạng, ta cần đổi sang định dạng mạng (network format).
+        - Và khi nhận dữ liệu về, lại phải dịch ngược lại để máy bên kia hiểu.
+
+        > ➡️ Đó chính là công việc của Presentation Layer.
+
+        ##### Một vài ví dụ cụ thể:
+
+        - Chuyển đổi định dạng dữ liệu:
+            - Ví dụ: chuyển đổi từ định dạng hình ảnh JPEG sang định dạng khác, hoặc từ Unicode sang ASCII,...
+        - Mã hóa (encryption) & Giải mã (decryption):
+            - Khi bạn gửi thông tin nhạy cảm (như mật khẩu), tầng này sẽ:
+                - Mã hóa (encrypt) trước khi gửi – để ai đó "nghe lén" cũng không đọc được.
+                - Giải mã (decrypt) sau khi nhận – để người nhận thật sự có thể đọc hiểu.
+
+        <Aside>
+            ##### Tổng kết vai trò của Layer 6:
+
+            - Dịch ngôn ngữ giữa ứng dụng và mạng
+            - Chuyển đổi định dạng giữa các phần mềm khác nhau
+            - Mã hóa/giải mã dữ liệu để bảo mật
+
+            > ➡️ Nói nôm na, nếu tầng Application là "bộ não giao tiếp", thì Presentation Layer giống như "phiên dịch viên" – giúp hai bên hiểu nhau dù có thể dùng định dạng khác nhau.
+        </Aside>
+    </TabItem>
+    <TabItem label="Tầng 5">
+        #### Layer 5 – Session Layer (Tầng Phiên Làm Việc)
+
+        Session Layer có nhiệm vụ quản lý các phiên giao tiếp (hay còn gọi là "sessions") giữa hai thiết bị hoặc ứng dụng.
+
+        Bạn có thể hiểu đơn giản như sau:
+
+        > Khi bạn mở trình duyệt (ví dụ: Chrome) và truy cập YouTube, một "phiên làm việc" giữa ứng dụng của bạn và server của YouTube sẽ được thiết lập.
+
+        Tầng Session sẽ:
+
+        - Thiết lập (establish) phiên giao tiếp.
+        - Quản lý (manage) phiên đó trong suốt quá trình truyền dữ liệu.
+        - Kết thúc (terminate) phiên khi công việc kết thúc.
+
+        ##### Một ví dụ thực tế:
+
+        Giả sử hàng triệu người đang cùng truy cập YouTube. Làm sao để server YouTube biết được:
+
+         - Ai đang xem video nào?
+        - Dữ liệu nào thuộc phiên nào?
+        - Khi nào nên ngắt kết nối?
+
+        ➡️ Đó là Session Layer đảm nhiệm việc phân biệt và quản lý từng "cuộc trò chuyện riêng biệt" này.
+
+        <Aside>
+            ##### Tóm lại, tầng 5 có các vai trò sau:
+
+            - Thiết lập kết nối giữa hai ứng dụng từ xa.
+            - Đồng bộ và duy trì trạng thái giữa các thiết bị giao tiếp.
+            - Ngắt kết nối khi phiên kết thúc hoặc có lỗi.
+        </Aside>
+
+        <Aside>
+            Mặc dù các tầng trên cùng (7, 6, 5) rất quan trọng để hiểu về nguyên lý hoạt động mạng, nhưng trên thực tế:
+
+                - Kỹ sư mạng (network engineers) thường không trực tiếp làm việc với các tầng này.
+                - Lập trình viên ứng dụng (application developers) mới là người làm việc với các tầng này để xây dựng ứng dụng như trình duyệt, video call, v.v.
+        </Aside>
+
+        <Aside type="caution">
+            ##### Chuỗi xử lý dữ liệu
+
+            - Sau khi dữ liệu đi qua **3 tầng trên (Application → Presentation → Session)**, nó sẽ được chuyển xuống **4 tầng dưới (Transport → Network → Data Link → Physical)**.
+            - Bắt đầu từ tầng 4, dữ liệu sẽ được thêm **tiêu đề (header)** để sẵn sàng truyền qua mạng.
+
+            ➡️ Tiếp theo sẽ là Layer 4 – Transport Layer, nơi thực hiện việc chia nhỏ dữ liệu, gắn địa chỉ cổng (port), và đảm bảo truyền dữ liệu tin cậy.
+        </Aside>
+    </TabItem>
+    <TabItem label="Tầng 4">
+        #### Layer 4 – Transport Layer (Tầng Giao Vận)
+
+        Transport Layer chịu trách nhiệm **chia nhỏ dữ liệu (segmentation)** và **ghép lại (reassembly)** để đảm bảo dữ liệu được truyền một cách hiệu quả và tin cậy giữa các thiết bị đầu cuối (end hosts).
+
+        ##### Tại sao cần chia nhỏ dữ liệu?
+
+        Giả sử bạn đang xem một video trên mạng.
+
+        - Nếu video được gửi đi như một khối dữ liệu khổng lồ, thì chỉ cần một lỗi nhỏ xảy ra, cả video sẽ không thể phát.
+        - Nhưng nếu video được chia thành nhiều phần nhỏ, thì nếu một phần bị lỗi, video chỉ bị giật nhẹ, sau đó vẫn tiếp tục phát bình thường.
+
+        Việc chia nhỏ giúp:
+
+        - Tăng độ tin cậy.
+        - Giảm rủi ro khi truyền qua mạng.
+        - Tối ưu băng thông và hiệu suất.
+
+        Ngoài việc chia nhỏ dữ liệu, Transport Layer còn đảm nhiệm:
+
+        - Giao tiếp từ đầu đến đầu **(end-to-end communication)**: giúp dữ liệu đi từ ứng dụng của thiết bị gửi đến đúng ứng dụng trên thiết bị nhận.
+        - Giao tiếp giữa các tiến trình **(process-to-process communication)**: ví dụ như kết nối từ trình duyệt của bạn đến dịch vụ web của YouTube.
+
+        <Aside type="caution">
+            ##### Quá trình xử lý dữ liệu
+
+            1. Dữ liệu được chuẩn bị bởi **3 tầng trên (Application → Presentation → Session)**.
+            2. Tầng 4 sẽ thêm một phần tiêu đề riêng (gọi là Layer 4 header).
+            3. Lúc này, khối dữ liệu + header sẽ được gọi là **segment**.
+
+            **Nếu dữ liệu lớn**: Nó sẽ được chia thành nhiều segment nhỏ, và mỗi segment sẽ được gắn header riêng biệt để có thể quản lý dễ dàng.
+
+            **Sau khi chia xong**: Các segment sẽ được gửi xuống tầng tiếp theo **(Layer 3 – Network Layer)** để tiếp tục quá trình truyền đi trên mạng.
+        </Aside>
+    </TabItem>
+    <TabItem label="Tầng 3">
+        #### Layer 3 – Network Layer (Tầng Mạng)
+
+        Network Layer chịu trách nhiệm kết nối các thiết bị đầu cuối (end hosts) nằm trên các mạng khác nhau – ví dụ từ máy tính ở nhà bạn đến một server ở Mỹ thông qua Internet.
+
+        ##### Các chức năng chính của Layer 3:
+
+        1. Cung cấp địa chỉ logic (Logical Addressing)
+
+            - Layer 3 sử dụng địa chỉ IP để định danh các thiết bị trên mạng.
+            - Đây là dạng địa chỉ mà bạn thường thấy như: 192.168.1.1 hay 8.8.8.8.
+
+            👉 Nhờ IP, thiết bị gửi và thiết bị nhận biết được nhau ở đâu trên mạng toàn cầu.
+
+        2. Lựa chọn đường đi (Path Selection / Routing)
+
+            - Dữ liệu không đi một đường thẳng từ A đến B.
+            - Có thể có nhiều tuyến đường khác nhau qua nhiều thiết bị trung gian.
+            - Layer 3 sẽ chọn đường đi tối ưu nhất (về tốc độ, chi phí, hoặc độ tin cậy).
+
+            👉 Router là thiết bị thực hiện việc này và hoạt động ở Layer 3.
+
+        <Aside type="caution">
+            ##### Quá trình đóng gói dữ liệu (Encapsulation)
+
+            1. Dữ liệu được chuẩn bị từ các tầng trên (Application → Presentation → Session).
+            2. Transport Layer (Layer 4) sẽ thêm header của nó và tạo ra segment.
+            3. Network Layer (Layer 3) tiếp tục thêm header riêng, bao gồm:
+                - Địa chỉ IP nguồn (source IP)
+                - Địa chỉ IP đích (destination IP)
+
+            Lúc này, toàn bộ phần dữ liệu + header Layer 4 + header Layer 3 được gọi là: **Packet (gói tin)**
+        </Aside>
+    </TabItem>
+    <TabItem label="Tầng 2">
+        #### Layer 2 – Data Link Layer (Tầng liên kết dữ liệu)
+
+        Layer 2 chịu trách nhiệm kết nối và truyền dữ liệu giữa các thiết bị lân cận — ví dụ như:
+
+        - Từ PC đến switch
+        - Từ switch đến router
+        - Từ router đến router (nếu chúng được nối trực tiếp)
+
+        ##### Layer 2 làm những gì?
+
+        1. **Cung cấp kết nối node-to-node (từng bước một)**
+
+            Không giống như Layer 3 (kết nối từ đầu đến cuối qua nhiều mạng), Layer 2 xử lý việc chuyển tiếp dữ liệu giữa hai thiết bị trực tiếp kết nối với nhau.
+
+        2. **Xử lý định dạng dữ liệu để truyền trên môi trường vật lý**
+
+            Vì Layer 2 nằm ngay phía trên Layer 1 (Physical Layer), nên nó cũng định nghĩa cách dữ liệu được định dạng để truyền qua các phương tiện vật lý như:
+
+            - Dây đồng (cáp UTP)
+            - Cáp quang
+            - Sóng vô tuyến (Wi-Fi)
+
+        3. **Phát hiện và có thể sửa lỗi truyền dẫn**
+
+            Layer 2 có thể phát hiện lỗi xảy ra trong quá trình truyền dữ liệu qua cáp hoặc sóng (ví dụ do nhiễu điện từ), và trong một số trường hợp có thể tự sửa lỗi nhẹ.
+
+        4. **Sử dụng địa chỉ riêng – MAC Address**
+
+            Layer 2 sử dụng địa chỉ MAC để nhận biết thiết bị. Đây là địa chỉ gắn liền với card mạng (NIC), có dạng như:
+
+            ```txt
+            00:1A:2B:3C:4D:5E
+            ```
+
+            Địa chỉ MAC hoàn toàn khác với IP – bạn có thể hình dung:
+
+            - IP giống như địa chỉ nhà trên bản đồ (có thể thay đổi).
+            - MAC giống như số serial của thiết bị (duy nhất, thường cố định).
+
+        5. **Switch hoạt động ở Layer 2**
+
+            Switch là thiết bị chủ lực ở tầng này. Nó đọc MAC address đích trong mỗi gói tin để biết nên gửi đến cổng nào.
+
+        <Aside type="caution">
+            ##### Quá trình đóng gói dữ liệu (Encapsulation) – nhìn lại toàn bộ:
+
+            <Steps>
+                1. Application Layer chuẩn bị dữ liệu.
+
+                2. Transport Layer (L4) thêm header → tạo thành **segment**.
+
+                3. Network Layer (L3) thêm IP header → tạo thành **packet**.
+
+                4. Data Link Layer (L2):
+                    - Thêm L2 header (chứa MAC nguồn và đích)
+                    - Thêm L2 trailer (thường là CRC để kiểm tra lỗi)
+            </Steps>
+
+            Khi hoàn tất bước này, toàn bộ cấu trúc được gọi là: 📦 **Frame**
+
+            ##### Sau đó dữ liệu đi đâu?
+
+            **Frame** này sẽ được gửi xuống Layer 1 (Physical Layer):
+
+            - Chuyển thành tín hiệu điện trên dây đồng
+            - Hoặc sóng vô tuyến nếu là Wi-Fi
+
+            → Gửi đến thiết bị khác.
+        </Aside>
+    </TabItem>
+    <TabItem label="Tầng 1">
+        #### Layer 1 – Physical Layer (Tầng vật lý)
+
+        Layer 1 là tầng thấp nhất trong mô hình OSI, chịu trách nhiệm về truyền dẫn tín hiệu vật lý thực tế giữa các thiết bị.
+
+        Bạn có thể hiểu đơn giản:
+
+        👉 Đây là tầng chuyển đổi dữ liệu nhị phân (bit) thành tín hiệu điện (nếu dùng dây) hoặc sóng vô tuyến (nếu dùng Wi-Fi) để gửi đi.
+
+        ##### Layer 1 định nghĩa những gì?
+
+        Layer này tập trung vào các yếu tố phần cứng và tín hiệu:
+
+        | Thành phần                       | Vai trò                                         |
+        | -------------------------------- | ----------------------------------------------- |
+        | 🔌 **Điện áp**                   | Mức điện áp nào tương ứng với bit 0, bit 1      |
+        | 📏 **Khoảng cách truyền tối đa** | Ví dụ: Cáp Ethernet Cat5e dài tối đa \~100 mét  |
+        | 🔗 **Chuẩn đầu nối vật lý**      | Cổng RJ45, cổng quang, v.v...                   |
+        | 🧵 **Loại cáp & đặc tính**       | UTP, STP, cáp quang, v.v...                     |
+        | 📶 **Tín hiệu truyền**           | Tín hiệu điện (wired), sóng vô tuyến (wireless) |
+
+        > Tất cả những gì bạn có thể "nhìn, chạm, hoặc đo được" thì thuộc Layer 1.
+
+        <Aside type="caution">
+            ##### Chuyển dữ liệu – Nhìn từ tầng vật lý
+
+            Khi một thiết bị muốn gửi dữ liệu:
+
+            1. Toàn bộ frame đã được đóng gói bởi các tầng trên (L2, L3, L4…).
+            2. Layer 1 sẽ chuyển đổi frame đó thành tín hiệu điện hoặc sóng và gửi qua môi trường vật lý (như dây cáp hoặc không khí).
+            3. Dữ liệu sẽ được truyền đến thiết bị bên kia (switch, router, PC…).
+        </Aside>
+
+        <Aside type="caution">
+            ##### Quá trình giải mã – De-encapsulation
+
+            Khi thiết bị bên kia nhận được tín hiệu:
+
+            1. Layer 1 chuyển tín hiệu về thành dãy bit.
+            2. Layer 2 dùng những bit đó để tái tạo lại frame.
+            3. Gỡ bỏ phần header/trailer của Layer 2 → còn lại packet (L3).
+            4. Gỡ tiếp header của Layer 3 → còn lại segment (L4).
+            5. Gỡ nốt header của Layer 4 → còn lại dữ liệu gốc do tầng ứng dụng (Application Layer) tạo ra.
+
+            > Đây chính là quá trình giải đóng gói dữ liệu (de-encapsulation) – tức là tháo lớp hành lý ra để lấy thông tin gốc bên trong.
+        </Aside>
+    </TabItem>
+</Tabs>
+
+### Protocol Data Units – PDU là gì?
+
+Trước khi tiếp tục, mình muốn bạn cùng ôn lại một số thuật ngữ quan trọng liên quan đến quá trình dữ liệu được chuẩn bị và gửi qua mạng.
+
+#### Khi ứng dụng bắt đầu gửi dữ liệu…
+
+1. Ứng dụng tương tác với Application Layer (Layer 7) → chuẩn bị dữ liệu để gửi.
+2. Dữ liệu này sẽ được đóng gói dần qua từng tầng OSI bên dưới – và mỗi tầng sẽ thêm “vỏ bọc riêng” gọi là header (và trailer ở Layer 2).
+
+#### Các thuật ngữ cần nhớ
+
+| Tầng OSI                | Khi thêm Header vào                  | Đơn vị dữ liệu (PDU) được gọi là gì? |
+| ----------------------- | ------------------------------------ | ------------------------------------ |
+| **Layer 4 – Transport** | Thêm TCP/UDP header                  | **Segment**                          |
+| **Layer 3 – Network**   | Thêm IP header                       | **Packet**                           |
+| **Layer 2 – Data Link** | Thêm MAC header + trailer            | **Frame**                            |
+| **Layer 1 – Physical**  | Chuyển thành tín hiệu điện hoặc sóng | **Bit**                              |
+
+#### Vậy PDU là gì?
+
+PDU (Protocol Data Unit) là tên gọi chung để chỉ đơn vị dữ liệu được dùng ở mỗi tầng mạng.
+
+> Ví dụ:
+> - Segment = PDU của tầng Transport
+> - Packet = PDU của tầng Network
+> - Frame = PDU của tầng Data Link
+> - Bit = PDU của tầng Physical
+
+👉 Khi bạn thấy thuật ngữ “PDU”, hãy nhớ đó chỉ là cách chúng ta gọi tên "gói dữ liệu tương ứng tại mỗi tầng" mà thôi.
+
+#### Tóm tắt quá trình đóng gói dữ liệu
+
+Giả sử bạn gửi một tin nhắn:
+
+1. Application Layer tạo ra dữ liệu.
+2. Transport Layer thêm header TCP/UDP → thành Segment
+3. Network Layer thêm IP header → thành Packet
+4. Data Link Layer thêm MAC header/trailer → thành Frame
+5. Physical Layer chuyển frame thành bit và gửi qua dây hoặc sóng.
+
+➡️ Quá trình này gọi là encapsulation – “đóng gói” dữ liệu qua từng lớp.
+
+#### Gỡ ngược – Khi dữ liệu được nhận
+
+Khi thiết bị bên kia nhận dữ liệu, nó sẽ làm ngược lại:
+
+Bit → Frame → Packet → Segment → Dữ liệu gốc → Quá trình này gọi là de-encapsulation – “tháo vỏ”.
+
+### Mẹo nhớ 7 tầng OSI bằng từ viết tắt (acronyms)
+
+#### Từ Layer 7 → Layer 1 (từ trên xuống dưới)
+
+Câu: "All People Seem To Need Data Processing"
+
+| Tầng | Viết tắt   | Tên tầng     |
+| ---- | ---------- | ------------ |
+| 7    | All        | Application  |
+| 6    | People     | Presentation |
+| 5    | Seem       | Session      |
+| 4    | To         | Transport    |
+| 3    | Need       | Network      |
+| 2    | Data       | Data Link    |
+| 1    | Processing | Physical     |
+
+⏬ Đây là thứ tự dữ liệu được đóng gói khi gửi đi.
+
+#### Từ Layer 1 → Layer 7 (từ dưới lên trên)
+
+Câu: "Please Do Not Teach Students Pointless Acronyms"
+
+| Tầng | Viết tắt  | Tên tầng     |
+| ---- | --------- | ------------ |
+| 1    | Please    | Physical     |
+| 2    | Do        | Data Link    |
+| 3    | Not       | Network      |
+| 4    | Teach     | Transport    |
+| 5    | Students  | Session      |
+| 6    | Pointless | Presentation |
+| 7    | Acronyms  | Application  |
+
+⏫ Đây là thứ tự dữ liệu được xử lý khi nhận về.
+
+---
+
+## Mô hình TCP/IP – Mô hình mạng thực tế
+
+Sau khi hiểu về mô hình OSI, bây giờ mình sẽ chia sẻ với các bạn về một mô hình khác thực tế hơn và đang được sử dụng phổ biến ngày nay, đó là mô hình TCP/IP.
+
+Giống như OSI, TCP/IP cũng là một mô hình khái niệm (conceptual model), bao gồm tập hợp các giao thức truyền thông giúp các thiết bị trong mạng trao đổi dữ liệu với nhau. Nhưng có vài điểm khác biệt lớn:
+
+- TCP/IP được dùng trong mạng Internet thật sự hiện nay.
+- Nó có ít tầng hơn so với OSI.
+- Và đặc biệt: nó không chỉ là lý thuyết — TCP/IP là mô hình đang vận hành Internet ngày nay.
+
+### Nguồn gốc của TCP/IP
+
+TCP/IP được phát triển bởi Bộ Quốc phòng Hoa Kỳ, cụ thể là thông qua tổ chức DARPA (Defense Advanced Research Projects Agency) – Cơ quan Dự án Nghiên cứu Tiên tiến Quốc phòng.
+
+Hai giao thức chính đặt nền móng cho toàn bộ hệ thống này chính là:
+
+- TCP (Transmission Control Protocol) – giao thức kiểm soát truyền tải.
+- IP (Internet Protocol) – giao thức định tuyến mạng.
+
+Vì vậy, mô hình này được gọi là TCP/IP.
+
+## OSI vs. TCP/IP: Có cần học cả hai?
+
+- TCP/IP là mô hình thực tế, dùng trong các hệ thống mạng và Internet hiện nay.
+- Tuy nhiên, mô hình OSI vẫn rất quan trọng trong việc giúp bạn hiểu rõ cách mạng hoạt động, cách phân tách chức năng theo từng tầng.
+- Trên thực tế, các kỹ sư mạng vẫn thường dùng mô hình OSI để phân tích lỗi, giao tiếp kỹ thuật, hoặc trong thi chứng chỉ (ví dụ như CCNA).
+
+**Tóm lại**: OSI giúp hiểu sâu – TCP/IP giúp triển khai thật.
+
+---
+
+## So sánh mô hình OSI và mô hình TCP/IP
+
+### So sánh tầng (layer)
+
+| **OSI Model**          | **TCP/IP Model**        |
+| ---------------------- | ----------------------- |
+| Layer 7 – Application  | Layer 4 – Application   |
+| Layer 6 – Presentation | *(gộp vào Application)* |
+| Layer 5 – Session      | *(gộp vào Application)* |
+| Layer 4 – Transport    | Layer 3 – Transport     |
+| Layer 3 – Network      | Layer 2 – Internet      |
+| Layer 2 – Data Link    | Layer 1 – Link          |
+| Layer 1 – Physical     | *(gộp vào Link)*        |
+
+> Trong mô hình TCP/IP, 3 tầng trên cùng của OSI (Application, Presentation, Session) được gộp chung lại thành một tầng Application.
+>
+> Các tầng thấp hơn thì khá tương đương:
+>
+> - Transport (L4) vẫn giữ nguyên.
+> - Network của OSI tương ứng với Internet layer trong TCP/IP.
+> - Data Link + Physical thì gộp thành Link Layer trong TCP/IP.
+
+### Cách nói chuyện trong thực tế
+
+Một điều rất quan trọng cần nhớ: mặc dù chúng ta dùng mô hình TCP/IP để vận hành mạng thật, nhưng khi nói chuyện kỹ thuật, mọi người thường dùng cách đánh số tầng của OSI.
+
+**Ví dụ**:
+
+- Nếu một kỹ sư mạng nói:
+    > “Có vấn đề ở tầng 4”
+    >
+    > → Họ đang nói về Layer 4 của OSI (tức là tầng vận chuyển – Transport),
+    >
+    > KHÔNG phải tầng 4 của TCP/IP (Application Layer!).
+- Tương tự:
+    > “Lỗi tầng 2”
+    >
+    > → Là đang nói về Data Link Layer của OSI, chứ không phải tầng 2 của TCP/IP.
+
+Vì vậy, bạn cần hiểu cả 2 mô hình, đặc biệt là OSI để hiểu các cuộc trò chuyện kỹ thuật, tài liệu, và khi đi thi chứng chỉ như CCNA.
+
+### Một số tên gọi khác nhau
+
+Trong thực tế, một số tầng trong TCP/IP có thể có tên gọi khác nhau tùy tài liệu hoặc giáo trình:
+
+- Link Layer có thể được gọi là:
+    - Network Access Layer
+    - Network Interface Layer
+
+> Đừng quá lo lắng khi thấy cách đặt tên khác nhau – hiểu ý nghĩa và chức năng là quan trọng nhất.
+
+### Mô hình 5 tầng (phổ biến trong thực tế giảng dạy)
+
+Có một phiên bản phổ biến hơn khi học TCP/IP là mô hình 5 tầng, tách riêng 2 tầng dưới:
+
+| **TCP/IP 5 tầng**     | **Tương ứng OSI**   |
+| --------------------- | ------------------- |
+| 5. Application        | OSI L5–L7 (gộp lại) |
+| 4. Transport          | OSI Layer 4         |
+| 3. Network / Internet | OSI Layer 3         |
+| 2. Data Link          | OSI Layer 2         |
+| 1. Physical           | OSI Layer 1         |
+
+Cá nhân mình thích cách chia này, vì:
+
+- Nó gộp tầng cao lại – nơi mà kỹ sư mạng ít khi đụng tới.
+- Nhưng vẫn giữ riêng Data Link và Physical, vì 2 tầng này có vai trò rõ ràng và tách biệt trong vận hành mạng vật lý.
+
+---
+
+## Mô phỏng quá trình truyền dữ liệu từ Host A đến Host B
+
+Sơ đồ mô tả quá trình Host A gửi dữ liệu đến Host B, với hai router ở giữa.
+
+Ta có:
+
+- Host A → Router 1 → Router 2 → Host B
+- Trên mỗi thiết bị đều có TCP/IP stack (ngăn xếp giao thức TCP/IP).
+
+> **Lưu ý**: Hai router chỉ cần quan tâm đến các tầng thấp, cụ thể là Internet layer (tầng 3) và Link layer (tầng 2).
+>
+>Chúng không cần xử lý dữ liệu ở tầng Application hay Transport.
+
+### Quy trình truyền dữ liệu từ Host A đến Host B
+
+<Steps>
+    1. Ứng dụng trên Host A muốn giao tiếp với ứng dụng trên Host B.
+
+        **Ví dụ**: gọi Skype – Host A gửi dữ liệu video và âm thanh đến Host B.
+
+    2. Skype hoạt động ở tầng Application, sau đó dữ liệu được đóng gói (encapsulated) qua các tầng:
+
+        - Transport (ví dụ TCP/UDP)
+        - Internet (IP)
+        - Link (Ethernet)
+
+    3. Dữ liệu sau đó được gửi đến Router đầu tiên (thường qua cáp đồng UTP Ethernet).
+</Steps>
+
+### Vai trò của Router
+
+- Router là thiết bị hoạt động ở tầng 3 – Internet Layer.
+- Nó cần biết địa chỉ IP đích để quyết định tuyến đường (routing) dữ liệu.
+
+**Tại mỗi router**:
+
+-Dữ liệu sẽ được gỡ gói (de-encapsulation) tại tầng Link.
+- Sau đó router đọc IP đích ở tầng Internet.
+- Rồi dữ liệu được đóng gói lại thành Frame và gửi đến router tiếp theo (ví dụ qua cáp quang đường dài).
+
+### Quy trình Host B nhận dữ liệu từ Host A
+
+<Steps>
+    1. Dữ liệu đến Host B – tại đây lại tiếp tục quá trình de-encapsulation:
+        - Tầng Link: Bỏ header/trailer → còn Packet
+        - Tầng Internet: Bỏ IP header → còn Segment
+        - Tầng Transport: Bỏ TCP/UDP header → còn lại dữ liệu gốc
+
+    2. Dữ liệu cuối cùng được giao cho ứng dụng Skype ở Host B.
+
+        **Kết quả**: Skype trên Host A đã giao tiếp thành công với Skype trên Host B → gọi là process-to-process communication.
+</Steps>
+
+> Quy trình trên sẽ được thực hiện nhiều lần, theo cả hai chiều, trong suốt cuộc gọi Skype.
+
+---
+
+## Khái niệm same-layer interaction và host-to-host communication
+
+<Tabs>
+    <TabItem label="same-layer interaction">
+        #### Định nghĩa:
+
+        **Same-layer interaction** là sự **giao tiếp giữa các tầng tương ứng (cùng tên)** trên hai thiết bị khác nhau trong mô hình TCP/IP hoặc OSI.
+
+        **Ví dụ**:
+
+        - Tầng Application trên Host A giao tiếp logic với tầng Application trên Host B.
+        - Tầng Transport trên Host A giao tiếp logic với tầng Transport trên Host B.
+
+        Tuy các tầng này **không thực sự truyền dữ liệu trực tiếp cho nhau**, nhưng chúng **giao tiếp theo một cách logic**, thông qua việc đóng gói (encapsulation) và gỡ gói (de-encapsulation).
+
+        #### Ví dụ cụ thể:
+
+        Giả sử bạn đang gọi Skype từ máy tính A đến máy tính B:
+
+        - Tầng Ứng dụng (Application) trên máy A tạo ra dữ liệu (video, âm thanh).
+        - Dữ liệu đó sẽ được đóng gói qua tầng Transport → Internet → Link.
+        - Khi đến máy B, dữ liệu được gỡ từng tầng cho đến khi tầng Application nhận dữ liệu.
+        - Tầng Application trên máy B hiểu được dữ liệu như thể nó đến **trực tiếp** từ tầng Application của máy A.
+
+        Đó là **tương tác cùng tầng** (Same-layer interaction): giao tiếp logic giữa hai tầng tương ứng của hai thiết bị.
+    </TabItem>
+    <TabItem label="host-to-host communication">
+        #### Định nghĩa:
+
+        **Host-to-host communication** là quá trình **giao tiếp trực tiếp giữa hai thiết bị đầu cuối (host)** trong mạng – thường là máy tính, server, hoặc điện thoại.
+
+        Trong mô hình TCP/IP, tầng **Transport** chịu trách nhiệm cho loại giao tiếp này. Nó đảm bảo rằng:
+
+        - Dữ liệu từ ứng dụng bên gửi đến đúng ứng dụng ở bên nhận.
+        - Trình tự gói tin được giữ đúng.
+        - Kiểm tra lỗi và xử lý lại nếu mất gói.
+
+        #### Ví dụ cụ thể:
+
+        Khi bạn gửi một file từ máy tính A đến máy tính B qua Internet:
+
+        - Tầng Transport trên A đóng gói dữ liệu thành các segment.
+        - Các segment đó được gửi đi qua các router trung gian (chỉ biết đến IP ở tầng Internet).
+        - Tầng Transport trên máy B nhận dữ liệu và ghép lại đúng thứ tự, kiểm tra lỗi, rồi chuyển lên tầng Application.
+
+        Đây chính là giao tiếp giữa thiết bị đầu cuối – nghĩa là hai host có thể giao tiếp ổn định, chính xác, dù mạng có thể phức tạp và nhiều trung gian.
+    </TabItem>
+</Tabs>
+
+---
+
+## Chuẩn giao thức giúp các thiết bị khác nhau giao tiếp được
+
+Một điểm quan trọng: Các giao thức TCP/IP là chuẩn công nghiệp, được dùng bởi tất cả nhà sản xuất thiết bị mạng.
+
+→ Vì thế, bạn có thể có:
+
+- Một chiếc Apple iMac giao tiếp với
+- Router Cisco, rồi đến
+- Router Juniper, rồi đến
+- Một chiếc PC Dell
+
+→ Và tất cả đều hoạt động bình thường.
+
+Đó chính là sức mạnh của chuẩn giao thức – interoperability (khả năng tương tác).
