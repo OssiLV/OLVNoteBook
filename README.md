@@ -1,54 +1,21 @@
-# Starlight Starter Kit: Basics
+## Welcome to My DevOps Journey!
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+Hello there! I'm [Truong Vo/OssiLV], and you've found the place where I document my continuous journey through the exciting world of DevOps. This page is not just a personal log of what I've learned, but also a space for me to share the detailed DevOps roadmap I'm following, along with the knowledge and experiences I've gained along the way.
 
-```
-npm create astro@latest -- --template starlight
-```
+DevOps isn't merely a collection of tools or processes; it's a philosophy, a culture of work aimed at unifying software development (Development) and system operations (Operations) to deliver products faster, with higher quality, and greater reliability. With the rapid pace of technological advancements today, mastering DevOps principles and tools has become more crucial than ever for anyone looking to build a solid career in the IT industry.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/starlight/tree/main/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/starlight/tree/main/examples/basics)
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/withastro/starlight&create_from_path=examples/basics)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwithastro%2Fstarlight%2Ftree%2Fmain%2Fexamples%2Fbasics&project-name=my-starlight-docs&repository-name=my-starlight-docs)
+Here, you'll find a logically organized learning path, from foundational knowledge to advanced tools and techniques. We'll explore the key pillars of DevOps together, including:
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+* **Networking:** From basic concepts of TCP/IP, DNS, HTTP/HTTPS to understanding how applications communicate in distributed environments. A solid grasp of networking is key to understanding how DevOps systems operate.
+* **Linux:** This operating system is the backbone of most DevOps environments. We'll dive into fundamental commands, process management, file systems, Shell scripting, and the necessary techniques to master the Linux environment.
+* **CI/CD (Continuous Integration/Continuous Delivery):** This is the heart of DevOps. We'll learn about the principles of continuous integration and continuous delivery, how to automate the build, test, and deployment processes to accelerate delivery and minimize errors.
+* **DevOps Tools:** Powerful tools supporting the workflow are indispensable. I'll share my experiences and guides on using popular tools such as:
+    * **Git & GitHub:** Effective source code management, team collaboration, and version control.
+    * **Jenkins:** A leading automation server for building CI/CD pipelines.
+    * **Docker & Kubernetes:** Containerization and container orchestration technologies to build and manage distributed applications flexibly and efficiently.
+    * **Ansible, Terraform:** Infrastructure as Code (IaC) tools that automate the provisioning and management of infrastructure.
+    * And many more tools that I'll continuously update as I explore.
 
-## 🚀 Project Structure
+My goal isn't just to list topics, but to provide easy-to-understand explanations, practical examples, and lessons learned from my own journey. I believe that sharing knowledge is the best way to learn and grow. Therefore, I highly welcome your feedback and contributions to make the content even better.
 
-Inside of your Astro + Starlight project, you'll see the following folders and files:
-
-```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   ├── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
-```
-
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
-
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
-
-Static assets, like favicons, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+Let's embark on this journey together, discover the exciting aspects of DevOps, and equip ourselves with the essential skills to succeed in the digital era! I hope you find valuable insights and inspiration on my page.
