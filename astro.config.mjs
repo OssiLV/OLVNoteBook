@@ -66,6 +66,13 @@ export default defineConfig({
 										'vi': 'Địa chỉ IPv4'
 									},
 									slug: 'networking/ipv4_addressing'
+								},
+								{
+									label: 'IPv4 Header',
+									translations: {
+										'vi': 'IPv4 Header'
+									},
+									slug: 'networking/ipv4_header'
 								}
 							]
 						},
