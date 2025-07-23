@@ -1,0 +1,73 @@
+---
+title: Lộ trình Mạng
+description: Lộ trình Mạng
+lastUpdated: 2025-07-23
+editUrl: https://github.com/OssiLV/OLV-NoteBook/blob/main/src/content/docs/vi/networking/roadmap.mdx
+---
+
+import {Steps} from "@astrojs/starlight/components";
+
+## Level 1 – Nền tảng cơ bản nhất (Kiến thức bắt buộc)
+
+> Hiểu cách máy tính giao tiếp, là nền tảng để làm việc với bất kỳ hệ thống nào.
+
+- **OSI Model** – Khung lý thuyết để hiểu các tầng giao tiếp mạng
+- **IP Addressing (IPv4)** – Cách thiết bị định danh & liên lạc với nhau
+- **DNS** – Dịch tên miền sang IP
+
+---
+
+## Level 2 – Giao thức ứng dụng (Application Protocols)
+
+> Làm quen với các giao thức bạn dùng hằng ngày: web, truyền file, mã hóa.
+
+- **HTTP/HTTPS** – Giao thức cơ bản của web và REST API
+- **SSL/TLS** – Mã hóa dữ liệu, cơ sở cho HTTPS, bảo mật dịch vụ
+- **FTP / SFTP** – Truyền file, dùng trong tự động hóa hoặc deploy file
+
+---
+
+## Level 3 – Bảo mật & kiểm soát truy cập
+
+> Kiến thức cần thiết để bảo vệ hệ thống, filter truy cập hợp lệ
+
+- **Firewall (iptables, Security Group, NACL...)**
+- **Whitelist / Blacklist IP**
+- **Port, Protocol filtering** – Khi cấu hình trên cloud hoặc local server
+
+---
+
+## Level 4 – Hệ thống mạng nâng cao
+
+> Kiến thức giúp bạn hiểu cách máy trong một mạng được cấp IP, định tuyến, ra internet...
+
+- **DHCP** – Cấp phát IP tự động cho server/container
+- **Routing** – Điều hướng gói tin giữa các mạng
+- **NAT** – Chuyển đổi địa chỉ IP, quan trọng với Cloud & Kubernetes
+
+---
+
+## Level 5 – Ứng dụng nâng cao & tích hợp
+
+> Dành cho hệ thống có yêu cầu đặc biệt về bảo mật, kiến trúc phân tán, multi-cloud...
+
+- **Proxy (Forward/Reverse)** – Load balancing, caching, SSL termination…
+- **VPN** – Kết nối private networks qua internet, thường dùng cho truy cập nội bộ
+- **Overlay Network (vxlan, flannel, calico)** – (Bonus) khi làm Kubernetes
+
+---
+
+<Steps>
+    1. **Giai đoạn 1**: OSI Model và IP Addressing là nền tảng lý thuyết và thực tế để hiểu cách mạng hoạt động. DNS được học sớm vì nó là dịch vụ cơ bản trong DevOps.
+
+    2. **Giai đoạn 2**: HTTP/HTTPS, SSL/TLS, và FTP/SFTP tập trung vào giao thức ứng dụng, giúp bạn làm quen với các dịch vụ web và truyền file.
+
+    3. **Giai đoạn 3**: White/Black List và Firewalls liên quan đến bảo mật và kiểm soát truy cập, là bước tiếp theo để bảo vệ hệ thống.
+
+    4. **Giai đoạn 4**: DHCP, Routing, và NAT là các khái niệm nâng cao hơn, liên quan đến quản lý và điều hướng mạng.
+
+    5. **Giai đoạn 5**: Proxy và VPN đòi hỏi hiểu biết tổng hợp về các khái niệm trước, thường được áp dụng trong các hệ thống phức tạp hơn (như microservices, cloud).
+</Steps>
+
+
+---

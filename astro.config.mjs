@@ -48,11 +48,19 @@ export default defineConfig({
 					},
 					items: [
 						{
+							label: 'Roadmap Networking',
+							translations: {
+								'vi': 'Lộ trình Mạng'
+							},
+							slug: 'networking/roadmap'
+						},
+						{
 							label: 'Basic',
 							translations: {
 								'vi': 'Cơ bản'
 							},
 							items: [
+
 								{
 									label: 'OSI & TCP/IP Models',
 									translations: {

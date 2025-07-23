@@ -1,0 +1,72 @@
+---
+title: Roadmap Networking
+description: Roadmap
+lastUpdated: 2025-07-23
+editUrl: https://github.com/OssiLV/OLV-NoteBook/blob/main/src/content/docs/networking/roadmap.mdx
+---
+
+import {Steps} from "@astrojs/starlight/components";
+
+## Level 1 – Fundamental Basics (Essential Knowledge)
+
+> Understand how computers communicate — the foundation for working with any system.
+
+- **OSI Model** – The theoretical framework for understanding networking layers
+- **IP Addressing (IPv4)** – How devices are identified and communicate
+- **DNS** – Translates domain names to IP addresses
+
+---
+
+## Level 2 – Application Protocols
+
+> Get familiar with protocols you use every day: web, file transfer, encryption.
+
+- **HTTP/HTTPS** – The core protocol of the web and REST APIs
+- **SSL/TLS** – Encrypts data; the foundation for HTTPS and secure services
+- **FTP / SFTP** – File transfer protocols used in automation or file deployment
+
+---
+
+## Level 3 – Security & Access Control
+
+> Knowledge needed to protect systems and filter legitimate traffic.
+
+- **Firewall (iptables, Security Groups, NACL, etc.)**
+- **IP Whitelist / Blacklist**
+- **Port & Protocol Filtering** – For configuring on cloud or local servers
+
+---
+
+## Level 4 – Advanced Networking Systems
+
+> Helps you understand how machines in a network get IPs, route traffic, and access the internet.
+
+- **DHCP** – Automatically assigns IPs to servers/containers
+- **Routing** – Directs packets between networks
+- **NAT** – Translates IP addresses; important for Cloud & Kubernetes
+
+---
+
+## Level 5 – Advanced Applications & Integration
+
+> For systems with high security or distributed architectures (e.g., microservices, multi-cloud).
+
+- **Proxy (Forward/Reverse)** – Load balancing, caching, SSL termination
+- **VPN** – Connects private networks over the internet; often used for internal access
+- **Overlay Network (vxlan, flannel, calico)** – *Bonus*: used in Kubernetes networking
+
+---
+
+<Steps>
+    1. **Stage 1**: OSI Model and IP Addressing provide the theoretical and practical foundation of networking. DNS is introduced early as it’s a core service in DevOps.
+
+    2. **Stage 2**: HTTP/HTTPS, SSL/TLS, and FTP/SFTP focus on application-level protocols, helping you work with web services and file transfer.
+
+    3. **Stage 3**: Firewalls and whitelists/blacklists relate to access control and system security.
+
+    4. **Stage 4**: DHCP, routing, and NAT cover more advanced topics around managing and directing network traffic.
+
+    5. **Stage 5**: Proxy and VPN require a solid understanding of all prior levels, and are typically used in more complex environments like microservices and cloud systems.
+</Steps>
+
+---
