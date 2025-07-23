@@ -1,28 +1,28 @@
 ---
-title: Introduction
+title: Giới thiệu
 description: ''
 tableOfContents: false
 lastUpdated: 2025-07-21
 ---
 
-## Welcome to My DevOps Journey!
+## Chào mừng đến với hành trình DevOps của tôi!
 
-Hello there! I'm [Truong Vo/OssiLV], and you've found the place where I document my continuous journey through the exciting world of DevOps. This page is not just a personal log of what I've learned, but also a space for me to share the detailed DevOps roadmap I'm following, along with the knowledge and experiences I've gained along the way.
+Chào bạn, tôi là [Trường Võ/OssiLV], và bạn đã tìm thấy nơi tôi ghi lại hành trình không ngừng nghỉ của mình trong thế giới DevOps đầy thú vị. Trang này không chỉ là một cuốn nhật ký cá nhân về những gì tôi học được, mà còn là một không gian để tôi chia sẻ lộ trình DevOps chi tiết mà tôi đang theo đuổi và những kiến thức, kinh nghiệm tôi đã tích lũy trên con đường này.
 
-DevOps isn't merely a collection of tools or processes; it's a philosophy, a culture of work aimed at unifying software development (Development) and system operations (Operations) to deliver products faster, with higher quality, and greater reliability. With the rapid pace of technological advancements today, mastering DevOps principles and tools has become more crucial than ever for anyone looking to build a solid career in the IT industry.
+DevOps không chỉ là một tập hợp các công cụ hay quy trình; đó là một triết lý, một văn hóa làm việc hướng tới việc hợp nhất phát triển phần mềm (Development) và vận hành hệ thống (Operations) để cung cấp sản phẩm nhanh hơn, chất lượng hơn và đáng tin cậy hơn. Với nhịp độ phát triển công nghệ chóng mặt như hiện nay, việc nắm vững các nguyên tắc và công cụ DevOps trở nên quan trọng hơn bao giờ hết đối với bất kỳ ai muốn xây dựng sự nghiệp vững chắc trong ngành công nghệ thông tin.
 
-Here, you'll find a logically organized learning path, from foundational knowledge to advanced tools and techniques. We'll explore the key pillars of DevOps together, including:
+Tại đây, bạn sẽ tìm thấy một lộ trình học tập được tổ chức một cách logic, từ những kiến thức nền tảng vững chắc cho đến các công cụ và kỹ thuật nâng cao. Chúng ta sẽ cùng nhau khám phá các trụ cột quan trọng của DevOps, bao gồm:
 
-* **Networking:** From basic concepts of TCP/IP, DNS, HTTP/HTTPS to understanding how applications communicate in distributed environments. A solid grasp of networking is key to understanding how DevOps systems operate.
-* **Linux:** This operating system is the backbone of most DevOps environments. We'll dive into fundamental commands, process management, file systems, Shell scripting, and the necessary techniques to master the Linux environment.
-* **CI/CD (Continuous Integration/Continuous Delivery):** This is the heart of DevOps. We'll learn about the principles of continuous integration and continuous delivery, how to automate the build, test, and deployment processes to accelerate delivery and minimize errors.
-* **DevOps Tools:** Powerful tools supporting the workflow are indispensable. I'll share my experiences and guides on using popular tools such as:
-  * **Git & GitHub:** Effective source code management, team collaboration, and version control.
-  * **Jenkins:** A leading automation server for building CI/CD pipelines.
-  * **Docker & Kubernetes:** Containerization and container orchestration technologies to build and manage distributed applications flexibly and efficiently.
-  * **Ansible, Terraform:** Infrastructure as Code (IaC) tools that automate the provisioning and management of infrastructure.
-  * And many more tools that I'll continuously update as I explore.
+* **Mạng (Network):** Từ các khái niệm cơ bản về TCP/IP, DNS, HTTP/HTTPS cho đến hiểu biết về cách các ứng dụng giao tiếp trong môi trường phân tán. Nắm vững mạng là chìa lòng để hiểu rõ cách các hệ thống DevOps hoạt động.
+* **Linux:** Hệ điều hành này là xương sống của hầu hết các môi trường DevOps. Chúng ta sẽ đi sâu vào các lệnh cơ bản, quản lý tiến trình, hệ thống tập tin, scripting Shell và những kỹ thuật cần thiết để làm chủ môi trường Linux.
+* **CI/CD (Continuous Integration/Continuous Delivery):** Đây là trái tim của DevOps. Chúng ta sẽ tìm hiểu về các nguyên tắc tích hợp liên tục và triển khai liên tục, cách tự động hóa quá trình xây dựng, kiểm thử và triển khai ứng dụng để tăng tốc độ và giảm thiểu lỗi.
+* **Các công cụ DevOps:** Không thể thiếu các công cụ mạnh mẽ hỗ trợ quy trình. Tôi sẽ chia sẻ kinh nghiệm và hướng dẫn sử dụng các công cụ phổ biến như:
+    * **Git & GitHub:** Quản lý mã nguồn, cộng tác nhóm và kiểm soát phiên bản hiệu quả.
+    * **Jenkins:** Máy chủ tự động hóa hàng đầu để xây dựng các pipelines CI/CD.
+    * **Docker & Kubernetes:** Công nghệ container hóa và điều phối container để xây dựng và quản lý các ứng dụng phân tán một cách linh hoạt và hiệu quả.
+    * **Ansible, Terraform:** Các công cụ Infrastructure as Code (IaC) giúp tự động hóa việc cung cấp và quản lý hạ tầng.
+    * Và nhiều công cụ khác nữa mà tôi sẽ liên tục cập nhật khi khám phá.
 
-My goal isn't just to list topics, but to provide easy-to-understand explanations, practical examples, and lessons learned from my own journey. I believe that sharing knowledge is the best way to learn and grow. Therefore, I highly welcome your feedback and contributions to make the content even better.
+Mục tiêu của tôi không chỉ là liệt kê các chủ đề, mà còn cung cấp những giải thích dễ hiểu, ví dụ thực tế và những bài học kinh nghiệm mà tôi đã rút ra. Tôi tin rằng việc chia sẻ kiến thức là cách tốt nhất để học hỏi và phát triển. Vì vậy, tôi rất mong nhận được phản hồi, ý kiến đóng góp từ bạn để nội dung ngày càng hoàn thiện hơn.
 
-Let's embark on this journey together, discover the exciting aspects of DevOps, and equip ourselves with the essential skills to succeed in the digital era! I hope you find valuable insights and inspiration on my page.
+Hãy cùng nhau bắt đầu hành trình này, khám phá những điều thú vị về DevOps và trang bị cho mình những kỹ năng cần thiết để thành công trong kỷ nguyên số! Hy vọng bạn sẽ tìm thấy những thông tin hữu ích và truyền cảm hứng trên trang của tôi.

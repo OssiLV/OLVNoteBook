@@ -11,13 +11,12 @@ export default defineConfig({
 			title: 'OssiLV',
 			locales: {
 				root: {
-					label: 'English',
-					lang: 'en',
-				},
-				// Simplified Chinese docs in `src/content/docs/vi/`
-				'vi': {
 					label: 'Việt Nam',
 					lang: 'vi',
+				},
+				'en': {
+					label: 'English',
+					lang: 'en',
 				}
 			},
 			social: [
@@ -26,59 +25,58 @@ export default defineConfig({
 			],
 			sidebar: [
 				{
-					label: 'Introduction',
+					label: 'Giới thiệu',
 					translations: {
-						'vi': 'Giới thiệu'
+						'en': 'Introduction'
 					},
 					items: [
-						// Each item here is one entry in the navigation menu.
 						{
-							label: 'Introduction',
+							label: 'Giới thiệu',
 							translations: {
-								'vi': 'Giới thiệu'
+								'en': 'Introduction'
 							},
 							slug: 'introduction/introduction'
 						},
 					],
 				},
 				{
-					label: 'Networking',
+					label: 'Mạng',
 					translations: {
-						'vi': 'Mạng'
+						'en': 'Networking'
 					},
 					items: [
 						{
-							label: 'Roadmap Networking',
+							label: 'Lộ trình Mạng',
 							translations: {
-								'vi': 'Lộ trình Mạng'
+								'en': 'Roadmap Networking'
 							},
 							slug: 'networking/roadmap'
 						},
 						{
-							label: 'Basic',
+							label: 'Cơ bản',
 							translations: {
-								'vi': 'Cơ bản'
+								'en': 'Basic'
 							},
 							items: [
 
 								{
-									label: 'OSI & TCP/IP Models',
+									label: 'Mô hình OSI & TCP/IP',
 									translations: {
-										'vi': 'Mô hình OSI & TCP/IP'
+										'en': 'OSI & TCP/IP Models'
 									},
 									slug: 'networking/osi_model_tcp_ip'
 								},
 								{
-									label: 'IPv4 Addressing',
+									label: 'Địa chỉ IPv4',
 									translations: {
-										'vi': 'Địa chỉ IPv4'
+										'en': 'IPv4 Addressing'
 									},
 									slug: 'networking/ipv4_addressing'
 								},
 								{
 									label: 'IPv4 Header',
 									translations: {
-										'vi': 'IPv4 Header'
+										'en': 'IPv4 Header'
 									},
 									slug: 'networking/ipv4_header'
 								}

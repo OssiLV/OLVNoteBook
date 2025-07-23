@@ -10,6 +10,7 @@ next:
   label: Next page
 ---
 
+
 ## 🔹 1. File System là gì?
 
 -   **File System (Hệ thống tệp)** là cách hệ điều hành **lưu trữ, sắp xếp và truy xuất dữ liệu trên ổ đĩa**.
