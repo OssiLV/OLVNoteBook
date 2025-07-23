@@ -4,3 +4,228 @@ description: IPv4 Header
 lastUpdated: 2025-07-23
 editUrl: https://github.com/OssiLV/OLV-NoteBook/blob/main/src/content/docs/vi/networking/ipv4_header.mdx
 ---
+
+import {Steps} from "@astrojs/starlight/components";
+
+## Vị trí của IPv4 header trong khung dữ liệu
+
+- **IPv4 header** là thành phần cốt lõi ở tầng 3, hỗ trợ định tuyến gói tin giữa các mạng.
+- Gói tin (Packet) IPv4 bao gồm dữ liệu, header tầng 4 (TCP/UDP), và header tầng 3 (IPv4).
+- Hiểu cấu trúc IPv4 header là bước đầu tiên để nắm bắt cách định tuyến hoạt động.
+
+### 1. Quy trình đóng gói dữ liệu
+
+<Steps>
+    1. Dữ liệu được chuẩn bị ở các tầng trên của mô hình OSI (tầng ứng dụng, trình bày, phiên).
+
+    2. **Tầng 4 (Transport Layer)**:
+
+        Dữ liệu được đóng gói với header tầng 4, thường sử dụng giao thức **TCP** hoặc **UDP**.
+
+        Kết quả: **Segment** (đoạn dữ liệu + header tầng 4).
+
+    3. **Tầng 3 (Network Layer)**:
+
+        Segment được đóng gói thêm với header tầng 3, thường là **IPv4**.
+
+        Kết quả: **Packet** (gói tin = dữ liệu + header tầng 4 + header tầng 3).
+
+    4. **Tầng 2 (Data Link Layer)**:
+
+        Packet được đóng gói với header và đuôi tầng 2 (header và trailer).
+
+        Kết quả: **Frame** (khung dữ liệu).
+</Steps>
+
+### 2. Protocol Data Unit (PDU)
+
+- **Tầng 3**: PDU được gọi là **packet** (gói tin).
+- **Tầng 2**: PDU được gọi là **frame** (khung).
+- Bài này tập trung vào **header tầng 3 (IPv4 header)**, chứa thông tin cần thiết để định tuyến gói tin đến đích.
+
+---
+
+
+## Tổng quan về IPv4 header
+
+- IPv4 header phức tạp hơn Ethernet header, chứa nhiều trường (fields) với mục đích cụ thể để hỗ trợ định tuyến gói tin.
+- Cách đọc biểu đồ IPv4 header: Từ trái sang phải, từ trên xuống dưới, bắt đầu từ bit đầu tiên đến bit cuối cùng.
+
+---
+
+## Các trường trong IPv4 header
+
+### 1. Trường Version (Phiên bản)
+
+- **Độ dài**: 4 bit (nửa octet).
+- **Mục đích**: Xác định phiên bản giao thức IP được sử dụng.
+- **Giá trị**:
+    - **IPv4**: Giá trị **4** (nhị phân: **0100**).
+    - **IPv6**: Giá trị **6** (nhị phân: **0110**).
+- **Lưu ý**:
+    - Chỉ có hai phiên bản IP phổ biến: IPv4 và IPv6.
+    - Có một giao thức thử nghiệm gọi là **Internet Stream Protocol** (giá trị 5), nhưng không được sử dụng công khai, nên được coi là "IPv5 bị mất".
+    - Trong IPv4 header, trường này luôn có giá trị **4**.
+    - IPv6 header có cấu trúc khác, nên giá trị **6** sẽ thay đổi cách diễn giải các trường còn lại.
+
+### 2. Trường Internet Header Length (IHL - Độ dài header)
+
+- **Độ dài**: 4 bit (nửa octet).
+- **Mục đích**: Chỉ định độ dài tổng thể của IPv4 header, cần thiết vì trường **Options** có độ dài thay đổi.
+- **Cách tính**:
+    - Giá trị trong trường IHL biểu thị độ dài header theo **khoảng tăng 4 byte**.
+    - **Công thức**: Độ dài header = Giá trị IHL × 4 byte.
+    - **Tối thiểu**: Giá trị IHL = **5** → 5 × 4 = **20 byte** (IPv4 header không có Options).
+    - **Tối đa**: Giá trị IHL = **15** (tối đa của 4 bit: 1 + 2 + 4 + 8) → 15 × 4 = **60 byte**.
+- **Ý nghĩa**:
+    - IPv4 header tối thiểu (không có Options): **20 byte**.
+    - Trường Options tối đa: **40 byte** (60 byte - 20 byte).
+    - Do đó, độ dài IPv4 header dao động từ **20 byte đến 60 byte**.
+
+### 3. Trường DSCP (Differentiated Services Code Point)
+
+- **Độ dài**: 6 bit.
+- **Mục đích**: Hỗ trợ **Quality of Service (QoS)**, ưu tiên dữ liệu nhạy cảm với độ trễ (ví dụ: âm thanh, video trực tuyến).
+- **Ứng dụng**:
+    - Dùng để đánh dấu loại lưu lượng để ưu tiên xử lý.
+    - Ví dụ: Dữ liệu Skype (âm thanh/video) cần ưu tiên hơn tải trang web để tránh độ trễ hoặc gián đoạn.
+- **Lưu ý**: QoS là chủ đề quan trọng trong CCNA, sẽ được thảo luận chi tiết trong bài học riêng.
+
+### 4. Trường ECN (Explicit Congestion Notification)
+
+- **Độ dài**: 2 bit.
+- **Mục đích**: Cung cấp thông báo tắc nghẽn mạng từ đầu đến cuối **mà không làm rớt gói tin**.
+- **Cách hoạt động**:
+    - Thông thường, tắc nghẽn mạng được báo hiệu bằng cách rớt gói tin.
+    - ECN cho phép báo hiệu tắc nghẽn mà không cần rớt gói, giúp cải thiện hiệu suất.
+- **Yêu cầu**: Cả hai điểm cuối (thiết bị gửi và nhận) và hạ tầng mạng phải hỗ trợ ECN.
+- **Lưu ý**: Đây là trường tùy chọn, không bắt buộc trong mọi trường hợp.
+
+### 5. Trường Total Length (Độ dài tổng)
+
+- **Độ dài**: 16 bit (2 octet, 2 byte).
+- **Mục đích**: Chỉ định **tổng độ dài của gói tin IPv4**, bao gồm:
+    - IPv4 header.
+    - Segment tầng 4 (gồm header tầng 4 và dữ liệu).
+- **Khác biệt với IHL**:
+    - Trường **IHL** chỉ định độ dài của **IPv4 header** (theo khoảng tăng 4 byte).
+    - **Total Length** đo độ dài **toàn bộ gói tin** (theo byte).
+- **Giá trị**:
+    - **Tối thiểu**: **20 byte** (IPv4 header tối thiểu, không có dữ liệu).
+    - **Tối đa**: **65,535 byte** (giá trị tối đa của 16 bit, khi tất cả bit là 1).
+- **Cách tính giá trị tối đa**:
+    - 16 bit toàn **1**:
+        - Bit 1: 1, Bit 2: 2, Bit 3: 4, ..., Bit 16: 32,768.
+        - Tổng: 1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 + 256 + 512 + 1024 + 2048 + 4096 + 8192 + 16,384 + 32,768 = **65,535**.
+- **Lưu ý**: Đơn vị là **byte**, không phải khoảng tăng 4 byte như IHL.
+
+### 6. Trường Identification (Định danh)
+
+- **Độ dài**: 16 bit (2 octet).
+- **Mục đích**: Xác định các mảnh (fragments) thuộc cùng một gói tin gốc khi gói tin bị **phân mảnh** (fragmentation).
+- **Cách hoạt động**:
+    - Nếu gói tin lớn hơn **MTU** (Maximum Transmission Unit, thường là **1500 byte**), nó sẽ được chia thành các mảnh.
+    - Mỗi mảnh có IPv4 header riêng, nhưng trường **Identification** có cùng giá trị để nhận diện chúng thuộc cùng gói tin gốc.
+    - Điều này giúp thiết bị nhận tái tạo lại gói tin ban đầu.
+- **Liên quan đến MTU**:
+    - MTU thường là **1500 byte**, tương ứng với kích thước payload tối đa của khung Ethernet.
+    - Nếu gói tin IPv4 vượt quá MTU, nó sẽ được phân mảnh.
+- **Lưu ý**: Việc tái tạo (reassembly) được thực hiện bởi **thiết bị nhận** (không phải router trung gian).
+
+### 7. Trường Flags (Cờ)
+
+- **Độ dài**: 3 bit.
+- **Mục đích**: Kiểm soát và nhận diện các mảnh trong quá trình phân mảnh.
+- **Cấu trúc 3 bit**:
+    - **Bit 0**: Dự trữ, luôn đặt là **0**.
+    - **Bit 1 (DF - Don’t Fragment)**:
+        - Nếu đặt là **1**: Gói tin **không được phép phân mảnh**. Nếu gói tin vượt quá MTU, nó sẽ bị loại bỏ.
+        - Nếu đặt là **0**: Gói tin có thể được phân mảnh.
+    - **Bit 2 (MF - More Fragments)**:
+        - Nếu đặt là **1**: Chỉ ra còn các mảnh khác của gói tin gốc.
+        - Nếu đặt là **0**: Đây là mảnh cuối cùng hoặc gói tin không bị phân mảnh.
+
+### 8. Trường Fragment Offset (Độ lệch mảnh)
+
+- **Độ dài**: 13 bit.
+- **Mục đích**: Chỉ định **vị trí của mảnh** trong gói tin gốc (chưa phân mảnh).
+- **Cách hoạt động**:
+    - Giá trị trong trường này cho biết mảnh hiện tại bắt đầu từ byte thứ bao nhiêu trong gói tin gốc.
+    - Đơn vị là **8 byte** (giá trị trong trường nhân với 8 để tính độ lệch thực tế).
+    - Giúp thiết bị nhận sắp xếp lại các mảnh theo đúng thứ tự, ngay cả khi chúng đến không theo thứ tự.
+
+### 9. Trường Time to Live (TTL - Thời gian sống)
+
+- **Độ dài**: 8 bit (1 octet).
+- **Mục đích**: Ngăn chặn gói tin bị lặp vô hạn (infinite loops) trong mạng.
+- **Cách hoạt động**:
+    - Mỗi khi gói tin đi qua một router, router giảm giá trị TTL đi **1**.
+    - Nếu TTL đạt **0**, router sẽ **loại bỏ** gói tin.
+    - Điều này giúp tránh tắc nghẽn mạng do gói tin bị lặp vô hạn vì cấu hình định tuyến sai.
+- **Ý nghĩa ban đầu**: TTL được thiết kế để biểu thị thời gian sống tối đa của gói tin (tính bằng giây), nhưng thực tế nó hoạt động như một **đếm số hop** (hop count).
+- **Giá trị mặc định**: Hiện tại, giá trị TTL mặc định được khuyến nghị là **64**.
+- **Ứng dụng**: Ngăn chặn gói tin bị kẹt trong vòng lặp, đảm bảo mạng hoạt động ổn định.
+
+### 10. Trường Protocol (Giao thức)
+
+- **Độ dài**: 8 bit (1 octet).
+- **Mục đích**: Chỉ định giao thức của **PDU tầng 4** (Layer 4 Protocol Data Unit) được đóng gói trong gói tin IPv4.
+- **Giá trị phổ biến**:
+    - **TCP**: Giá trị **6**.
+    - **UDP**: Giá trị **17**.
+    - **ICMP**: Giá trị **1** (dùng cho lệnh `ping`).
+    - **OSPF**: Giá trị **89** (Open Shortest Path First, một giao thức định tuyến động).
+- **Lưu ý**:
+    - TCP và UDP là các giao thức tầng 4 phổ biến nhất, sẽ được thảo luận chi tiết trong bài học sau.
+    - OSPF cho phép router tự động học các tuyến đường từ các router láng giềng, không cần cấu hình thủ công.
+    - Danh sách đầy đủ các số giao thức có thể tra cứu trên Wikipedia, nhưng cần nhớ các giá trị: **6 (TCP)**, **17 (UDP)**, **1 (ICMP)**, và **89 (OSPF)**.
+
+### 11. Trường Header Checksum (Tổng kiểm tra header)
+
+- **Độ dài**: 16 bit (2 octet).
+- **Mục đích**: Kiểm tra lỗi trong **IPv4 header**.
+- **Cách hoạt động**:
+    - Router nhận gói tin sẽ tính toán lại giá trị checksum của header và so sánh với giá trị trong trường này.
+    - Nếu hai giá trị không khớp, nghĩa là có lỗi trong quá trình truyền, router sẽ **loại bỏ** gói tin.
+- **Lưu ý**:
+    - Checksum chỉ kiểm tra **IPv4 header**, không kiểm tra dữ liệu được đóng gói.
+    - Các giao thức tầng 4 (như TCP và UDP) có trường checksum riêng để kiểm tra lỗi trong dữ liệu.
+- **Ứng dụng**: Đảm bảo tính toàn vẹn của IPv4 header trong quá trình truyền.
+
+### 12. Trường Source IP Address và Destination IP Address
+
+- **Độ dài**: 32 bit (4 octet) cho mỗi trường.
+- **Mục đích**:
+    - **Source IP Address**: Địa chỉ IP của thiết bị gửi gói tin.
+    - **Destination IP Address**: Địa chỉ IP của thiết bị nhận dự kiến.
+- **Lưu ý**: Các trường này đã được thảo luận chi tiết trước đó, là thành phần cốt lõi để định tuyến gói tin.
+
+### 13. Trường Options (Tùy chọn)
+
+- **Độ dài**: Tùy chọn, từ **0 bit** (nếu không sử dụng) đến **320 bit (40 byte)**.
+- **Mục đích**: Cung cấp các tùy chọn bổ sung cho gói tin IPv4 (ví dụ: thông tin định tuyến đặc biệt).
+- **Cách nhận biết**:
+    - Nếu trường **IHL** > 5, nghĩa là có trường Options (vì IHL = 5 tương ứng với header 20 byte không có Options).
+    - Độ dài tối đa của Options: **40 byte** (tổng header tối đa 60 byte - 20 byte header cơ bản).
+- **Lưu ý**:
+    - Trường Options hiếm khi được sử dụng trong thực tế.
+    - Không cần đi sâu cho mục đích học CCNA, nhưng có thể tham khảo thêm trên Wikipedia nếu quan tâm.
+
+### 14. Tổng kết các trường trong IPv4 header
+
+| Trường                | Độ dài     | Mục đích                                                                 |
+|-----------------------|------------|-------------------------------------------------------------------------|
+| **Version**           | 4 bit      | Xác định phiên bản IP (4 cho IPv4, 6 cho IPv6).                         |
+| **IHL**               | 4 bit      | Chỉ định độ dài header (20–60 byte, theo khoảng tăng 4 byte).          |
+| **DSCP**              | 6 bit      | Hỗ trợ QoS, ưu tiên lưu lượng nhạy cảm với độ trễ.                       |
+| **ECN**               | 2 bit      | Báo hiệu tắc nghẽn mạng mà không rớt gói tin.                            |
+| **Total Length**      | 16 bit     | Tổng độ dài gói tin (20–65,535 byte).                                   |
+| **Identification**    | 16 bit     | Nhận diện các mảnh của cùng gói tin khi phân mảnh.                       |
+| **Flags**             | 3 bit      | Kiểm soát phân mảnh (DF: không phân mảnh, MF: còn mảnh khác).           |
+| **Fragment Offset**   | 13 bit     | Chỉ định vị trí mảnh trong gói tin gốc.                                  |
+| **Time to Live (TTL)**| 8 bit      | Ngăn gói tin lặp vô hạn, đếm số hop (mặc định 64).                      |
+| **Protocol**          | 8 bit      | Chỉ định giao thức tầng 4 (TCP: 6, UDP: 17, ICMP: 1, OSPF: 89).         |
+| **Header Checksum**   | 16 bit     | Kiểm tra lỗi trong IPv4 header.                                        |
+| **Source IP Address** | 32 bit     | Địa chỉ IP của thiết bị gửi.                                            |
+| **Destination IP Address** | 32 bit | Địa chỉ IP của thiết bị nhận.                                           |
+| **Options**           | 0–320 bit  | Tùy chọn bổ sung, hiếm khi sử dụng.                                      |
