@@ -1,0 +1,58 @@
+---
+title: DNS (Domain Name System)
+description: DNS (Domain Name System)
+lastUpdated: 2025-07-24
+editUrl: https://github.com/OssiLV/OLV-NoteBook/blob/main/src/content/docs/networking/dns.mdx
+---
+
+import {Aside} from "@astrojs/starlight/components";
+
+## Mục đích của DNS
+
+- **DNS (Domain Name System)**: Hệ thống phân giải tên miền, chuyển đổi tên dễ đọc cho con người (human-readable names) như **google.com** thành **địa chỉ IP** (IPv4 hoặc IPv6).
+- **Resolve**: Trong ngữ cảnh này, nghĩa là **chuyển đổi** từ tên miền sang địa chỉ IP.
+- **Tại sao cần DNS**:
+- Máy tính (PC, server, v.v.) sử dụng **địa chỉ IP** để giao tiếp, không sử dụng tên miền.
+- Tên miền (như **youtube.com**) dễ nhớ hơn địa chỉ IP (ví dụ: 142.250.190.78) đối với con người.
+- DNS giúp người dùng truy cập các trang web mà không cần nhớ địa chỉ IP.
+
+**Ví dụ**:
+- Khi nhập **youtube.com** vào trình duyệt, thiết bị sẽ hỏi một **DNS server** để lấy địa chỉ IP tương ứng.
+- Nhờ DNS, người dùng không cần biết địa chỉ IP của **youtube.com**.
+
+### 1. Địa chỉ IP và tên miền
+
+- **Địa chỉ IPv4**: Được viết dưới dạng **thập phân có dấu chấm** (dotted decimal), ví dụ: **192.168.1.1**. Dễ đọc nhưng khó nhớ so với tên miền.
+- **Tên miền**: Dễ nhớ hơn, ví dụ: **google.com**, **youtube.com**.
+- DNS đóng vai trò cầu nối giữa tên miền và địa chỉ IP.
+
+### 2. Cách DNS hoạt động
+
+- **Quy trình cơ bản**:
+1. Người dùng nhập tên miền (ví dụ: **youtube.com**) vào trình duyệt.
+2. Thiết bị gửi yêu cầu đến **DNS server** để phân giải tên miền thành địa chỉ IP.
+3. DNS server trả về địa chỉ IP (ví dụ: **142.250.190.78**).
+4. Thiết bị sử dụng địa chỉ IP để kết nối với máy chủ đích.
+- **Cấu hình DNS server**:
+- Có thể **cấu hình thủ công** trên thiết bị.
+- Hoặc nhận tự động qua **DHCP** (Dynamic Host Configuration Protocol, sẽ được đề cập trong bài học sau).
+- **Ví dụ DNS server phổ biến**: Google DNS (**8.8.8.8**).
+
+### 3. Mạng mẫu
+
+- **Cấu trúc mạng**:
+- **3 PC** được kết nối với router **R1** qua switch **SW1**.
+- **R1** kết nối với **Internet**.
+- Một **DNS server của Google** (địa chỉ IP: **8.8.8.8**) nằm đâu đó trên Internet.
+- **Thực hành**:
+- Truy cập vào PC1 (máy Windows) để kiểm tra cách DNS hoạt động, ví dụ: phân giải **youtube.com** thành địa chỉ IP.
+
+
+### 4. Kết luận
+
+- **DNS** là hệ thống quan trọng để chuyển đổi tên miền thành địa chỉ IP, giúp người dùng dễ dàng truy cập các dịch vụ mạng.
+- Thiết bị sử dụng **địa chỉ IP** để giao tiếp, nhưng con người dùng **tên miền** cho dễ nhớ.
+- DNS server (như **8.8.8.8** của Google) có thể được cấu hình thủ công hoặc qua DHCP.
+- Hiểu cách DNS hoạt động là nền tảng để quản lý và khắc phục sự cố mạng.
+
+

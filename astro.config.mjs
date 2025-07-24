@@ -79,6 +79,13 @@ export default defineConfig({
 										'en': 'IPv4 Header'
 									},
 									slug: 'networking/ipv4_header'
+								},
+								{
+									label: 'DNS (Domain Name System)',
+									translations: {
+										'en': 'DNS (Domain Name System)'
+									},
+									slug: 'networking/dns'
 								}
 							]
 						},
