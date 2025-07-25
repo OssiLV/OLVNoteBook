@@ -9,6 +9,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'OssiLV',
+			tableOfContents: {minHeadingLevel: 2, maxHeadingLevel: 4},
 			locales: {
 				root: {
 					label: 'Việt Nam',
