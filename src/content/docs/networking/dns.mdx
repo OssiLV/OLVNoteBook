@@ -23,7 +23,7 @@ DNS là nền tảng của Internet hiện đại, đảm bảo người dùng v
 - **Dễ sử dụng**: Người dùng chỉ cần nhớ tên miền (như `facebook.com`) thay vì địa chỉ IP dài dòng.
 - **Linh hoạt**: DNS cho phép thay đổi IP của máy chủ mà không cần thay đổi tên miền, giúp dễ dàng di chuyển hoặc nâng cấp hệ thống.
 - **Hỗ trợ nhiều dịch vụ**: Ngoài website, DNS hỗ trợ email (MX Record), xác minh tên miền (TXT Record), và các dịch vụ khác.
-- **Tính sẵn sàng**: DNS đảm bảo dịch vụ luôn доступен, ngay cả khi máy chủ thay đổi vị trí hoặc cấu hình.
+- **Tính sẵn sàng**: DNS đảm bảo dịch vụ luôn có sẵn, ngay cả khi máy chủ thay đổi vị trí hoặc cấu hình.
 
 ### 2. Vai trò của DNS trong công việc DevOps
 
@@ -36,8 +36,8 @@ DevOps sử dụng DNS để triển khai, quản lý, và duy trì các hệ th
 - **Tối ưu hiệu suất**: Điều chỉnh TTL hoặc chọn Name Server nhanh để giảm thời gian truy vấn.
 
 - **Ví dụ thực tế**:
-- Khi triển khai một website trên AWS EC2, DevOps cần tạo A Record để trỏ `example.com` đến IP của instance.
-- Khi di chuyển máy chủ sang một nhà cung cấp khác, DevOps cập nhật DNS Record để đảm bảo người dùng vẫn truy cập được mà không bị gián đoạn.
+    - Khi triển khai một website trên AWS EC2, DevOps cần tạo A Record để trỏ `example.com` đến IP của instance.
+    - Khi di chuyển máy chủ sang một nhà cung cấp khác, DevOps cập nhật DNS Record để đảm bảo người dùng vẫn truy cập được mà không bị gián đoạn.
 
 ### 3.Cách DNS hoạt động ở mức cơ bản
 
@@ -55,27 +55,7 @@ DNS hoạt động thông qua một quy trình gọi là **DNS Resolution** (ph�
 
 **Lưu ý**: Quy trình chi tiết sẽ được giải thích trong phần [Quy trình phân giải DNS](#quy-trình-phân-giải-dns).
 
-### 4. Thực hành cơ bản
-
-Để làm quen với khái niệm DNS, bạn có thể thực hiện các bước sau:
-1. **Kiểm tra IP của một tên miền**:
-    - Mở terminal (Linux/Mac) hoặc Command Prompt (Windows).
-    - Gõ: `ping google.com`
-    - Kết quả hiển thị IP, ví dụ: `142.250.190.78`.
-    - Hiểu rằng DNS đã chuyển `google.com` thành IP này.
-2. **So sánh truy cập bằng tên miền và IP**:
-    - Truy cập `www.google.com` trong trình duyệt (dùng DNS).
-    - Truy cập trực tiếp `142.250.190.78` (không dùng DNS).
-    - Quan sát: Tên miền dễ nhớ hơn, nhưng cả hai đều dẫn đến cùng website.
-3. **Kiểm tra DNS Resolver hiện tại**:
-    - Linux/Mac: `cat /etc/resolv.conf` (hiển thị Resolver như `8.8.8.8`).
-    - Windows: `ipconfig /all | findstr DNS`.
-    - Ghi lại Resolver (ví dụ: Google DNS, ISP DNS).
-4. **Thử đổi Resolver**:
-    - Thay đổi DNS trên máy tính sang Google DNS (`8.8.8.8`, `8.8.4.4`).
-    - Kiểm tra tốc độ truy cập bằng `ping facebook.com` trước và sau khi đổi.
-
-### 5. Vai trò của DevOps trong DNS
+### 4. Vai trò của DevOps trong DNS
 
 - **Triển khai dịch vụ**: Đảm bảo tên miền trỏ đúng đến máy chủ hoặc dịch vụ.
 - **Bảo trì hệ thống**: Cập nhật DNS khi máy chủ thay đổi (như di chuyển sang cloud).
@@ -92,10 +72,10 @@ DNS là một hệ thống phức tạp nhưng được xây dựng từ các th
 
 - **Định nghĩa**: Tên miền là chuỗi ký tự mà người dùng nhập để truy cập một website hoặc dịch vụ, ví dụ: `google.com`, `example.com`. Nó là cách thân thiện để người dùng tương tác với Internet thay vì dùng địa chỉ IP.
 - **Cấu trúc**:
-- **Root**: Dấu chấm cuối (`.`) thường ẩn trong trình duyệt.
-- **Top-Level Domain (TLD)**: Phần cuối của tên miền, như `.com`, `.org`, `.vn`.
-- **Second-Level Domain**: Phần chính, như `google` trong `google.com`.
-- **Subdomain**: Phần mở rộng, như `www` trong `www.google.com`.
+    - **Root**: Dấu chấm cuối (`.`) thường ẩn trong trình duyệt.
+    - **Top-Level Domain (TLD)**: Phần cuối của tên miền, như `.com`, `.org`, `.vn`.
+    - **Second-Level Domain**: Phần chính, như `google` trong `google.com`.
+    - **Subdomain**: Phần mở rộng, như `www` trong `www.google.com`.
 - **Vai trò trong DNS**: Tên miền là điểm khởi đầu mà người dùng sử dụng để gửi truy vấn DNS.
 - **Ví dụ thực tế**:
     - `mail.google.com` là một subdomain của `google.com`, trỏ đến máy chủ email.
@@ -116,9 +96,9 @@ DNS là một hệ thống phức tạp nhưng được xây dựng từ các th
 
 - **Định nghĩa**: Name Server là máy chủ lưu trữ các bản ghi DNS cho một tên miền cụ thể. Chúng trả lời các truy vấn DNS bằng cách cung cấp thông tin từ DNS Record.
 - **Loại**:
-- **Authoritative Name Server**: Lưu trữ bản ghi DNS chính thức của tên miền (ví dụ: `ns1.example.com`).
-- **Non-Authoritative Name Server**: Chỉ lưu cache tạm thời để trả lời nhanh hơn.
-- **Vai trò trong DNS**: Name Server là nơi lưu trữ và cung cấp thông tin DNS khi Resolver hỏi.
+    - **Authoritative Name Server**: Lưu trữ bản ghi DNS chính thức của tên miền (ví dụ: `ns1.example.com`).
+    - **Non-Authoritative Name Server**: Chỉ lưu cache tạm thời để trả lời nhanh hơn.
+    - **Vai trò trong DNS**: Name Server là nơi lưu trữ và cung cấp thông tin DNS khi Resolver hỏi.
 - **Ví dụ thực tế**:
     - Khi bạn đăng ký tên miền qua Namecheap, bạn được cung cấp Name Server như `dns1.namecheap.com`.
     - DevOps có thể cấu hình Name Server để trỏ tên miền đến dịch vụ DNS như Cloudflare hoặc AWS Route 53.
@@ -162,30 +142,21 @@ DNS là một hệ thống phức tạp nhưng được xây dựng từ các th
 
 ### 8. Các thành phần tương tác thế nào?
 
-- Người dùng nhập tên miền (`example.com`) vào trình duyệt.
-    - **Resolver** nhận truy vấn và hỏi **Root Server**.
-    - **Root Server** trả về địa chỉ của **TLD Server** (như `.com`).
-    - **TLD Server** trả về địa chỉ của **Name Server** của tên miền (như `ns1.example.com`).
-    - **Name Server** trả về **DNS Record** từ **Zone** (như bản ghi A: `192.0.2.1`).
-    - **Registrar** là nơi bạn cấu hình Name Server cho tên miền.
+Người dùng nhập tên miền (`example.com`) vào trình duyệt.
 
-### 9. Thực hành cơ bản
+<Steps>
+    1. **Resolver** nhận truy vấn và hỏi **Root Server**.
 
-1. **Kiểm tra Name Server của một tên miền**:
-    - Mở terminal (Linux/Mac) hoặc Command Prompt (Windows).
-    - Gõ: `dig example.com NS`
-    - Kết quả hiển thị Name Server, ví dụ: `ns1.example.com`, `ns2.example.com`.
-2. **Kiểm tra Resolver đang sử dụng**:
-    - Trên Linux/Mac: `cat /etc/resolv.conf` để xem Resolver (như `8.8.8.8`).
-    - Trên Windows: `ipconfig /all | findstr DNS` để xem DNS Server.
-3. **Tìm thông tin Registrar**:
-    - Dùng lệnh: `whois example.com` hoặc truy cập https://whois.domaintools.com.
-    - Kết quả hiển thị Registrar (như Namecheap) và Name Server.
-4. **Tạo subdomain giả lập**:
-    - Nếu có quyền truy cập vào Registrar (như Namecheap), thử thêm subdomain `test.example.com` với bản ghi A trỏ đến IP `192.0.2.1`.
-    - Kiểm tra bằng: `ping test.example.com`.
+    2. **Root Server** trả về địa chỉ của **TLD Server** (như `.com`).
 
-### 10. Vai trò của DevOps với các thành phần DNS
+    3. **TLD Server** trả về địa chỉ của **Name Server** của tên miền (như `ns1.example.com`).
+
+    4. **Name Server** trả về **DNS Record** từ **Zone** (như bản ghi A: `192.0.2.1`).
+
+    5. **Registrar** là nơi bạn cấu hình Name Server cho tên miền.
+</Steps>
+
+### 9. Vai trò của DevOps với các thành phần DNS
 
 - **Domain Name**: Hiểu cấu trúc để tạo subdomain hoặc quản lý tên miền.
 - **DNS Record**: Cấu hình bản ghi để trỏ tên miền đến dịch vụ (web, email).
@@ -211,31 +182,30 @@ Quy trình phân giải DNS bao gồm nhiều bước, trong đó các thành ph
     1. **Người dùng nhập tên miền**:
         - Người dùng nhập tên miền (như `www.example.com`) vào trình duyệt hoặc ứng dụng.
         - Trình duyệt gửi truy vấn DNS đến **DNS Resolver** được cấu hình trên thiết bị hoặc mạng.
-
+        <br/>
     2. **Kiểm tra cache của Resolver**:
         - Resolver kiểm tra xem nó đã có thông tin về tên miền trong bộ nhớ cache chưa (từ các truy vấn trước).
         - Nếu có, Resolver trả về IP ngay lập tức, bỏ qua các bước tiếp theo.
         - Nếu không, Resolver bắt đầu quá trình truy vấn.
-
+        <br/>
     3. **Liên lạc với Root Server**:
         - Resolver gửi truy vấn đến một trong 13 nhóm **Root Server** trên toàn cầu.
         - Root Server không biết IP của `www.example.com`, nhưng biết địa chỉ của **TLD Server** quản lý phần mở rộng (như `.com`).
         - Root Server trả về địa chỉ của TLD Server (ví dụ: máy chủ `.com`).
-
+        <br/>
     4. **Liên lạc với TLD Server**:
         - Resolver gửi truy vấn đến **TLD Server** (như máy chủ `.com`).
         - TLD Server biết địa chỉ của **Authoritative Name Server** quản lý tên miền `example.com`.
         - TLD Server trả về địa chỉ của Name Server (như `ns1.example.com`).
-
+        <br/>
     5. **Liên lạc với Authoritative Name Server**:
         - Resolver gửi truy vấn đến **Name Server** của `example.com`.
         - Name Server tra cứu trong **Zone** của `example.com` và trả về bản ghi DNS tương ứng (như bản ghi A: `192.0.2.1` cho `www.example.com`).
-
+        <br/>
     6. **Trả kết quả và lưu cache**:
         - Resolver nhận được IP (như `192.0.2.1`) và gửi lại cho trình duyệt.
         - Resolver lưu kết quả vào cache để tăng tốc các truy vấn sau, dựa trên **TTL** (Time to Live) của bản ghi.
         - Trình duyệt sử dụng IP để kết nối đến máy chủ.
-
 </Steps>
 
 ### 2. Ví dụ thực tế
@@ -340,7 +310,7 @@ DNS Record (bản ghi DNS) là các mục thông tin được lưu trữ trong Z
     - DevOps cần cấu hình AAAA Record khi triển khai dịch vụ trên máy chủ hỗ trợ IPv6.
 - **Lưu ý**: Tương tự A Record nhưng dành cho IPv6.
 
-#### 2.3. CNAME Record (Canonical Name Record)
+#### 1.3. CNAME Record (Canonical Name Record)
 - **Định nghĩa**: Tạo bí danh (alias) trỏ một tên miền/subdomain đến một tên miền khác (không phải IP trực tiếp).
 - **Cú pháp**: `alias TTL IN CNAME canonical_name`
 - **Ví dụ**:
@@ -351,7 +321,7 @@ DNS Record (bản ghi DNS) là các mục thông tin được lưu trữ trong Z
     - DevOps dùng CNAME khi tích hợp CDN hoặc dịch vụ cloud.
 - **Lưu ý**: CNAME không trỏ trực tiếp đến IP và không thể dùng cho tên miền gốc (`example.com`).
 
-#### 2.4. MX Record (Mail Exchange Record)
+#### 1.4. MX Record (Mail Exchange Record)
 - **Định nghĩa**: Chỉ định máy chủ email xử lý email cho tên miền.
 - **Cú pháp**: `name TTL IN MX priority mail_server`
 - **Ví dụ**:
@@ -362,7 +332,7 @@ DNS Record (bản ghi DNS) là các mục thông tin được lưu trữ trong Z
     - DevOps cần thêm MX Record khi thiết lập dịch vụ email.
 - **Lưu ý**: Độ ưu tiên (priority) càng thấp, máy chủ càng được ưu tiên.
 
-#### 2.5. TXT Record (Text Record)
+#### 1.5. TXT Record (Text Record)
 - **Định nghĩa**: Lưu trữ thông tin văn bản tùy ý, thường dùng để xác minh hoặc cung cấp metadata.
 - **Cú pháp**: `name TTL IN TXT text`
 - **Ví dụ**:
@@ -374,7 +344,7 @@ DNS Record (bản ghi DNS) là các mục thông tin được lưu trữ trong Z
     - DevOps dùng TXT Record để tích hợp dịch vụ bên thứ ba.
 - **Lưu ý**: Nội dung TXT phải tuân theo định dạng của dịch vụ yêu cầu.
 
-#### 2.6. NS Record (Name Server Record)
+#### 1.6. NS Record (Name Server Record)
 - **Định nghĩa**: Chỉ định Name Server quản lý DNS cho tên miền.
 - **Cú pháp**: `name TTL IN NS nameserver`
 - **Ví dụ**:
@@ -385,7 +355,7 @@ DNS Record (bản ghi DNS) là các mục thông tin được lưu trữ trong Z
     - DevOps thay đổi NS Record khi chuyển nhà cung cấp DNS.
 - **Lưu ý**: NS Record thường được cấu hình tại Registrar.
 
-#### 2.7. SOA Record (Start of Authority Record)
+#### 1.7. SOA Record (Start of Authority Record)
 - **Định nghĩa**: Lưu trữ thông tin quản lý của Zone DNS, như Name Server chính, email quản trị, và thông tin đồng bộ.
 - **Cú pháp**: `name TTL IN SOA primary_ns admin_email (serial refresh retry expire minimum)`
 - **Ví dụ**:
@@ -394,7 +364,7 @@ DNS Record (bản ghi DNS) là các mục thông tin được lưu trữ trong Z
     - DevOps kiểm tra SOA để biết thông tin về Zone và xử lý sự cố đồng bộ DNS.
 - **Lưu ý**: SOA thường được tạo tự động bởi nhà cung cấp DNS.
 
-#### 2.8. PTR Record (Pointer Record)
+#### 1.8. PTR Record (Pointer Record)
 - **Định nghĩa**: Dùng cho reverse DNS, chuyển IP thành tên miền.
 - **Cú pháp**: `ip_in_reverse TTL IN PTR hostname`
 - **Ví dụ**:
@@ -405,7 +375,7 @@ DNS Record (bản ghi DNS) là các mục thông tin được lưu trữ trong Z
     - DevOps cấu hình PTR khi thiết lập email server.
 - **Lưu ý**: PTR thường được quản lý bởi nhà cung cấp IP (như ISP hoặc cloud provider).
 
-#### 2.9. SRV Record (Service Record)
+#### 1.9. SRV Record (Service Record)
 - **Định nghĩa**: Chỉ định máy chủ và cổng cho một dịch vụ cụ thể (như VoIP, SIP).
 - **Cú pháp**: `_service._protocol.name TTL IN SRV priority weight port target`
 - **Ví dụ**:
