@@ -46,50 +46,41 @@ export default defineConfig({
 						'en': 'Networking'
 					},
 					items: [
+						// {
+						// 	label: 'Lộ trình Mạng',
+						// 	translations: {
+						// 		'en': 'Roadmap Networking'
+						// 	},
+						// 	slug: 'networking/roadmap'
+						// },
 						{
-							label: 'Lộ trình Mạng',
+							label: 'Mô hình OSI & TCP/IP',
 							translations: {
-								'en': 'Roadmap Networking'
+								'en': 'OSI & TCP/IP Models'
 							},
-							slug: 'networking/roadmap'
+							slug: 'networking/osi_model_tcp_ip'
 						},
 						{
-							label: 'Cơ bản',
+							label: 'Địa chỉ IPv4',
 							translations: {
-								'en': 'Basic'
+								'en': 'IPv4 Addressing'
 							},
-							items: [
-
-								{
-									label: 'Mô hình OSI & TCP/IP',
-									translations: {
-										'en': 'OSI & TCP/IP Models'
-									},
-									slug: 'networking/osi_model_tcp_ip'
-								},
-								{
-									label: 'Địa chỉ IPv4',
-									translations: {
-										'en': 'IPv4 Addressing'
-									},
-									slug: 'networking/ipv4_addressing'
-								},
-								{
-									label: 'IPv4 Header',
-									translations: {
-										'en': 'IPv4 Header'
-									},
-									slug: 'networking/ipv4_header'
-								},
-								{
-									label: 'DNS (Domain Name System)',
-									translations: {
-										'en': 'DNS (Domain Name System)'
-									},
-									slug: 'networking/dns'
-								}
-							]
+							slug: 'networking/ipv4_addressing'
 						},
+						{
+							label: 'IPv4 Header',
+							translations: {
+								'en': 'IPv4 Header'
+							},
+							slug: 'networking/ipv4_header'
+						},
+						{
+							label: 'DNS (Domain Name System)',
+							translations: {
+								'en': 'DNS (Domain Name System)'
+							},
+							slug: 'networking/dns'
+						}
 					],
 				},
 			],
