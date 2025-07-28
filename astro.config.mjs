@@ -9,7 +9,7 @@ export default defineConfig({
 	adapter: vercel(),
 	integrations: [
 		mermaid({
-			theme: 'forest',
+			theme: 'neutral',
 			autoTheme: true
 		}),
 		starlight({
