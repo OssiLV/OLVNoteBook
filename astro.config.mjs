@@ -92,7 +92,14 @@ export default defineConfig({
 								'en': 'HTTP'
 							},
 							slug: 'networking/http'
-						}
+						},
+						{
+							label: 'SSL/TLS',
+							translations: {
+								'en': 'SSL/TLS'
+							},
+							slug: 'networking/ssl_tls'
+						},
 					],
 				},
 			],
