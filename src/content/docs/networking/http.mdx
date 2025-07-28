@@ -108,24 +108,12 @@ Bắt tay ba bước, ở dạng đơn giản nhất, là quá trình mà tất 
 
 Khi quá trình bắt tay ba bước hoàn tất, việc chia sẻ dữ liệu giữa máy khách và máy chủ có thể bắt đầu. Cần lưu ý rằng máy khách có thể bắt đầu gửi dữ liệu ứng dụng ngay sau khi gửi gói tin ACK cuối cùng, nhưng máy chủ vẫn phải **đợi nhận được gói tin ACK này** để thực hiện yêu cầu.
 
-```text
-| Máy khách |                               | Máy chủ |
-       |                                          |
-       | -------- SYN: x = rand() ------------->  |
-       |                                          |
-       | <--- SYN-ACK: x + 1, y = rand() -------  |
-       |                                          |
-       | -------- ACK: y + 1 ------------------>  |
-       |                                          |
-       | ---- Application Data (GET /...) ---->   |
-```
-
 ```mermaid
 sequenceDiagram
-    Alice->>+John: Hello John, how are you?
-    Alice->>+John: John, can you hear me?
-    John-->>-Alice: Hi Alice, I can hear you!
-    John-->>-Alice: I feel great!
+    Server->>Client: SYN: x = rand()
+    Client-->>Server: SYN-ACK: x + 1, y = rand()
+    Server->>Client: ACK: y + 1
+    Server->>Client: Application Data
 ```
 Tuy nhiên, một số triển khai của HTTP/1.0 đã cố gắng khắc phục vấn đề này bằng cách giới thiệu một tiêu đề mới gọi là `Connection: keep-alive`, nhằm thông báo với máy chủ rằng: "Này máy chủ, đừng đóng kết nối này, tôi sẽ cần dùng lại." Tuy nhiên, tính năng này vẫn không được hỗ trợ rộng rãi và vấn đề vẫn tồn tại.
 
@@ -183,7 +171,7 @@ SPDY không thực sự cố gắng thay thế HTTP; nó là một lớp chuyể
 
 Vào năm 2015, Google không muốn duy trì hai tiêu chuẩn cạnh tranh, vì vậy họ quyết định tích hợp SPDY vào HTTP, tạo ra HTTP/2 và ngừng sử dụng SPDY.
 
-### **HTTP/2 - 2015**
+### HTTP/2 - 2015
 
 Đến thời điểm này, bạn hẳn đã hiểu tại sao cần một phiên bản mới của giao thức HTTP. **HTTP/2** được thiết kế để truyền tải nội dung với độ trễ thấp.
 
@@ -198,44 +186,44 @@ Các tính năng chính hoặc khác biệt so với phiên bản cũ **HTTP/1.1
 
 Những cải tiến này giúp HTTP/2 giảm độ trễ, tăng hiệu suất và đáp ứng tốt hơn nhu cầu của web hiện đại.
 
-```text
-+------------------------------------+
-| Application Layer (HTTP/2)        |
-+------------------------------------+
-| Session (TLS - Optional)          |
-+------------------------------------+
-| Transport (TCP)                   |
-+------------------------------------+
-| Network (IP)                      |
-+------------------------------------+
-| ...                               |
-+------------------------------------+
+![img](https://i.imgur.com/X1BT5eX.png)
 
-        ↓
+#### 1. Giao thức nhị phân (Binary Protocol)
 
-+----------------------+
-|      HTTP/1.1        |
-|----------------------|
-| POST /users HTTP/1.1 |
-| HOST: www.example.com|
-| Content-Type: text/plain       |
-| Content-Length: 15             |
-|                                |
-| { "username": "admin" }        |
-+----------------------+
+HTTP/2 giải quyết vấn đề độ trễ cao tồn tại trong HTTP/1.x bằng cách trở thành một giao thức nhị phân. Là một giao thức nhị phân, nó dễ phân tích hơn nhưng không còn dễ đọc bằng mắt thường như HTTP/1.x. Các thành phần chính của HTTP/2 là **Khung (Frames)** và **Luồng (Streams)**.
 
-        ↓
+##### Khung và Luồng (Frames and Streams)
 
-+----------------------+
-|       HTTP/2         |
-|----------------------|
-| Headers Frame        |
-| Data Frame           |
-+----------------------+
-```
+Thông điệp HTTP giờ đây bao gồm một hoặc nhiều khung. Có khung **HEADERS** cho siêu dữ liệu (metadata) và khung **DATA** cho nội dung (payload), cùng với một số loại khung khác (như RST_STREAM, SETTINGS, PRIORITY, v.v.) mà bạn có thể tham khảo trong thông số kỹ thuật của HTTP/2.
 
-```mermaid
-flowchart LR
-     markdown["`This **is** _Markdown_`"]-->B
-    C
-```
+Mỗi yêu cầu và phản hồi HTTP/2 được gán một **ID luồng (stream ID)** duy nhất và được chia thành các khung. Khung là các mảnh dữ liệu nhị phân. Một tập hợp các khung được gọi là một **Luồng (Stream)**. Mỗi khung có một ID luồng để xác định luồng mà nó thuộc về và mỗi khung có một tiêu đề chung. Ngoài ra, cần lưu ý rằng ID luồng là duy nhất, trong đó các yêu cầu từ máy khách sử dụng số lẻ, còn phản hồi từ máy chủ sử dụng số chẵn.
+
+Ngoài các khung HEADERS và DATA, một loại khung đáng chú ý khác là **RST_STREAM**, được sử dụng để hủy một luồng cụ thể. Ví dụ, máy khách có thể gửi khung này để thông báo cho máy chủ rằng nó không cần luồng đó nữa. Trong HTTP/1.1, cách duy nhất để máy chủ dừng gửi phản hồi là đóng kết nối, dẫn đến tăng độ trễ vì phải mở một kết nối mới cho các yêu cầu tiếp theo. Trong khi đó, với HTTP/2, máy khách có thể sử dụng RST_STREAM để dừng nhận một luồng cụ thể mà kết nối vẫn được giữ mở, và các luồng khác vẫn tiếp tục hoạt động.
+
+#### 2. Ghép kênh (Multiplexing)
+
+Vì HTTP/2 là giao thức nhị phân và sử dụng các khung và luồng cho yêu cầu và phản hồi, nên khi một kết nối TCP được mở, tất cả các luồng được gửi bất đồng bộ qua cùng một kết nối mà không cần mở thêm kết nối nào. Đổi lại, máy chủ phản hồi theo cách bất đồng bộ, tức là các phản hồi không có thứ tự cố định, và máy khách sử dụng ID luồng được gán để xác định gói tin thuộc về luồng nào. Điều này cũng giải quyết vấn đề **chặn đầu dòng (head-of-line blocking)** trong HTTP/1.x, nghĩa là máy khách không phải chờ đợi yêu cầu mất nhiều thời gian, và các yêu cầu khác vẫn được xử lý đồng thời.
+
+#### 3. Nén tiêu đề (Header Compression)
+
+Nén tiêu đề được quy định trong một RFC riêng, nhằm tối ưu hóa các tiêu đề được gửi đi. Ý tưởng chính là khi máy khách liên tục truy cập vào cùng một máy chủ, có rất nhiều dữ liệu dư thừa trong các tiêu đề được gửi đi lặp lại, và đôi khi các cookie làm tăng kích thước tiêu đề, dẫn đến tăng sử dụng băng thông và độ trễ. Để khắc phục, HTTP/2 giới thiệu cơ chế nén tiêu đề.
+
+Không giống như yêu cầu và phản hồi, các tiêu đề không được nén bằng định dạng gzip hay compress, mà sử dụng một cơ chế khác. Các giá trị văn bản được mã hóa bằng mã Huffman, và cả máy khách lẫn máy chủ duy trì một bảng tiêu đề (headers table). Cả hai bên loại bỏ các tiêu đề lặp lại (như user agent) trong các yêu cầu tiếp theo và tham chiếu chúng bằng bảng tiêu đề được duy trì.
+
+Nhân nói về tiêu đề, cần lưu ý rằng các tiêu đề trong HTTP/2 vẫn giống HTTP/1.1, ngoại trừ việc bổ sung một số **tiêu đề giả (pseudo headers)** như `:method`, `:scheme`, `:host` và `:path`.
+
+#### 4. Đẩy từ máy chủ (Server Push)
+
+Đẩy từ máy chủ là một tính năng nổi bật của HTTP/2, cho phép máy chủ, khi biết máy khách sẽ yêu cầu một tài nguyên nhất định, đẩy tài nguyên đó đến máy khách mà không cần máy khách yêu cầu. Ví dụ, khi trình duyệt tải một trang web, nó phân tích toàn bộ trang để tìm các nội dung từ xa cần tải từ máy chủ, sau đó gửi các yêu cầu liên tiếp để lấy nội dung đó.
+
+Server Push cho phép máy chủ giảm số lượt giao tiếp (roundtrips) bằng cách đẩy dữ liệu mà nó biết máy khách sẽ cần. Cách thực hiện là máy chủ gửi một khung đặc biệt gọi là **PUSH_PROMISE**, thông báo cho máy khách rằng: “Này, tôi sắp gửi tài nguyên này cho bạn! Đừng yêu cầu nó.” Khung PUSH_PROMISE được liên kết với luồng khởi tạo việc đẩy và chứa ID luồng được hứa hẹn (promised stream ID), tức là luồng mà máy chủ sẽ dùng để gửi tài nguyên được đẩy.
+
+#### 5. Ưu tiên yêu cầu (Request Prioritization)
+
+Máy khách có thể gán mức ưu tiên cho một luồng bằng cách bao gồm thông tin ưu tiên trong khung **HEADERS** khi mở luồng. Tại bất kỳ thời điểm nào khác, máy khách có thể gửi khung **PRIORITY** để thay đổi mức ưu tiên của một luồng.
+
+Nếu không có thông tin ưu tiên, máy chủ xử lý các yêu cầu một cách bất đồng bộ, tức là không theo thứ tự cụ thể. Nếu một luồng được gán ưu tiên, máy chủ sẽ dựa trên thông tin này để quyết định phân bổ bao nhiêu tài nguyên để xử lý yêu cầu nào.
+
+#### 6. Bảo mật (Security)
+
+Có nhiều thảo luận về việc liệu bảo mật (thông qua TLS) có nên là bắt buộc đối với HTTP/2 hay không. Cuối cùng, quyết định là không bắt buộc. Tuy nhiên, hầu hết các nhà cung cấp tuyên bố rằng họ chỉ hỗ trợ HTTP/2 khi nó được sử dụng qua TLS. Vì vậy, mặc dù HTTP/2 không yêu cầu mã hóa theo thông số kỹ thuật, nhưng nó gần như đã trở thành bắt buộc trên thực tế. Khi HTTP/2 được triển khai qua TLS, có một số yêu cầu cụ thể: phải sử dụng phiên bản TLS 1.2 trở lên, cần có kích thước khóa tối thiểu nhất định, và yêu cầu sử dụng các khóa tạm thời (ephemeral keys).
