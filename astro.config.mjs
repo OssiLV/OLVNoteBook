@@ -80,6 +80,13 @@ export default defineConfig({
 								'en': 'DNS (Domain Name System)'
 							},
 							slug: 'networking/dns'
+						},
+						{
+							label: 'HTTP',
+							translations: {
+								'en': 'HTTP'
+							},
+							slug: 'networking/http'
 						}
 					],
 				},
