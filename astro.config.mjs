@@ -2,11 +2,16 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import vercel from "@astrojs/vercel";
+import mermaid from "astro-mermaid";
 
 // https://astro.build/config
 export default defineConfig({
 	adapter: vercel(),
 	integrations: [
+		mermaid({
+			theme: 'forest',
+			autoTheme: true
+		}),
 		starlight({
 			title: 'OssiLV',
 			tableOfContents: {minHeadingLevel: 2, maxHeadingLevel: 4},

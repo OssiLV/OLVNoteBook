@@ -119,6 +119,14 @@ Khi quá trình bắt tay ba bước hoàn tất, việc chia sẻ dữ liệu g
        |                                          |
        | ---- Application Data (GET /...) ---->   |
 ```
+
+```mermaid
+sequenceDiagram
+    Alice->>+John: Hello John, how are you?
+    Alice->>+John: John, can you hear me?
+    John-->>-Alice: Hi Alice, I can hear you!
+    John-->>-Alice: I feel great!
+```
 Tuy nhiên, một số triển khai của HTTP/1.0 đã cố gắng khắc phục vấn đề này bằng cách giới thiệu một tiêu đề mới gọi là `Connection: keep-alive`, nhằm thông báo với máy chủ rằng: "Này máy chủ, đừng đóng kết nối này, tôi sẽ cần dùng lại." Tuy nhiên, tính năng này vẫn không được hỗ trợ rộng rãi và vấn đề vẫn tồn tại.
 
 Ngoài việc không duy trì kết nối, HTTP còn là một giao thức không trạng thái (stateless), tức là máy chủ không lưu giữ thông tin về máy khách, do đó mỗi yêu cầu phải chứa đầy đủ thông tin cần thiết để máy chủ xử lý yêu cầu một cách độc lập, không liên quan đến các yêu cầu trước đó. Điều này càng làm trầm trọng thêm vấn đề, tức là ngoài việc máy khách phải mở một số lượng lớn kết nối, nó còn phải gửi một số dữ liệu dư thừa qua mạng, dẫn đến tăng mức sử dụng băng thông.
@@ -227,7 +235,7 @@ Những cải tiến này giúp HTTP/2 giảm độ trễ, tăng hiệu suất v
 ```
 
 ```mermaid
-graph TD
-    A[Start] --> B[Process]
-    B --> C[End]
+flowchart LR
+     markdown["`This **is** _Markdown_`"]-->B
+    C
 ```
