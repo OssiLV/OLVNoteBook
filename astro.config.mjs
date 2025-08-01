@@ -46,10 +46,7 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Mạng',
-					translations: {
-						'en': 'Networking'
-					},
+					label: 'Networking',
 					items: [
 						// {
 						// 	label: 'Lộ trình Mạng',
@@ -101,6 +98,42 @@ export default defineConfig({
 							slug: 'networking/ssl_tls'
 						},
 					],
+				},
+				{
+					label: 'Linux',
+					items: []
+				},
+				{
+					label: 'Git & GitHub',
+					items: []
+				},
+				{
+					label: 'CI/CD',
+					items: []
+				},
+				{
+					label: 'Tools',
+					items: [
+						{
+							label: 'Nginx',
+							translations: {
+								'en': 'Nginx'
+							},
+							slug: 'tools/nginx'
+						},
+					]
+				},
+				{
+					label: 'Cloud - AWS',
+					items: []
+				},
+				{
+					label: 'Monitoring & Logging',
+					items: []
+				},
+				{
+					label: 'DevSecOps',
+					items: []
 				},
 			],
 			customCss: [
