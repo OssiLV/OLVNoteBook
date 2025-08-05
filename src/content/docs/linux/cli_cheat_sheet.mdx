@@ -1,0 +1,249 @@
+---
+title: CLI cheat sheet
+description: CLI cheat sheet
+lastUpdated: 2025-08-05
+editUrl: https://github.com/OssiLV/OLV-NoteBook/blob/main/src/content/docs/linux/cli_cheat_sheet.mdx
+---
+
+import { Aside } from "@astrojs/starlight/components";
+
+## System
+
+### Thông tin hệ thống (System information)
+
+| **Command**          | **Mô tả**                                                             | **Flags phổ biến & mô tả**                                                                              |
+| -------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `uname -a`           | Hiển thị tất cả thông tin hệ thống (tên kernel, máy, kiến trúc, v.v.) | `-a`: hiển thị tất cả thông tin<br/>`-r`: chỉ hiển thị phiên bản kernel<br/>`-m`: kiến trúc máy         |
+| `hostnamectl`        | Hiển thị thông tin hostname và hệ thống liên quan                     | `set-hostname <name>`: thay đổi hostname                                                                |
+| `lscpu`              | Liệt kê thông tin kiến trúc CPU (số core, thread, model...)           | <br/>`--json`: hiển thị dạng JSON                                                                       |
+| `timedatectl status` | Hiển thị thời gian hệ thống, múi giờ, trạng thái đồng bộ thời gian    | `set-time <HH:MM:SS>`: đặt giờ<br/>`set-timezone <zone>`: đặt múi giờ<br/>`status`: hiển thị trạng thái |
+
+### Giám sát & quản lý hệ thống (System monitoring and management)
+
+| **Command**  | **Mô tả**                                                   | **Flags phổ biến & mô tả**                                                                 |
+| ------------ | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `top`        | Hiển thị danh sách tiến trình đang chạy theo thời gian thực | `-n <số>`: số lần cập nhật<br/>`-u <user>`: lọc theo user                                  |
+| `htop`       | Trình xem tiến trình tương tác nâng cao (cần cài thêm)      |                                                                                            |
+| `df -h`      | Hiển thị thông tin dung lượng ổ đĩa ở định dạng dễ đọc      | `-h`: human-readable (MB, GB)<br/>`-T`: hiển thị loại hệ thống tập tin                     |
+| `free -m`    | Hiển thị bộ nhớ đã dùng và còn trống (đơn vị MB)            | `-m`: đơn vị megabyte<br/>`-h`: human-readable<br/>`-t`: bao gồm cả tổng bộ nhớ swap       |
+| `kill <PID>` | Kết thúc tiến trình theo Process ID (PID)                   | `-9`: buộc dừng ngay<br/>`-15`: dừng an toàn<br/>`-l`: liệt kê các tín hiệu có thể sử dụng |
+
+### Chạy & quản lý tiến trình (Running commands)
+
+| **Command**       | **Mô tả**                                                               | **Flags phổ biến & mô tả**                            |
+| ----------------- | ----------------------------------------------------------------------- | ----------------------------------------------------- |
+| `<command> &`     | Chạy lệnh trong nền (background), trả quyền điều khiển lại cho terminal | Không có flag cụ thể – chỉ cần thêm `&` vào cuối lệnh |
+| `jobs`            | Hiển thị các tiến trình đang chạy nền hiện tại                          | Không có flag – hiển thị danh sách các jobs           |
+| `fg <job_number>` | Đưa tiến trình từ nền lên chạy ở foreground (nền → giao diện chính)     | `<job_number>`: số thứ tự job (xem bằng `jobs`)       |
+
+**Ví dụ**:
+
+```bash
+sleep 60 &      # Chạy lệnh sleep 60 giây ở chế độ nền
+jobs            # Xem danh sách tiến trình nền
+fg %1           # Đưa job số 1 về foreground
+```
+
+### Quản lý dịch vụ (Service management)
+
+| **Command**                       | **Mô tả**                                           | **Flags phổ biến & mô tả**                                                                  |
+| --------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `sudo systemctl start <service>`  | Bắt đầu một dịch vụ                                 | -                                                                                           |
+| `sudo systemctl stop <service>`   | Dừng một dịch vụ đang chạy                          | -                                                                                           |
+| `sudo systemctl status <service>` | Kiểm tra trạng thái hoạt động của dịch vụ           | `--no-pager`: hiển thị đầy đủ đầu ra thay vì phân trang                                     |
+| `sudo systemctl reload <service>` | Nạp lại cấu hình của dịch vụ mà không khởi động lại | Phụ thuộc vào dịch vụ có hỗ trợ reload hay không                                            |
+| `journalctl -f`                   | Theo dõi log theo thời gian thực (giống `tail -f`)  | `-f`: follow – liên tục theo dõi log mới                                                    |
+| `journalctl -u <unit_name>`       | Hiển thị log của một unit/dịch vụ cụ thể            | `-u`: unit name – ví dụ `ssh`, `nginx.service`<br/>`--since`, `--until`: lọc theo thời gian |
+
+### Cron và lập lịch (Cron Jobs & Scheduling)
+
+| **Command**  | **Mô tả**                                                               | **Flags phổ biến & mô tả**       |
+| ------------ | ----------------------------------------------------------------------- | -------------------------------- |
+| `crontab -e` | Mở trình soạn thảo để chỉnh sửa các tác vụ cron của người dùng hiện tại | `-e`: edit – chỉnh sửa cron jobs |
+| `crontab -l` | Hiển thị danh sách các tác vụ cron đã đặt                               | `-l`: list – liệt kê cron jobs   |
+
+## Files
+
+### Quản lý File (File management)
+
+| **Command**                 | **Mô tả**                                               | **Flags phổ biến & mô tả**                                                               |
+| --------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `ls`                        | Liệt kê các file và thư mục trong thư mục hiện tại      | `-l`: hiển thị chi tiết<br/>`-a`: bao gồm file ẩn<br/>`-h`: kích thước dễ đọc            |
+| `touch <filename>`          | Tạo file rỗng hoặc cập nhật thời gian truy cập của file | -                                                                                        |
+| `cp <source> <destination>` | Sao chép file/thư mục từ nơi này đến nơi khác           | `-r`: sao chép thư mục đệ quy<br/>`-i`: hỏi trước khi ghi đè<br/>`-v`: hiển thị chi tiết |
+| `mv <source> <destination>` | Di chuyển hoặc đổi tên file/thư mục                     | `-i`: hỏi trước khi ghi đè<br/>`-v`: hiển thị chi tiết                                   |
+| `rm <filename>`             | Xóa file hoặc thư mục                                   | `-r`: xóa đệ quy (thư mục)<br/>`-f`: xóa không hỏi<br/>`-i`: hỏi xác nhận từng file      |
+
+### Điều hướng thư mục (Directory navigation)
+
+| **Command**       | **Mô tả**                           | **Flags phổ biến & mô tả**             |
+| ----------------- | ----------------------------------- | -------------------------------------- |
+| `pwd`             | Hiển thị đường dẫn thư mục hiện tại | -                                      |
+| `cd <directory>`  | Chuyển sang thư mục chỉ định        | sử dụng cú pháp đặc biệt như `..`, `~` |
+| `mkdir <dirname>` | Tạo một thư mục mới                 | `-p`: tạo thư mục cha nếu chưa tồn tại |
+
+### Quyền và quyền sở hữu tệp (File Permissions and Ownership)
+
+| **Command**                            | **Mô tả**                                          | **Flags phổ biến & mô tả**                                     |
+| -------------------------------------- | -------------------------------------------------- | -------------------------------------------------------------- |
+| `chmod [who][+/-][permissions] <file>` | Thay đổi quyền truy cập của tệp hoặc thư mục       | `-R`: áp dụng đệ quy cho tất cả thư mục và tệp con             |
+| `chmod u+x <file>`                     | Thêm quyền thực thi (execute) cho người sở hữu tệp | -                                                              |
+| `chown [user]:[group] <file>`          | Thay đổi người sở hữu và nhóm của tệp              | `-R`: áp dụng đệ quy cho toàn bộ thư mục và nội dung bên trong |
+
+| **Chữ cái** | **Ý nghĩa**              | **Giá trị số (Octal)** |
+| ----------- | ------------------------ | ---------------------- |
+| `r`         | Read – Quyền đọc         | 4                      |
+| `w`         | Write – Quyền ghi        | 2                      |
+| `x`         | Execute – Quyền thực thi | 1                      |
+| `-`         | Không có quyền           | 0                      |
+
+**Ví dụ**:
+
+`rwxr-xr--` tương ứng với `755`
+
+-   Chủ sở hữu: `rwx` (4+2+1 = 7)
+-   Nhóm: `r-x` (4+0+1 = 5)
+-   Người khác: `r--` (4+0+0 = 4)
+
+Do đó: `chmod 755 <file>` thiết lập quyền như trên cho `file`.
+
+### Tìm kiếm (Searching and Finding)
+
+| **Lệnh**                                  | **Mô tả**                                                    | **Flags phổ biến & mô tả**                                                                                                             |
+| ----------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `find [directory] -name <search_pattern>` | Tìm kiếm tệp hoặc thư mục theo tên trong một thư mục cụ thể. | `-iname`: tìm không phân biệt hoa thường<br/>`-type f`: chỉ tìm tệp<br/>`-type d`: chỉ tìm thư mục                                     |
+| `grep <search_pattern> <file>`            | Tìm kiếm chuỗi ký tự (pattern) trong nội dung của tệp.       | `-i`: không phân biệt hoa thường<br/>`-r`: tìm đệ quy trong thư mục<br/>`-n`: hiển thị số dòng khớp<br/>`--color`: tô màu kết quả khớp |
+
+**Ví dụ**:
+
+-   `find /var/log -name "\*.log"` → Tìm tất cả các tệp `.log` trong thư mục `/var/log`
+-   `grep "error" /var/log/syslog` → Tìm dòng chứa từ `"error"` trong tệp log hệ thống
+-   `grep -rin "nginx" /etc` → Tìm từ "nginx" trong thư mục `/etc`, hiển thị số dòng và tô màu kết quả
+
+### Lưu trữ và nén (Archiving and Compression)
+
+| Command                                          | Miêu tả tiếng Việt                           | Flag phổ biến và Miêu tả                                                                                                                                                             |
+| ------------------------------------------------ | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `tar -czvf <name.tar.gz> [files]`                | Nén các tệp tin thành một kho lưu trữ tar.gz | `-c`: Tạo một kho lưu trữ mới<br/>`-z`: Sử dụng gzip để nén<br/>`-v`: Hiển thị chi tiết quá trình (verbose)<br/>`-f`: Chỉ định tên tệp kho lưu trữ                                   |
+| `tar -xvf <name.tar.[gz\|bz\|xz]> [destination]` | Giải nén một kho lưu trữ tar đã nén          | `-x`: Giải nén kho lưu trữ<br/>`-v`: Hiển thị chi tiết quá trình (verbose)<br/>`-f`: Chỉ định tên tệp kho lưu trữ<br/>`-C`: Chỉ định thư mục đích để giải nén (nếu có [destination]) |
+
+<Aside>
+    Các flag `-z` (gzip), `-j` (bzip2), hoặc `--xz` (xz) được sử dụng tùy thuộc
+    vào loại nén của tệp tar (`.gz`, `.bz`, `.xz`).
+</Aside>
+
+**Ví dụ**:
+
+-   `tar -czvf backup.tar.gz /home/user/` → Nén thư mục `/home/user/` thành file `backup.tar.gz`
+-   `tar -xvf archive.tar.gz -C /tmp` → Giải nén file `archive.tar.gz` vào thư mục `/tmp`
+
+### Chỉnh sửa và xử lý văn bản (Text editing and processing)
+
+| Command                | Miêu tả                                   | Flag phổ biến và Miêu tả                                                                                                                                                                    |
+| ---------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `nano <file>`          | Mở tệp trong trình chỉnh sửa văn bản Nano | `-w`: Tắt tự động ngắt dòng<br/>`-i`: Tự động thụt đầu dòng<br/>`-l`: Hiển thị số dòng<br/>`-m`: Kích hoạt hỗ trợ chuột                                                                     |
+| `cat <file>`           | Hiển thị nội dung của tệp                 | `-n`: Hiển thị số dòng<br/>`-b`: Hiển thị số dòng (bỏ qua dòng trống)<br/>`-E`: Hiển thị ký tự `$` ở cuối mỗi dòng<br/>`-T`: Hiển thị tab dưới dạng `^I`                                    |
+| `less <file>`          | Hiển thị nội dung tệp theo từng trang     | `-N`: Hiển thị số dòng<br/>`-S`: Tắt ngắt dòng (chỉ cuộn ngang)<br/>`-i`: Bỏ qua phân biệt hoa thường khi tìm kiếm<br/>`-F`: Thoát ngay nếu tệp nhỏ hơn một màn hình                        |
+| `head <file>`          | Hiển thị vài dòng đầu tiên của tệp        | `-n <số>`: Hiển thị số dòng cụ thể (mặc định 10)<br/>`-c <số>`: Hiển thị số byte cụ thể<br/>`-q`: Tắt tiêu đề khi xử lý nhiều tệp<br/>`-v`: Hiển thị tiêu đề tên tệp                        |
+| `tail <file>`          | Hiển thị vài dòng cuối cùng của tệp       | `-n <số>`: Hiển thị số dòng cụ thể (mặc định 10)<br/>`-c <số>`: Hiển thị số byte cụ thể<br/>`-f`: Theo dõi tệp theo thời gian thực<br/>`-q`: Tắt tiêu đề khi xử lý nhiều tệp                |
+| `awk ‘{print}’ <file>` | In từng dòng trong tệp                    | `-F <ký tự>`: Chỉ định ký tự phân tách trường<br/>`-v var=giá trị`: Gán biến cho awk<br/>`-f <tệp>`: Đọc lệnh awk từ tệp<br/>`--field-separator <ký tự>`: Tương tự `-F`, chỉ định phân tách |
+
+## Packages
+
+### Quản lý gói (APT) (Package management (APT))
+
+| Command                                     | Miêu tả                                 | Flag phổ biến và Miêu tả                                                                                                                                                                               |
+| ------------------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `sudo apt install <package>`                | Cài đặt một gói phần mềm                | `-y`: Tự động xác nhận mà không hỏi<br/>`--no-install-recommends`: Không cài các gói đề xuất<br/>`--allow-downgrades`: Cho phép hạ cấp phiên bản gói<br/>`-s`: Mô phỏng hành động mà không thực hiện   |
+| `sudo apt install -f --reinstall <package>` | Cài đặt lại gói bị lỗi                  | `-f`: Sửa các phụ thuộc bị hỏng<br/>`--reinstall`: Cài đặt lại gói đã có<br/>`-y`: Tự động xác nhận mà không hỏi<br/>`-s`: Mô phỏng hành động mà không thực hiện                                       |
+| `apt search <package>`                      | Tìm kiếm các gói APT                    | `--names-only`: Chỉ tìm kiếm theo tên gói<br/>`-F <chuỗi>`: Tìm kiếm theo định dạng cụ thể<br/>`--showall`: Hiển thị tất cả thông tin gói<br/>`-q`: Giảm chi tiết đầu ra                               |
+| `apt-cache policy <package>`                | Liệt kê các phiên bản có sẵn của gói    | `--all-versions`: Hiển thị tất cả phiên bản<br/>`-p`: Hiển thị ưu tiên của gói<br/>`--no-all-versions`: Chỉ hiển thị phiên bản ưu tiên<br/>`--format <định dạng>`: Tùy chỉnh định dạng đầu ra          |
+| `sudo apt update`                           | Cập nhật danh sách gói                  | `-q`: Giảm chi tiết đầu ra<br/>`--allow-releaseinfo-change`: Cho phép thay đổi thông tin nguồn<br/>`-y`: Tự động xác nhận<br/>`--no-progress`: Tắt hiển thị tiến trình                                 |
+| `sudo apt upgrade`                          | Nâng cấp tất cả các gói có thể nâng cấp | `-y`: Tự động xác nhận mà không hỏi<br/>`--allow-downgrades`: Cho phép hạ cấp phiên bản<br/>`--no-install-recommends`: Không cài gói đề xuất<br/>`-s`: Mô phỏng hành động mà không thực hiện           |
+| `sudo apt remove <package>`                 | Gỡ bỏ một gói phần mềm                  | `-y`: Tự động xác nhận mà không hỏi<br/>`--dry-run`: Mô phỏng hành động mà không thực hiện<br/>`--auto-remove`: Xóa các gói phụ thuộc không còn cần thiết<br/>`-s`: Tương tự `--dry-run`, chỉ mô phỏng |
+| `sudo apt purge <package>`                  | Gỡ bỏ gói và tất cả tệp cấu hình của nó | `-y`: Tự động xác nhận mà không hỏi<br/>`--dry-run`: Mô phỏng hành động mà không thực hiện<br/>`--auto-remove`: Xóa các gói phụ thuộc không còn cần thiết<br/>`-s`: Tương tự `--dry-run`, chỉ mô phỏng |
+
+### Quản lý gói (Snap) (Package management (Snap))
+
+| Command                         | Miêu tả                                 | Flag phổ biến và Miêu tả                                                                                                                                                                                                                              |
+| ------------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `snap find <package>`           | Tìm kiếm các gói Snap                   | `--narrow`: Chỉ tìm kiếm theo tên chính xác<br/>`--section <danh mục>`: Tìm kiếm trong danh mục cụ thể<br/>`--color <auto\|always\|never>`: Điều khiển màu sắc đầu ra<br/>`--unicode <auto\|always\|never>`: Điều khiển hiển thị ký tự Unicode        |
+| `sudo snap install <snap_name>` | Cài đặt một gói Snap                    | `--classic`: Sử dụng chế độ classic confinement<br/>`--dangerous`: Cài đặt mà không kiểm tra chữ ký<br/>`--channel <channel>`: Cài đặt từ kênh cụ thể (ví dụ: stable, beta)<br/>`--revision <revision>`: Cài đặt phiên bản cụ thể                     |
+| `sudo snap remove <snap_name>`  | Gỡ bỏ một gói Snap                      | `--purge`: Xóa cả dữ liệu snapshot của gói<br/>`--revision <revision>`: Gỡ bỏ phiên bản cụ thể<br/>`--no-wait`: Không chờ hoàn tất lệnh<br/>`--purge-snapshots`: Xóa tất cả snapshot của gói                                                          |
+| `sudo snap refresh`             | Cập nhật tất cả các gói Snap đã cài đặt | `--channel <channel>`: Cập nhật từ kênh cụ thể<br/>`--list`: Hiển thị danh sách các gói sẽ được cập nhật<br/>`--time`: Hiển thị thời gian cập nhật gần nhất<br/>`--hold <thời gian>`: Tạm hoãn cập nhật trong khoảng thời gian                        |
+| `snap list`                     | Liệt kê tất cả các gói Snap đã cài đặt  | `--all`: Hiển thị tất cả phiên bản, kể cả không hoạt động<br/>`--color <auto\|always\|never>`: Điều khiển màu sắc đầu ra<br/>`--unicode <auto\|always\|never>`: Điều khiển hiển thị ký tự Unicode<br/>`--verbose`: Hiển thị chi tiết hơn              |
+| `snap info <snap_name>`         | Hiển thị thông tin về một gói Snap      | `--verbose`: Hiển thị thông tin chi tiết hơn<br/>`--color <auto\|always\|never>`: Điều khiển màu sắc đầu ra<br/>`--unicode <auto\|always\|never>`: Điều khiển hiển thị ký tự Unicode<br/>`--abs-time`: Hiển thị thời gian tuyệt đối thay vì tương đối |
+
+## Users & groups
+
+### Quản lý người dùng (User management)
+
+| Command                     | Miêu tả                                      | Flag phổ biến và Miêu tả                                                                                                                                                                                                            |
+| --------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `w`                         | Hiển thị danh sách người dùng đang đăng nhập | `-h`: Tắt tiêu đề cột<br/>`-s`: Sử dụng định dạng ngắn gọn<br/>`-f`: Tắt hiển thị cột "FROM"<br/>`-u`: Bỏ qua tên người dùng khi kiểm tra UID                                                                                       |
+| `sudo adduser <username>`   | Tạo một người dùng mới                       | `--home <đường dẫn>`: Chỉ định thư mục chính của người dùng<br/>`--shell <shell>`: Chỉ định shell mặc định<br/>`--ingroup <nhóm>`: Thêm người dùng vào nhóm chính<br/>`--uid <ID>`: Chỉ định ID người dùng cụ thể                   |
+| `sudo deluser <username>`   | Xóa một người dùng                           | `--remove-home`: Xóa thư mục chính của người dùng<br/>`--remove-all-files`: Xóa tất cả tệp thuộc về người dùng<br/>`--backup`: Sao lưu dữ liệu trước khi xóa<br/>`--force`: Buộc xóa ngay cả khi đang sử dụng                       |
+| `sudo passwd <username>`    | Đặt hoặc thay đổi mật khẩu cho người dùng    | `-e`: Buộc người dùng đổi mật khẩu lần đăng nhập tiếp theo<br/>`-d`: Xóa mật khẩu (cho phép đăng nhập không cần mật khẩu)<br/>`-S`: Hiển thị trạng thái mật khẩu<br/>`--stdin`: Nhận mật khẩu từ đầu vào chuẩn                      |
+| `su <username>`             | Chuyển đổi sang người dùng khác              | `-`: Khởi tạo môi trường đăng nhập đầy đủ<br/>`-c <lệnh>`: Thực thi lệnh cụ thể dưới quyền người dùng<br/>`-s <shell>`: Chỉ định shell để sử dụng<br/>`-p`: Giữ nguyên biến môi trường hiện tại                                     |
+| `sudo passwd -l <username>` | Khóa tài khoản người dùng                    | Không có flag bổ sung: Lệnh này chỉ sử dụng `-l` để khóa<br/>`-S`: Kiểm tra trạng thái khóa của tài khoản<br/>`--stdin`: Không áp dụng, chỉ dùng để kiểm tra<br/>`-q`: Giảm chi tiết đầu ra                                         |
+| `sudo passwd -u <username>` | Mở khóa mật khẩu người dùng                  | Không có flag bổ sung: Lệnh này chỉ sử dụng `-u` để mở khóa<br/>`-S`: Kiểm tra trạng thái khóa của tài khoản<br/>`--stdin`: Không áp dụng, chỉ dùng để kiểm tra<br/>`-q`: Giảm chi tiết đầu ra                                      |
+| `sudo chage <username>`     | Đặt ngày hết hạn mật khẩu người dùng         | `-l`: Hiển thị thông tin hết hạn của tài khoản<br/>`-E <ngày>`: Đặt ngày tài khoản hết hạn (YYYY-MM-DD)<br/>`-M <ngày>`: Đặt số ngày tối đa trước khi đổi mật khẩu<br/>`-W <ngày>`: Đặt số ngày cảnh báo trước khi mật khẩu hết hạn |
+
+### Quản lý nhóm (Group management)
+
+| Command                     | Miêu tả                                  | Flag phổ biến và Miêu tả                                                                                                                                                         |
+| --------------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id [username]`             | Hiển thị ID người dùng và nhóm           | `-u`: Chỉ hiển thị UID (ID người dùng)<br/>`-g`: Chỉ hiển thị GID (ID nhóm chính)<br/>`-G`: Hiển thị tất cả ID nhóm mà người dùng thuộc về<br/>`-n`: Hiển thị tên thay vì số ID  |
+| `groups [username]`         | Hiển thị các nhóm mà người dùng thuộc về | Không có flag phổ biến: Lệnh này không có tùy chọn bổ sung đáng kể<br/>`--help`: Hiển thị thông tin trợ giúp<br/>`--version`: Hiển thị phiên bản lệnh                            |
+| `sudo addgroup <groupname>` | Tạo một nhóm mới                         | `--gid <ID>`: Chỉ định ID nhóm cụ thể<br/>`--system`: Tạo nhóm hệ thống (GID thấp)<br/>`--force-badname`: Cho phép tên nhóm không theo chuẩn<br/>`--quiet`: Giảm chi tiết đầu ra |
+| `sudo delgroup <groupname>` | Xóa một nhóm                             | `--only-if-empty`: Chỉ xóa nếu nhóm không có thành viên<br/>`--system`: Chỉ xóa nhóm hệ thống<br/>`--backup`: Sao lưu dữ liệu trước khi xóa<br/>`--quiet`: Giảm chi tiết đầu ra  |
+
+## Networking
+
+| Command        | Miêu tả                                   | Flag phổ biến và Miêu tả                                                                                                                                                                                     |
+| -------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ip addr show` | Hiển thị các giao diện mạng và địa chỉ IP | `-4`: Chỉ hiển thị địa chỉ IPv4<br/>`-6`: Chỉ hiển thị địa chỉ IPv6<br/>`-br`: Hiển thị định dạng ngắn gọn (brief)<br/>`dev <tên_giao_diện>`: Chỉ hiển thị thông tin của giao diện cụ thể                    |
+| `ip -s link`   | Hiển thị thống kê mạng                    | `-s`: Hiển thị thống kê chi tiết<br/>`-h`: Định dạng đầu ra dễ đọc cho con người<br/>`-d`: Hiển thị thông tin chi tiết hơn về thiết bị<br/>`dev <tên_giao_diện>`: Chỉ hiển thị thống kê của giao diện cụ thể |
+| `ss -l`        | Hiển thị các socket đang lắng nghe        | `-l`: Chỉ hiển thị các socket đang lắng nghe<br/>`-t`: Chỉ hiển thị các kết nối TCP<br/>`-u`: Chỉ hiển thị các kết nối UDP<br/>`-n`: Hiển thị địa chỉ và cổng dạng số thay vì tên                            |
+| `ping <host>`  | Ping đến một host và hiển thị kết quả     | `-c <số>`: Giới hạn số lần ping<br/>`-i <giây>`: Khoảng thời gian giữa các lần ping<br/>`-s <kích thước>`: Đặt kích thước gói tin (byte)<br/>`-t <TTL>`: Đặt giá trị Time To Live                            |
+
+<Aside>
+    Lệnh `ss` là phiên bản hiện đại thay thế cho `netstat`, cung cấp thông tin
+    chi tiết hơn về socket.
+</Aside>
+
+### Cấu hình Netplan (Netplan configuration)
+
+-   Tham khảo thêm tại [netplan.io](https://netplan.io) để biết chi tiết về cấu hình Netplan.
+
+| Command                   | Miêu tả                                          | Flag phổ biến và Miêu tả                                                                                                                                                                                               |
+| ------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cat /etc/netplan/*.yaml` | Hiển thị cấu hình Netplan hiện tại               | Không có flag cụ thể: Lệnh `cat` sử dụng đường dẫn `/etc/netplan/*.yaml` để hiển thị tất cả tệp YAML<br/>`-n`: Hiển thị số dòng<br/>`-T`: Hiển thị tab dưới dạng `^I`<br/>`-E`: Hiển thị ký tự `$` ở cuối mỗi dòng     |
+| `sudo netplan try`        | Kiểm tra cấu hình mới trong một khoảng thời gian | `--timeout <giây>`: Đặt thời gian thử nghiệm (mặc định 120 giây)<br/>`--config-file <tệp>`: Chỉ định tệp cấu hình cụ thể<br/>`--state <thư_mục>`: Chỉ định thư mục trạng thái<br/>`--debug`: Hiển thị thông tin gỡ lỗi |
+| `sudo netplan apply`      | Áp dụng cấu hình Netplan hiện tại                | `--debug`: Hiển thị thông tin gỡ lỗi<br/>`--state <thư_mục>`: Chỉ định thư mục trạng thái<br/>`--config-file <tệp>`: Chỉ định tệp cấu hình cụ thể<br/>`--no-wait`: Không chờ hoàn tất áp dụng                          |
+
+### Quản lý tường lửa (Firewall management)
+
+| Command                                     | Miêu tả                                          | Flag phổ biến và Miêu tả                                                                                                                                                                                                                                     |
+| ------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `sudo ufw status`                           | Hiển thị trạng thái của tường lửa                | `verbose`: Hiển thị thông tin chi tiết hơn<br/>`numbered`: Hiển thị số thứ tự của các quy tắc<br/>`--no-headers`: Tắt tiêu đề trong đầu ra<br/>`--force`: Buộc hiển thị trạng thái mà không kiểm tra                                                         |
+| `sudo ufw enable`                           | Kích hoạt tường lửa                              | Không có flag phổ biến: Lệnh này không có tùy chọn bổ sung đáng kể<br/>`--force`: Buộc kích hoạt mà không cần xác nhận<br/>`--dry-run`: Mô phỏng hành động mà không thực thi                                                                                 |
+| `sudo ufw disable`                          | Vô hiệu hóa tường lửa                            | Không có flag phổ biến: Lệnh này không có tùy chọn bổ sung đáng kể<br/>`--force`: Buộc vô hiệu hóa mà không cần xác nhận<br/>`--dry-run`: Mô phỏng hành động mà không thực thi                                                                               |
+| `sudo ufw allow <port/service>`             | Cho phép lưu lượng trên cổng hoặc dịch vụ cụ thể | `from <địa chỉ>`: Chỉ định nguồn IP được phép<br/>`to <địa chỉ>`: Chỉ định đích IP<br/>`proto <giao thức>`: Chỉ định giao thức (tcp, udp)<br/>`comment <mô tả>`: Thêm ghi chú cho quy tắc                                                                    |
+| `sudo ufw deny <port/service>`              | Chặn lưu lượng trên cổng hoặc dịch vụ cụ thể     | `from <địa chỉ>`: Chỉ định nguồn IP bị chặn<br/>`to <địa chỉ>`: Chỉ định đích IP<br/>`proto <giao thức>`: Chỉ định giao thức (tcp, udp)<br/>`comment <mô tả>`: Thêm ghi chú cho quy tắc                                                                      |
+| `sudo ufw delete allow/deny <port/service>` | Xóa một quy tắc hiện có                          | `numbered`: Sử dụng số thứ tự của quy tắc (yêu cầu `ufw status numbered` trước)<br/>`from <địa chỉ>`: Chỉ định nguồn IP của quy tắc cần xóa<br/>`to <địa chỉ>`: Chỉ định đích IP của quy tắc<br/>`proto <giao thức>`: Chỉ định giao thức của quy tắc cần xóa |
+
+<Aside>
+    Các tham số `<port/service>` có thể là số cổng (ví dụ: `80`) hoặc tên dịch vụ (ví dụ: `http`).
+</Aside>
+
+### SSH và truy cập từ xa (SSH and remote access)
+
+| Command                                  | Miêu tả                               | Flag phổ biến và Miêu tả                                                                                                                                                                                                                                                    |
+| ---------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ssh <user@host>`                        | Kết nối đến máy chủ từ xa qua SSH     | `-p <cổng>`: Chỉ định cổng SSH (mặc định 22)<br/>`-i <tệp_key>`: Sử dụng tệp khóa riêng để xác thực<br/>`-X`: Bật chuyển tiếp X11 (cho ứng dụng đồ họa)<br/>`-v`: Hiển thị thông tin chi tiết (verbose)                                                                     |
+| `scp <source> <user@host>:<destination>` | Sao chép tệp an toàn giữa các máy chủ | `-P <cổng>`: Chỉ định cổng SSH (mặc định 22)<br/>`-i <tệp_key>`: Sử dụng tệp khóa riêng để xác thực`-r`: Sao chép đệ quy (bao gồm thư mục)<br/>`-v`: Hiển thị thông tin chi tiết (verbose)<br/>`-p`: Giữ nguyên quyền và thời gian tệp<br/>`-C`: Bật nén dữ liệu khi truyền |
+
+<Aside>
+    `<user@host>` có định dạng như `username@hostname` hoặc `username@IP`. `<source>` và `<destination>` có thể là đường dẫn cục bộ hoặc từ xa.
+</Aside>
