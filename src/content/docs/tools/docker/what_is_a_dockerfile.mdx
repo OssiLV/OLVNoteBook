@@ -1,0 +1,283 @@
+---
+title: Dockerfile là gì?
+description: Docker
+lastUpdated: 2025-08-10
+editUrl: https://github.com/OssiLV/OLV-NoteBook/blob/main/src/content/docs/tools/docker/what_is_a_dockerfile.mdx
+---
+
+-   **Định nghĩa**: Dockerfile là một kịch bản tự động hóa, mô tả các bước để tạo một image Docker. Image này sau đó được dùng để chạy các container, đảm bảo ứng dụng hoạt động nhất quán trên mọi môi trường.
+-   **Mục đích**: Đóng gói ứng dụng, thư viện, cấu hình, và môi trường runtime thành một image có thể tái sử dụng.
+-   **Vị trí**: Dockerfile thường được đặt trong thư mục gốc của dự án, với tên là `Dockerfile` (không có phần mở rộng).
+
+---
+
+## Cấu trúc cơ bản của Dockerfile
+
+Một Dockerfile bao gồm các lệnh (instructions) theo cú pháp:
+
+```
+INSTRUCTION arguments
+```
+
+-   **INSTRUCTION**: Từ khóa của Docker (viết hoa, ví dụ: `FROM`, `RUN`, `COPY`).
+-   **arguments**: Các tham số hoặc giá trị đi kèm lệnh.
+
+Ví dụ một Dockerfile đơn giản để chạy ứng dụng Node.js:
+
+```dockerfile
+# Chỉ định image cơ sở
+FROM node:18
+
+# Thiết lập thư mục làm việc
+WORKDIR /app
+
+# Sao chép mã nguồn vào container
+COPY . .
+
+# Cài đặt phụ thuộc
+RUN npm install
+
+# Lệnh chạy ứng dụng
+CMD ["node", "index.js"]
+```
+
+---
+
+## Các từ khóa (Instructions) chính trong Dockerfile
+
+Dưới đây là danh sách các từ khóa phổ biến trong Dockerfile và chức năng của chúng:
+
+1. **FROM**
+
+    - **Chức năng**: Chỉ định image cơ sở (base image) để xây dựng image mới.
+    - **Cú pháp**: `FROM <image>[:<tag>] [AS <name>]`
+    - **Ví dụ**: `FROM ubuntu:20.04` (dùng image Ubuntu 20.04).
+    - **Lưu ý**: Mọi Dockerfile phải bắt đầu bằng `FROM`, trừ khi dùng `FROM scratch` (image rỗng).
+
+2. **WORKDIR**
+
+    - **Chức năng**: Thiết lập thư mục làm việc hiện tại cho các lệnh tiếp theo (`RUN`, `CMD`, `COPY`, v.v.).
+    - **Cú pháp**: `WORKDIR /path/to/workdir`
+    - **Ví dụ**: `WORKDIR /app` (tất cả lệnh sau sẽ chạy trong thư mục `/app`).
+    - **Lưu ý**: Nếu thư mục không tồn tại, Docker sẽ tự tạo.
+
+3. **COPY**
+
+    - **Chức năng**: Sao chép tệp hoặc thư mục từ máy host vào image.
+    - **Cú pháp**: `COPY <src> <dest>`
+    - **Ví dụ**: `COPY package.json /app/` (sao chép `package.json` vào `/app`).
+    - **Lưu ý**: Đường dẫn nguồn là tương đối so với thư mục chứa Dockerfile.
+
+4. **ADD**
+
+    - **Chức năng**: Tương tự `COPY`, nhưng hỗ trợ thêm giải nén tệp tar hoặc tải tệp từ URL.
+    - **Cú pháp**: `ADD <src> <dest>`
+    - **Ví dụ**: `ADD app.tar.gz /app/` (giải nén `app.tar.gz` vào `/app`).
+    - **Lưu ý**: `COPY` thường được ưu tiên vì đơn giản và rõ ràng hơn.
+
+5. **RUN**
+
+    - **Chức năng**: Thực thi lệnh trong quá trình xây dựng image, thường dùng để cài đặt phần mềm hoặc cấu hình.
+    - **Cú pháp**:
+        - Shell: `RUN <command>` (chạy trong shell, ví dụ: `/bin/sh -c`)
+        - Exec: `RUN ["executable", "param1", "param2"]` (chạy trực tiếp, không qua shell).
+    - **Ví dụ**:
+        - `RUN apt-get update && apt-get install -y python3`
+        - `RUN ["npm", "install"]`
+    - **Lưu ý**: Mỗi `RUN` tạo một layer mới trong image, nên gộp các lệnh liên quan để giảm kích thước.
+
+6. **CMD**
+
+    - **Chức năng**: Chỉ định lệnh mặc định chạy khi container khởi động.
+    - **Cú pháp**:
+        - Exec: `CMD ["executable", "param1", "param2"]` (khuyến nghị).
+        - Shell: `CMD command param1` (chạy trong shell).
+    - **Ví dụ**: `CMD ["node", "index.js"]` hoặc `CMD node index.js`
+    - **Lưu ý**:
+        - Chỉ một `CMD` được thực thi; nếu có nhiều, chỉ lệnh cuối có hiệu lực.
+        - `CMD` có thể bị ghi đè khi chạy container bằng `docker run`.
+
+7. **ENTRYPOINT**
+
+    - **Chức năng**: Chỉ định lệnh chính chạy khi container khởi động, khó bị ghi đè hơn `CMD`.
+    - **Cú pháp**:
+        - Exec: `ENTRYPOINT ["executable", "param1", "param2"]`
+        - Shell: `ENTRYPOINT command param1`
+    - **Ví dụ**: `ENTRYPOINT ["python3", "app.py"]`
+    - **Lưu ý**: Thường kết hợp với `CMD` để cung cấp tham số mặc định.
+
+8. **ENV**
+
+    - **Chức năng**: Thiết lập biến môi trường trong container.
+    - **Cú pháp**: `ENV <key>=<value>`
+    - **Ví dụ**: `ENV PORT=8080`
+    - **Lưu ý**: Biến môi trường có thể được sử dụng trong các lệnh khác hoặc trong ứng dụng.
+
+9. **EXPOSE**
+
+    - **Chức năng**: Thông báo cổng mà container sẽ lắng nghe (không thực sự mở cổng).
+    - **Cú pháp**: `EXPOSE <port>[/<protocol>]`
+    - **Ví dụ**: `EXPOSE 80/tcp`
+    - **Lưu ý**: Cần ánh xạ cổng khi chạy container bằng `-p` (ví dụ: `docker run -p 8080:80`).
+
+10. **VOLUME**
+
+    - **Chức năng**: Tạo điểm gắn kết (mount point) để lưu trữ dữ liệu bền vững.
+    - **Cú pháp**: `VOLUME /path` hoặc `VOLUME ["/path"]`
+    - **Ví dụ**: `VOLUME /data`
+    - **Lưu ý**: Dữ liệu trong volume không bị xóa khi container bị xóa.
+
+11. **USER**
+
+    - **Chức năng**: Chỉ định người dùng hoặc UID để chạy các lệnh tiếp theo hoặc container.
+    - **Cú pháp**: `USER <user>[:<group>]` hoặc `USER <UID>[:<GID>]`
+    - **Ví dụ**: `USER appuser`
+    - **Lưu ý**: Mặc định là `root`, nhưng nên dùng người dùng không phải root để tăng bảo mật.
+
+12. **ARG**
+
+    - **Chức năng**: Định nghĩa biến chỉ dùng trong quá trình xây dựng image.
+    - **Cú pháp**: `ARG <name>[=<default value>]`
+    - **Ví dụ**: `ARG VERSION=1.0` (sử dụng bằng `$VERSION`).
+    - **Lưu ý**: Khác với `ENV`, `ARG` không tồn tại trong container khi chạy.
+
+13. **LABEL**
+
+    - **Chức năng**: Thêm siêu dữ liệu (metadata) cho image.
+    - **Cú pháp**: `LABEL <key>=<value>`
+    - **Ví dụ**: `LABEL version="1.0" maintainer="example@example.com"`
+    - **Lưu ý**: Có thể tra cứu bằng `docker inspect`.
+
+14. **HEALTHCHECK**
+
+    - **Chức năng**: Kiểm tra trạng thái sức khỏe của container.
+    - **Cú pháp**: `HEALTHCHECK [OPTIONS] CMD command`
+    - **Ví dụ**: `HEALTHCHECK --interval=30s CMD curl -f http://localhost/ || exit 1`
+    - **Lưu ý**: Hỗ trợ các tùy chọn như `--interval`, `--timeout`, `--retries`.
+
+15. **ONBUILD**
+    - **Chức năng**: Chỉ định lệnh chạy khi image được dùng làm base image cho image khác.
+    - **Cú pháp**: `ONBUILD <INSTRUCTION>`
+    - **Ví dụ**: `ONBUILD COPY . /app`
+    - **Lưu ý**: Dùng cho các image tái sử dụng.
+
+---
+
+## Quy trình xây dựng và sử dụng Dockerfile
+
+1. **Viết Dockerfile**: Tạo tệp `Dockerfile` trong thư mục dự án.
+2. **Xây dựng image**:
+    ```bash
+    docker build -t <image-name>:<tag> .
+    ```
+    - `-t`: Đặt tên và tag cho image.
+    - `.`: Thư mục chứa Dockerfile.
+3. **Chạy container**:
+    ```bash
+    docker run -d -p <host-port>:<container-port> <image-name>:<tag>
+    ```
+4. **Kiểm tra image/container**:
+    - `docker images`: Liệt kê image.
+    - `docker ps`: Liệt kê container đang chạy.
+
+---
+
+## Các phương pháp hay khi viết Dockerfile
+
+-   **Tối ưu hóa layer**: Gộp các lệnh `RUN` liên quan để giảm số layer (ví dụ: `RUN apt-get update && apt-get install -y ...`).
+-   **Dọn dẹp tệp tạm**: Xóa cache hoặc tệp không cần thiết trong cùng lệnh `RUN` để giảm kích thước image.
+    ```dockerfile
+    RUN apt-get update && apt-get install -y python3 && apt-get clean
+    ```
+-   **Sử dụng image cơ sở nhẹ**: Chọn image như `alpine` (nhỏ gọn) thay vì `ubuntu` nếu có thể.
+    ```dockerfile
+    FROM node:18-alpine
+    ```
+-   **Tránh chạy với root**: Dùng `USER` để chạy container với người dùng không phải root.
+-   **Sử dụng `.dockerignore`**: Tạo tệp `.dockerignore` để loại bỏ các tệp không cần thiết (như `node_modules`, `.git`) khỏi quá trình build.
+    ```text
+    # .dockerignore
+    node_modules
+    .git
+    *.log
+    ```
+-   **Sử dụng multi-stage build**: Giảm kích thước image bằng cách tách quá trình build và runtime.
+
+    ```dockerfile
+    # Stage 1: Build
+    FROM node:18 AS builder
+    WORKDIR /app
+    COPY . .
+    RUN npm install && npm run build
+
+    # Stage 2: Runtime
+    FROM node:18-alpine
+    WORKDIR /app
+    COPY --from=builder /app/dist /app
+    CMD ["node", "dist/index.js"]
+    ```
+
+---
+
+## Những điều cần biết thêm
+
+-   **Dockerignore**: Tương tự `.gitignore`, tệp `.dockerignore` giúp loại bỏ các tệp/thư mục không cần sao chép vào image, giảm thời gian build và kích thước image.
+-   **Layer caching**: Docker lưu trữ các layer của image để tăng tốc build. Thay đổi một lệnh sẽ làm mất cache của các lệnh sau nó. Vì vậy, đặt các lệnh ít thay đổi (như `COPY package.json` và `RUN npm install`) trước các lệnh thường xuyên thay đổi (như `COPY . .`).
+-   **Exec vs Shell**: Dùng cú pháp exec (`["command", "arg1"]`) cho `CMD` và `ENTRYPOINT` để container xử lý tín hiệu (như SIGTERM) đúng cách.
+-   **Multi-stage builds**: Giúp giảm kích thước image bằng cách chỉ giữ lại những gì cần thiết cho runtime.
+-   **Docker Compose**: Nếu ứng dụng cần nhiều container (ví dụ: web + database), dùng Docker Compose để quản lý qua tệp YAML.
+
+---
+
+## Ví dụ thực tế
+
+**Dockerfile cho ứng dụng Python Flask**:
+
+```dockerfile
+# Image cơ sở
+FROM python:3.9-slim
+
+# Thiết lập thư mục làm việc
+WORKDIR /app
+
+# Sao chép requirements.txt và cài đặt phụ thuộc
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Sao chép mã nguồn
+COPY . .
+
+# Thiết lập biến môi trường
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=production
+
+# Mở cổng
+EXPOSE 5000
+
+# Chạy ứng dụng
+CMD ["flask", "run", "--host=0.0.0.0"]
+```
+
+**Chạy**:
+
+```bash
+docker build -t my-flask-app:latest .
+docker run -d -p 5000:5000 my-flask-app:latest
+```
+
+---
+
+## Các lỗi phổ biến và cách khắc phục
+
+-   **Image quá lớn**: Dùng image cơ sở nhẹ (như `alpine`), dọn dẹp tệp tạm, hoặc dùng multi-stage build.
+-   **Container không chạy**: Kiểm tra `CMD` hoặc `ENTRYPOINT` có đúng lệnh không, kiểm tra log bằng `docker logs <container-id>`.
+-   **Cổng không hoạt động**: Đảm bảo dùng `-p` khi chạy container để ánh xạ cổng.
+-   **Lỗi phụ thuộc**: Đảm bảo `COPY` và `RUN` cài đặt đúng các phụ thuộc trước khi chạy ứng dụng.
+
+---
+
+## Tham khảo thêm
+
+-   **Docker Hub**: Kho image chính thức (https://hub.docker.com).
+-   **Tài liệu chính thức**: https://docs.docker.com
+-   **Cộng đồng**: Tìm các ví dụ thực tế trên GitHub hoặc các bài hướng dẫn trên blog DevOps.

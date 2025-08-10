@@ -140,6 +140,13 @@ export default defineConfig({
                                     },
                                     slug: "tools/docker/introduction",
                                 },
+                                {
+                                    label: "Dockerfile là gì?",
+                                    translations: {
+                                        en: "What is a Dockerfile?",
+                                    },
+                                    slug: "tools/docker/what_is_a_dockerfile",
+                                },
                             ],
                         },
                         {
