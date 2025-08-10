@@ -131,12 +131,24 @@ export default defineConfig({
                     label: "Tools",
                     items: [
                         {
+                            label: "Docker",
+                            items: [
+                                {
+                                    label: "Giới thiệu Docker",
+                                    translations: {
+                                        en: "Introduction to Docker",
+                                    },
+                                    slug: "tools/docker/introduction",
+                                },
+                            ],
+                        },
+                        {
                             label: "Nginx",
                             items: [
                                 {
-                                    label: "Nginx là gì ?",
+                                    label: "Giới thiệu Nginx",
                                     translations: {
-                                        en: "What is Nginx?",
+                                        en: "Introduction to Nginx",
                                     },
                                     slug: "tools/nginx/introduction",
                                 },

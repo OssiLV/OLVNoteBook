@@ -1,0 +1,59 @@
+---
+title: Giới thiệu Docker
+description: Docker
+lastUpdated: 2025-08-01
+editUrl: https://github.com/OssiLV/OLV-NoteBook/blob/main/src/content/docs/tools/docker/introduction.mdx
+---
+
+Docker là một nền tảng mã nguồn mở dùng để tự động hóa việc triển khai, quản lý và chạy ứng dụng trong các **container**.
+
+Container cho phép đóng gói ứng dụng cùng với tất cả các phụ thuộc (thư viện, cấu hình, hệ điều hành cơ bản) thành một đơn vị độc lập, đảm bảo ứng dụng chạy ổn định trên bất kỳ môi trường nào, từ máy phát triển cá nhân đến hệ thống sản xuất.
+
+## **Các khái niệm chính của Docker**
+
+1. **Container**: Một môi trường nhẹ, cô lập để chạy ứng dụng. Container chứa mã nguồn, runtime, thư viện và cấu hình cần thiết, nhưng nhỏ gọn hơn máy ảo (VM) vì không cần toàn bộ hệ điều hành.
+2. **Image**: Bản mẫu chỉ đọc dùng để tạo container. Image giống như một "snapshot" của ứng dụng và môi trường của nó, được xây dựng từ một tệp **Dockerfile**.
+3. **Dockerfile**: Tệp cấu hình chứa các lệnh để tạo một image, ví dụ: cài đặt phần mềm, sao chép mã nguồn, hoặc thiết lập biến môi trường.
+4. **Docker Hub**: Kho lưu trữ công cộng để chia sẻ và tải các image Docker, ví dụ: image của Nginx, MySQL, hoặc Ubuntu.
+5. **Docker Compose**: Công cụ để định nghĩa và chạy nhiều container cùng lúc thông qua tệp YAML, giúp quản lý các ứng dụng phức tạp.
+
+## **Lợi ích của Docker**
+
+-   **Tính di động**: Container chạy đồng nhất trên các môi trường (local, cloud, server).
+-   **Tiết kiệm tài nguyên**: Container nhẹ hơn máy ảo, sử dụng ít CPU và RAM.
+-   **Tự động hóa và DevOps**: Hỗ trợ CI/CD, triển khai nhanh và dễ dàng mở rộng.
+-   **Cô lập**: Mỗi container chạy độc lập, tránh xung đột giữa các ứng dụng.
+-   **Cộng đồng lớn**: Docker Hub cung cấp hàng triệu image sẵn có.
+
+## **Ứng dụng thực tế**
+
+-   **Triển khai ứng dụng**: Đóng gói ứng dụng web (như Node.js, Django) và chạy trên bất kỳ server nào.
+-   **Microservices**: Tách ứng dụng thành các container nhỏ để dễ quản lý và mở rộng.
+-   **Môi trường phát triển**: Tạo môi trường phát triển giống hệt sản xuất, giảm lỗi "trên máy tôi thì chạy được còn máy khác thì không".
+-   **CI/CD**: Tích hợp với Jenkins, GitHub Actions để tự động build, test, deploy.
+
+## **Cách hoạt động cơ bản**
+
+1. Cài đặt Docker trên máy (Docker Desktop cho Windows/Mac, hoặc Docker trên Linux).
+2. Viết **Dockerfile** để định nghĩa cách xây dựng image.
+3. Sử dụng lệnh `docker build` để tạo image từ Dockerfile.
+4. Chạy container từ image bằng lệnh `docker run`.
+5. Quản lý container với các lệnh như `docker ps`, `docker stop`, `docker rm`.
+
+## **Ví dụ đơn giản**
+
+Tạo một container chạy Nginx web server:
+
+```bash
+docker run -d -p 8080:80 nginx
+```
+
+-   `-d`: Chạy container ở chế độ nền.
+-   `-p 8080:80`: Ánh xạ cổng 8080 của máy host với cổng 80 của container.
+-   `nginx`: Image chính thức từ Docker Hub.
+
+Truy cập `http://localhost:8080` để xem trang mặc định của Nginx.
+
+## **Kết luận**
+
+Docker giúp đơn giản hóa việc phát triển, triển khai và quản lý ứng dụng, đặc biệt trong môi trường hiện đại như DevOps và microservices. Nếu bạn cần hướng dẫn chi tiết hơn về cài đặt, sử dụng, hoặc ví dụ cụ thể, hãy cho tôi biết!
