@@ -1,0 +1,391 @@
+---
+title: Docker Compose là gì?
+description: Docker
+lastUpdated: 2025-08-10
+editUrl: https://github.com/OssiLV/OLV-NoteBook/blob/main/src/content/docs/tools/docker/what_is_a_docker_compose.mdx
+---
+
+**Docker Compose** là một công cụ do Docker cung cấp để định nghĩa và quản lý các ứng dụng đa container thông qua tệp cấu hình YAML (`docker-compose.yml`).
+
+Phiên bản hiện tại của Docker Compose sử dụng lệnh `docker compose` (không có dấu gạch nối), tích hợp trực tiếp vào Docker CLI, thay thế cho `docker-compose` cũ (dựa trên Python, đã bị deprecated).
+
+---
+
+## Docker Compose là gì?
+
+-   **Định nghĩa**: Docker Compose là một công cụ để định nghĩa, chạy, và quản lý nhiều container Docker cùng lúc thông qua tệp `docker-compose.yml`. Nó giúp tự động hóa việc thiết lập các service (container), network, và volume, đặc biệt hữu ích cho các ứng dụng phức tạp như hệ thống full-stack (web, database, cache).
+-   **Mục đích**:
+    -   Chạy nhiều container đồng thời với cấu hình nhất quán.
+    -   Quản lý mối quan hệ giữa các container (phụ thuộc, kết nối mạng).
+    -   Tái tạo môi trường phát triển, kiểm thử, hoặc staging.
+-   **Khi nào sử dụng**: Chủ yếu cho phát triển, kiểm thử, hoặc môi trường staging. Trong sản xuất, các công cụ như **Kubernetes** hoặc **Docker Swarm** thường được ưu tiên cho khả năng mở rộng và quản lý phức tạp.
+
+---
+
+## Phân biệt `docker compose` và `docker-compose`
+
+-   **`docker-compose` (cũ)**:
+    -   Công cụ độc lập, viết bằng Python, cài đặt qua `pip`.
+    -   Dùng cú pháp: `docker-compose up`.
+    -   Đã bị **deprecated** từ năm 2023, không còn được phát triển.
+-   **`docker compose` (mới, hiện tại)**:
+    -   Plugin tích hợp vào Docker CLI, viết bằng Go.
+    -   Dùng cú pháp: `docker compose up` (không có dấu gạch nối).
+    -   Tích hợp sẵn trong Docker Desktop (Windows/macOS) hoặc Docker Engine (Linux, từ phiên bản 1.29.0+).
+    -   Ưu điểm: Hiệu suất cao, không phụ thuộc Python, hỗ trợ các tính năng mới nhất.
+-   **Lưu ý chuyển đổi**:
+    -   Tệp `docker-compose.yml` tương thích với cả hai phiên bản.
+    -   Để sử dụng `docker compose`, đảm bảo Docker CLI được cập nhật:
+        ```bash
+        docker compose version
+        ```
+    -   Nếu dùng phiên bản cũ, gỡ `docker-compose`:
+        ```bash
+        pip uninstall docker-compose
+        ```
+
+---
+
+## Các khái niệm chính
+
+1. **Service**: Một container được định nghĩa trong `docker-compose.yml` (ví dụ: web server, database).
+2. **Network**: Mạng mặc định hoặc tùy chỉnh để các service giao tiếp (dùng tên service như hostname).
+3. **Volume**: Lưu trữ dữ liệu bền vững (persistent data) cho container, như dữ liệu database.
+4. **Tệp `docker-compose.yml`**: Tệp YAML mô tả cấu hình ứng dụng, bao gồm service, network, volume.
+
+---
+
+## Cấu trúc và các từ khóa trong `docker-compose.yml`
+
+Tệp `docker-compose.yml` sử dụng cú pháp YAML, với các từ khóa chính:
+
+1. **version**:
+    - Chỉ định phiên bản cú pháp Compose. Tính đến 8/2025, dùng `'3.8'` hoặc mới hơn (kiểm tra [Docker Docs](https://docs.docker.com/compose/compose-file/) để cập nhật).
+    - Ví dụ: `version: '3.8'`.
+2. **services**:
+    - Định nghĩa các container. Các thuộc tính phổ biến:
+        - `image`: Image từ Docker Hub (ví dụ: `nginx:latest`).
+        - `build`: Đường dẫn đến thư mục chứa Dockerfile.
+        - `ports`: Ánh xạ cổng host:container (ví dụ: `"8080:80"`).
+        - `environment`: Biến môi trường (hoặc dùng tệp `.env`).
+        - `volumes`: Gắn kết volume/thư mục.
+        - `depends_on`: Chỉ định service phụ thuộc.
+        - `networks`: Kết nối với mạng cụ thể.
+        - `healthcheck`: Kiểm tra trạng thái service.
+3. **networks**:
+    - Định nghĩa mạng tùy chỉnh (mặc định: bridge network).
+    - Ví dụ: `networks: { my-network: { driver: bridge } }`.
+4. **volumes**:
+    - Định nghĩa volume để lưu trữ dữ liệu.
+    - Ví dụ: `volumes: { db-data: {} }`.
+
+**Ví dụ `docker-compose.yml`**:
+
+```yaml
+version: "3.8"
+services:
+    web:
+        image: nginx:latest
+        ports:
+            - "8080:80"
+        depends_on:
+            - app
+        networks:
+            - my-network
+    app:
+        build: .
+        environment:
+            - DATABASE_URL=postgres://user:password@db:5432/myapp
+        depends_on:
+            db:
+                condition: service_healthy
+        networks:
+            - my-network
+    db:
+        image: postgres:15
+        environment:
+            - POSTGRES_USER=user
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_DB=myapp
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U user"]
+            interval: 10s
+            retries: 5
+        networks:
+            - my-network
+volumes:
+    db-data:
+networks:
+    my-network:
+        driver: bridge
+```
+
+---
+
+## Các lệnh `docker compose` cơ bản
+
+-   **Khởi động ứng dụng**:
+    ```bash
+    docker compose up -d
+    ```
+    -   `-d`: Chạy ở chế độ nền.
+    -   `--build`: Buộc build lại image.
+-   **Dừng và xóa**:
+    ```bash
+    docker compose down
+    ```
+    -   `--volumes`: Xóa cả volume.
+-   **Xem trạng thái**:
+    ```bash
+    docker compose ps
+    ```
+-   **Xem log**:
+    ```bash
+    docker compose logs [service-name]
+    ```
+-   **Chạy lệnh trong service**:
+    ```bash
+    docker compose exec [service-name] bash
+    ```
+-   **Build image**:
+    ```bash
+    docker compose build
+    ```
+-   **Kiểm tra cấu hình**:
+    ```bash
+    docker compose config
+    ```
+
+---
+
+## Cách hoạt động
+
+1. **Viết `docker-compose.yml`**: Mô tả service, network, volume.
+2. **Chạy `docker compose up`**:
+    - Tạo network (mặc định hoặc tùy chỉnh).
+    - Tải hoặc build image.
+    - Khởi động container và kết nối chúng.
+3. **Quản lý**: Dùng `docker compose` để dừng, xem log, hoặc mở rộng.
+
+---
+
+## Các tính năng mới (tính đến 8/2025)
+
+-   **Hỗ trợ Compose Specification**: Phiên bản mới nhất của tệp Compose (3.8+) hỗ trợ các tính năng như:
+    -   `profiles`: Cho phép chạy service theo ngữ cảnh (ví dụ: chỉ chạy `monitoring` trong kiểm thử).
+        ```yaml
+        services:
+            monitoring:
+                image: prom/prometheus
+                profiles:
+                    - test
+        ```
+    -   `depends_on` với `condition`: Đảm bảo service sẵn sàng (ví dụ: `service_healthy`).
+-   **Tích hợp GPU**: Hỗ trợ chạy container sử dụng GPU (phù hợp với AI/ML).
+    ```yaml
+    services:
+        ml-app:
+            image: tensorflow/tensorflow:latest-gpu
+            deploy:
+                resources:
+                    reservations:
+                        devices:
+                            - driver: nvidia
+                              count: 1
+                              capabilities: [gpu]
+    ```
+-   **Tích hợp với Docker Desktop**: Tính năng mới trong Docker Desktop (phiên bản 4.36+) hỗ trợ giao diện đồ họa để quản lý Compose.
+-   **Cải thiện hiệu suất**: `docker compose` nhanh hơn nhờ tích hợp Go, đặc biệt khi xử lý ứng dụng lớn.
+
+---
+
+## Ví dụ thực tế: Ứng dụng full-stack
+
+**Cấu trúc dự án**:
+
+```
+my-app/
+├── frontend/
+│   ├── Dockerfile
+│   └── (mã nguồn React)
+├── backend/
+│   ├── Dockerfile
+│   └── (mã nguồn Node.js)
+└── docker-compose.yml
+```
+
+**Dockerfile cho backend**:
+
+```dockerfile
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+CMD ["node", "server.js"]
+```
+
+**Dockerfile cho frontend**:
+
+```dockerfile
+FROM node:20-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+CMD ["npm", "start"]
+```
+
+**`docker-compose.yml`**:
+
+```yaml
+version: "3.8"
+services:
+    frontend:
+        build: ./frontend
+        ports:
+            - "3000:3000"
+        depends_on:
+            - backend
+        networks:
+            - app-network
+    backend:
+        build: ./backend
+        ports:
+            - "5000:5000"
+        environment:
+            - DATABASE_URL=postgres://user:password@db:5432/myapp
+        depends_on:
+            db:
+                condition: service_healthy
+        networks:
+            - app-network
+    db:
+        image: postgres:15
+        environment:
+            - POSTGRES_USER=user
+            - POSTGRES_PASSWORD=password
+            - POSTGRES_DB=myapp
+        volumes:
+            - db-data:/var/lib/postgresql/data
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U user"]
+            interval: 10s
+            retries: 5
+        networks:
+            - app-network
+volumes:
+    db-data:
+networks:
+    app-network:
+        driver: bridge
+```
+
+**Chạy**:
+
+```bash
+docker compose up -d
+```
+
+Truy cập `http://localhost:3000` (frontend) và `http://localhost:5000` (backend).
+
+---
+
+## Các phương pháp hay
+
+1. **Sử dụng `.env`**:
+    ```env
+    DB_PASSWORD=secret
+    APP_PORT=8080
+    ```
+    Trong `docker-compose.yml`:
+    ```yaml
+    environment:
+        - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+        - "${APP_PORT}:80"
+    ```
+2. **Tối ưu hóa**:
+    - Dùng image nhẹ (`alpine`).
+    - Tạo `.dockerignore`:
+        ```text
+        node_modules
+        .git
+        *.log
+        ```
+3. **Tách biệt môi trường**:
+    - Dùng `docker-compose.dev.yml` và `docker-compose.prod.yml`:
+        ```bash
+        docker compose -f docker-compose.dev.yml up
+        ```
+4. **Healthcheck**:
+    - Thêm `healthcheck` để đảm bảo service sẵn sàng.
+5. **Scale service**:
+    ```bash
+    docker compose up --scale backend=3
+    ```
+
+---
+
+## Các vấn đề thường gặp và cách khắc phục
+
+1. **Container không giao tiếp**:
+    - Kiểm tra tên service trong mã nguồn (ví dụ: dùng `db` thay vì `localhost`).
+    - Đảm bảo trong cùng `networks`.
+2. **Cổng xung đột**:
+    - Kiểm tra cổng:
+        ```bash
+        netstat -tuln | grep 8080
+        ```
+    - Đổi cổng trong `ports`.
+3. **Service không sẵn sàng**:
+    - Dùng `healthcheck` và `depends_on` với `condition: service_healthy`.
+4. **Lỗi build**:
+    - Dùng `--no-cache`:
+        ```bash
+        docker compose build --no-cache
+        ```
+
+---
+
+## Docker Compose trong sản xuất
+
+-   **Hạn chế**: Không phù hợp cho hệ thống lớn, thiếu tính năng mở rộng và quản lý phức tạp.
+-   **Giải pháp**: Sử dụng **Kubernetes** hoặc **Docker Swarm** cho sản xuất.
+-   **Ứng dụng**: Dùng Docker Compose cho:
+    -   Môi trường staging/kiểm thử.
+    -   Tích hợp CI/CD (GitHub Actions, Jenkins).
+
+**Ví dụ CI/CD với GitHub Actions**:
+
+```yaml
+name: Deploy with Docker Compose
+on:
+    push:
+        branches: [main]
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: Build and Run
+              run: |
+                  docker compose up -d --build
+```
+
+---
+
+## Tài nguyên học thêm
+
+-   **Tài liệu chính thức**: [Docker Compose Docs](https://docs.docker.com/compose/) (cập nhật các tính năng mới như GPU, profiles).
+-   **Khóa học**:
+    -   TechWorld with Nana (YouTube): Hướng dẫn Docker Compose.
+    -   KodeKloud: “Docker for Beginners”.
+-   **Thực hành**:
+    -   [Play with Docker](https://labs.play-with-docker.com).
+    -   Xây dựng ứng dụng full-stack với frontend, backend, database.
+
+---

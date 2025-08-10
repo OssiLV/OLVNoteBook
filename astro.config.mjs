@@ -147,6 +147,13 @@ export default defineConfig({
                                     },
                                     slug: "tools/docker/what_is_a_dockerfile",
                                 },
+                                {
+                                    label: "Docker Compose là gì?",
+                                    translations: {
+                                        en: "What is Docker Compose?",
+                                    },
+                                    slug: "tools/docker/what_is_a_docker_compose",
+                                },
                             ],
                         },
                         {
