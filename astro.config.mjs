@@ -132,10 +132,15 @@ export default defineConfig({
                     items: [
                         {
                             label: "Nginx",
-                            translations: {
-                                en: "Nginx",
-                            },
-                            slug: "tools/nginx",
+                            items: [
+                                {
+                                    label: "Nginx là gì ?",
+                                    translations: {
+                                        en: "What is Nginx?",
+                                    },
+                                    slug: "tools/nginx/introduction",
+                                },
+                            ],
                         },
                     ],
                 },
