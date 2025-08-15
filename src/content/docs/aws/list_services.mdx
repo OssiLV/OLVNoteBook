@@ -1,0 +1,76 @@
+---
+title: Các dịch vụ AWS thường dùng
+description: AWS
+lastUpdated: 2025-08-15
+editUrl: https://github.com/OssiLV/OLV-NoteBook/blob/main/src/content/docs/aws/list_services.mdx
+---
+
+AWS cung cấp một bộ dịch vụ mà các kỹ sư DevOps sử dụng hàng ngày để tự động hóa, quản lý và mở rộng quy trình phát triển và triển khai phần mềm. Dưới đây là danh sách đầy đủ các dịch vụ AWS thường được sử dụng trong quy trình DevOps, được phân loại theo chức năng chính, dựa trên mức độ liên quan đến các tác vụ hàng ngày như tích hợp liên tục/triển khai liên tục (CI/CD), quản lý hạ tầng, giám sát, và hơn thế nữa.
+
+## Dịch vụ Tính toán
+- **Amazon EC2 (Elastic Compute Cloud)**: Cung cấp các máy chủ ảo có khả năng mở rộng để chạy ứng dụng. DevOps sử dụng EC2 để lưu trữ ứng dụng, chạy các tác nhân CI/CD hoặc thiết lập môi trường thử nghiệm.
+- **AWS Lambda**: Dịch vụ tính toán không máy chủ để chạy mã mà không cần quản lý máy chủ. Được sử dụng cho tự động hóa dựa trên sự kiện, vi dịch vụ và các tác vụ nhẹ như xử lý nhật ký hoặc mở rộng tự động.
+- **AWS Elastic Beanstalk**: Đơn giản hóa việc triển khai và quản lý ứng dụng bằng cách xử lý việc cung cấp hạ tầng. Hữu ích để triển khai nhanh các ứng dụng web với cấu hình tối thiểu.
+- **AWS Fargate**: Công cụ tính toán không máy chủ cho container, cho phép các nhóm DevOps chạy container mà không cần quản lý các phiên bản EC2 bên dưới. Lý tưởng cho vi dịch vụ và khối lượng công việc container hóa.
+
+## Dịch vụ Lưu trữ
+- **Amazon S3 (Simple Storage Service)**: Lưu trữ đối tượng có khả năng mở rộng để lưu trữ các sản phẩm xây dựng, nhật ký, bản sao lưu và nội dung tĩnh. Thường được sử dụng trong các pipeline CI/CD và để lưu trữ dữ liệu.
+- **Amazon EBS (Elastic Block Store)**: Cung cấp bộ nhớ khối cho các phiên bản EC2, được sử dụng cho lưu trữ liên tục trong các ứng dụng trạng thái.
+- **Amazon EFS (Elastic File System)**: Hệ thống tệp có khả năng mở rộng để lưu trữ chia sẻ giữa các phiên bản EC2 hoặc container, thường được sử dụng trong DevOps cho cấu hình hoặc lưu trữ dữ liệu chia sẻ.
+- **Amazon FSx**: Hệ thống tệp được quản lý (ví dụ: FSx cho Windows File Server) cho các khối lượng công việc cụ thể, được sử dụng trong DevOps cho các nhu cầu lưu trữ đặc biệt.
+
+## Dịch vụ Cơ sở dữ liệu
+- **Amazon RDS (Relational Database Service)**: Dịch vụ cơ sở dữ liệu quan hệ được quản lý hỗ trợ MySQL, PostgreSQL, Oracle, v.v. Được sử dụng để lưu trữ cơ sở dữ liệu ứng dụng với sao lưu và mở rộng tự động.
+- **Amazon DynamoDB**: Cơ sở dữ liệu NoSQL cho các ứng dụng hiệu suất cao, có khả năng mở rộng. Thường được sử dụng trong kiến trúc vi dịch vụ và serverless.
+- **Amazon Redshift**: Dịch vụ kho dữ liệu cho phân tích, được sử dụng trong DevOps để xử lý dữ liệu quy mô lớn từ nhật ký hoặc số liệu ứng dụng.
+
+## Dịch vụ Mạng
+- **Amazon VPC (Virtual Private Cloud)**: Cung cấp môi trường mạng cách ly để triển khai tài nguyên an toàn. Cần thiết để cấu hình các pipeline CI/CD và lưu trữ ứng dụng an toàn.
+- **Amazon Route 53**: Dịch vụ DNS có khả năng mở rộng để định tuyến lưu lượng đến các ứng dụng, thường được sử dụng để quản lý tên miền và cân bằng tải.
+- **AWS API Gateway**: Quản lý và mở rộng API, thường được sử dụng trong kiến trúc vi dịch vụ và serverless để cung cấp các điểm cuối ứng dụng.
+- **AWS Direct Connect**: Cung cấp kết nối mạng chuyên dụng đến AWS, được sử dụng cho các quy trình DevOps có lưu lượng cao như truyền dữ liệu quy mô lớn.
+- **AWS Global Accelerator**: Cải thiện hiệu suất và tính sẵn sàng của ứng dụng bằng cách định tuyến lưu lượng qua mạng toàn cầu của AWS.
+- **Elastic Load Balancing (ELB)**: Phân phối lưu lượng qua các phiên bản EC2 hoặc container, quan trọng cho các ứng dụng có tính sẵn sàng cao trong pipeline DevOps.
+
+## CI/CD và Công cụ Phát triển
+- **AWS CodePipeline**: Dịch vụ tích hợp và triển khai liên tục để tự động hóa các pipeline phát hành. Điều phối mã từ nguồn đến triển khai.
+- **AWS CodeBuild**: Dịch vụ xây dựng được quản lý để biên dịch mã, chạy thử nghiệm và tạo các sản phẩm triển khai. Tích hợp với CodePipeline cho quy trình CI.
+- **AWS CodeDeploy**: Tự động hóa triển khai ứng dụng đến EC2, Lambda hoặc máy chủ tại chỗ, hỗ trợ triển khai blue/green và canary.
+- **AWS CodeStar**: Đơn giản hóa việc thiết lập dự án bằng cách tích hợp CodePipeline, CodeBuild và các công cụ khác với kho Git để phát triển liền mạch.
+- **AWS CodeCommit** (sử dụng hạn chế): Dịch vụ kiểm soát nguồn cho các kho Git riêng. Lưu ý: AWS đã ngừng chấp nhận khách hàng mới cho CodeCommit từ ngày 25/07/2024, nên nhiều nhóm sử dụng GitHub hoặc Bitbucket thay thế.
+
+## ịch vụ Container và Điều phối
+- **Amazon ECS (Elastic Container Service)**: Dịch vụ điều phối container được quản lý để chạy các container Docker, được sử dụng cho vi dịch vụ và ứng dụng có khả năng mở rộng.
+- **Amazon EKS (Elastic Kubernetes Service)**: Dịch vụ Kubernetes được quản lý để chạy các khối lượng công việc container hóa, phổ biến cho các triển khai vi dịch vụ phức tạp.
+- **AWS App Runner**: Dịch vụ được quản lý hoàn toàn để triển khai các ứng dụng web container hóa, đơn giản hóa DevOps cho các ứng dụng quy mô nhỏ.
+
+## Hạ tầng dưới dạng Mã (IaC)
+- **AWS CloudFormation**: Cung cấp và quản lý hạ tầng bằng các mẫu, cho phép thiết lập môi trường lặp lại và tự động.
+- **AWS OpsWorks**: Dịch vụ quản lý cấu hình sử dụng Chef hoặc Puppet để tự động hóa cấu hình và triển khai máy chủ.
+- **AWS Systems Manager**: Tự động hóa các tác vụ vận hành như vá lỗi, cấu hình và quản lý danh mục cho EC2 và hệ thống tại chỗ.
+- **AWS Config**: Theo dõi và thực thi cấu hình tài nguyên để tuân thủ và phát hiện sự trôi lệch.
+
+## Giám sát và Ghi nhật ký
+- **Amazon CloudWatch**: Giám sát tài nguyên và ứng dụng AWS, thu thập số liệu, nhật ký và sự kiện để cung cấp thông tin chi tiết và cảnh báo theo thời gian thực.
+- **AWS X-Ray**: Phân tích và gỡ lỗi các ứng dụng phân tán, đặc biệt là vi dịch vụ, bằng cách theo dõi các yêu cầu và xác định các điểm nghẽn hiệu suất.
+- **AWS CloudTrail**: Ghi lại các cuộc gọi API và hoạt động tài khoản để kiểm tra và tuân thủ, quan trọng đối với các thực hành DevSecOps.
+
+## Bảo mật và Danh tính
+- **AWS IAM (Identity and Access Management)**: Quản lý quyền truy cập và chính sách của người dùng, cần thiết để bảo mật các quy trình DevOps.
+- **AWS Secrets Manager**: Lưu trữ và luân chuyển dữ liệu nhạy cảm như khóa API và thông tin xác thực cơ sở dữ liệu, được sử dụng cho cấu hình pipeline an toàn.
+- **AWS KMS (Key Management Service)**: Quản lý các khóa mã hóa để bảo mật dữ liệu trong các quy trình DevOps.
+
+## Các Dịch vụ Hỗ trợ Khác
+- **Amazon SNS (Simple Notification Service)**: Gửi thông báo cho các sự kiện pipeline hoặc cảnh báo, thường được tích hợp với quy trình CI/CD.
+- **Amazon SQS (Simple Queue Service)**: Quản lý hàng đợi tin nhắn để tách rời vi dịch vụ hoặc các giai đoạn pipeline.
+- **AWS Step Functions**: Điều phối quy trình công việc cho các ứng dụng serverless, hữu ích để tự động hóa các tác vụ DevOps phức tạp.
+- **Amazon CloudFront**: Mạng phân phối nội dung (CDN) để phân phối các tài sản tĩnh, thường được sử dụng trong triển khai ứng dụng web.
+- **AWS Trusted Advisor**: Cung cấp khuyến nghị để tối ưu hóa tài nguyên AWS, giúp các nhóm DevOps cải thiện hiệu suất và giảm chi phí.
+
+## Ghi chú:
+- **Bối cảnh sử dụng hàng ngày**: Các dịch vụ được liệt kê ở trên được sử dụng rộng rãi trong DevOps để tự động hóa xây dựng, triển khai, giám sát và quản lý hạ tầng. Các dịch vụ cụ thể được sử dụng hàng ngày phụ thuộc vào quy trình làm việc (ví dụ: serverless so với container hóa, đơn khối so với vi dịch vụ).
+- **Tích hợp bên thứ ba**: Nhiều nhóm DevOps bổ sung các dịch vụ AWS bằng các công cụ như Jenkins, Terraform hoặc GitHub Actions để tăng tính linh hoạt, như được ghi nhận trong các bài đăng trên X và các nguồn web.
+- **Bậc miễn phí và khả năng mở rộng**: Nhiều dịch vụ này có sẵn trong Bậc miễn phí AWS, giúp dễ dàng tiếp cận để thử nghiệm và các dự án quy mô nhỏ.
+- **Công cụ đang phát triển**: Các dịch vụ AWS như CodeCommit đang bị loại bỏ đối với người dùng mới, và các nhóm thường tích hợp các công cụ bên ngoài (ví dụ: GitHub, Bitbucket) để kiểm soát nguồn.
+
+Danh sách này bao gồm các dịch vụ AWS cốt lõi mà các kỹ sư DevOps sử dụng hàng ngày để xây dựng, triển khai, giám sát và quản lý ứng dụng một cách hiệu quả. Để biết chi tiết về giá, hãy kiểm tra các trang định giá AWS, vì chi phí thay đổi tùy theo mức sử dụng.

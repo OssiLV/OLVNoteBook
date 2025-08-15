@@ -184,7 +184,15 @@ export default defineConfig({
                 },
                 {
                     label: "Cloud - AWS",
-                    items: [],
+                    items: [
+                        {
+                            label: "Các dịch vụ AWS thường dùng",
+                            translations: {
+                                en: "Commonly used AWS services",
+                            },
+                            slug: "aws/list_services",
+                        },
+                    ],
                 },
                 {
                     label: "Monitoring & Logging",
