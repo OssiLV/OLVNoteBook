@@ -196,6 +196,7 @@ export default defineConfig({
                 },
             ],
             customCss: [
+                "./src/styles/theme.css",
                 "./src/styles/font.css",
                 // Fontsource files for to regular and semi-bold font weights.
                 "@fontsource/ibm-plex-sans/400.css",

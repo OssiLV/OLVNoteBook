@@ -1,0 +1,30 @@
+/* Pastel dark mode colors for reading documents. */
+:root {
+    --sl-color-accent-low: #4a6d7c; /* Soft muted blue */
+    --sl-color-accent: #a0d2eb; /* Pastel blue */
+    --sl-color-accent-high: #d0e6f2; /* Light pastel blue */
+    --sl-color-white: #f0f8ff; /* Soft off-white */
+    --sl-color-gray-1: #d9e4eb;
+    --sl-color-gray-2: #b8c9d1;
+    --sl-color-gray-3: #8fa3ac;
+    --sl-color-gray-4: #5e727b;
+    --sl-color-gray-5: #3c4e56;
+    --sl-color-gray-6: #2a3a41;
+    --sl-color-black: #1e2a30; /* Soft dark gray */
+}
+
+/* Pastel light mode colors for reading documents*/
+:root[data-theme='light'] {
+    --sl-color-accent-low: #b3ebf2; /* Light pastel blue */
+    --sl-color-accent: #84a8c4; /* Glacier blue */
+    --sl-color-accent-high: #5f7a9d; /* Muted dark blue */
+    --sl-color-white: #2e3b4e; /* Soft dark blue-gray for text */
+    --sl-color-gray-1: #2e3b4e;
+    --sl-color-gray-2: #4a5568;
+    --sl-color-gray-3: #667387;
+    --sl-color-gray-4: #85909f;
+    --sl-color-gray-5: #a7b1c2;
+    --sl-color-gray-6: #cbd5e0;
+    --sl-color-gray-7: #edf2f7;
+    --sl-color-black: #fafafa; /* Very light gray background */
+}
