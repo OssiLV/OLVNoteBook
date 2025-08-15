@@ -1,0 +1,525 @@
+---
+title: Jenkinsfile là gì?
+description: Jenkins
+lastUpdated: 2025-08-15
+editUrl: https://github.com/OssiLV/OLV-NoteBook/blob/main/src/content/docs/tools/docker/what_is_a_jenkinsfile.mdx
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+**Jenkinsfile** là một tệp văn bản định nghĩa một **Jenkins Pipeline**, giúp tự động hóa quy trình **tích hợp liên tục và triển khai liên tục** (CI/CD) cho các dự án phần mềm.
+
+Nó được viết bằng cú pháp dựa trên Groovy và được lưu trong **kho lưu trữ mã nguồn** của dự án (ví dụ: Git).
+
+Điều này thể hiện cách tiếp cận **"Pipeline as Code"** – nơi quá trình build, test và triển khai được quản lý và phiên bản hóa cùng với mã ứng dụng.
+
+Jenkins hỗ trợ hai loại cú pháp cho Jenkinsfile:
+- **Declarative**: Có cấu trúc rõ ràng, mang tính định hướng, dễ cho người mới.
+- **Scripted**: Linh hoạt hơn, dựa trên Groovy, phù hợp với logic tùy chỉnh nâng cao.
+
+## Lợi ích chính
+
+- **Kiểm soát phiên bản và cộng tác**: Jenkinsfile nằm trong hệ thống quản lý mã nguồn, cho phép review code, tạo nhánh, và cộng tác giữa các thành viên. Đây là “nguồn sự thật duy nhất” (single source of truth) cho pipeline.
+- **Theo dõi thay đổi (Audit Trail)**: Mọi thay đổi với pipeline đều được lưu trong lịch sử phiên bản, dễ dàng kiểm tra ai đã thay đổi gì và khi nào.
+- **Tự động hóa cho các nhánh và Pull Request**: Tự động tạo build cho tất cả nhánh và pull request.
+- **Độ bền và khả năng phục hồi**: Pipeline có thể hoạt động ngay cả khi Jenkins khởi động lại, tạm dừng để chờ xác nhận từ con người, và xử lý các quy trình phức tạp như chạy song song hoặc vòng lặp.
+- **Khả năng mở rộng**: Tích hợp với các plugin và mở rộng thông qua thư viện chia sẻ (shared libraries).
+
+---
+
+## Bắt đầu với Jenkinsfile
+
+**Điều kiện tiên quyết**
+
+- Cài đặt Jenkins phiên bản 2.x hoặc mới hơn.
+- Đảm bảo plugin Pipeline đã được cài (plugin này có sẵn trong gói plugin được khuyến nghị khi cài Jenkins).
+
+**Tạo Jenkinsfile đầu tiên**
+
+1. **Trong giao diện Jenkins (Classic hoặc Blue Ocean)**:
+
+- Tạo một dự án Pipeline mới.
+- Trong mục Pipeline, chọn **"Pipeline script"** và nhập code trực tiếp (phù hợp để thử nghiệm).
+- Hoặc dùng **Blue Ocean** để tạo và commit Jenkinsfile vào kho mã nguồn (lưu ý: Blue Ocean đang ở chế độ bảo trì và sẽ không có bản cập nhật lớn).
+
+2. **Định nghĩa Pipeline trong Source Control Management (SCM)**:
+
+- Viết Jenkinsfile bằng trình soạn thảo (nên bật highlight cú pháp Groovy) và commit vào thư mục gốc của repo (tên mặc định: `Jenkinsfile`).
+- Trong Jenkins, tạo một dự án Pipeline và chọn **"Pipeline script from SCM"**.
+-Cấu hình SCM (ví dụ: Git), URL repo, thông tin đăng nhập, và đường dẫn script (ví dụ: `Jenkinsfile`).
+- Jenkins sẽ định kỳ kiểm tra repo hoặc sử dụng webhook để tự động chạy build khi có thay đổi.
+
+**Ví dụ cơ bản (Declarative Syntax)**:
+
+```groovy
+pipeline {
+    agent any  // Chạy trên bất kỳ agent nào có sẵn
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Đang build dự án...'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Đang chạy kiểm thử...'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Đang triển khai lên production...'
+            }
+        }
+    }
+}
+```
+
+Lưu file này với tên **Jenkinsfile** ở thư mục gốc repo và commit. Jenkins sẽ tự động phát hiện và chạy nó.
+
+Có thể sử dụng **Snippet Generator** (`${YOUR_JENKINS_URL}/pipeline-syntax`) để tạo các đoạn code step phù hợp với plugin đã cài đặt.
+
+---
+
+## Pipeline dạng Declarative: Từ cơ bản đến nâng cao
+
+Cú pháp Declarative được khuyến nghị cho hầu hết người dùng nhờ tính dễ đọc và cấu trúc có sẵn. Nó bắt đầu bằng khối `pipeline { }` và tuân theo một định dạng được định nghĩa trước.
+
+### Cấu trúc cơ bản
+
+- **pipeline**: Khối gốc.
+- **agent**: Xác định nơi pipeline sẽ chạy (ví dụ: `any` cho bất kỳ node nào, `none` để giao cho từng stage quyết định, hoặc chỉ định nhãn cụ thể như image Docker).
+- **stages**: Chứa một hoặc nhiều khối `stage` cho các giai đoạn logic (ví dụ: Build, Test).
+- **steps**: Bên trong mỗi stage, định nghĩa các hành động (ví dụ: `echo`, `sh` để chạy lệnh shell).
+
+**Ví dụ:**
+
+```groovy
+pipeline {
+    agent any
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+}
+```
+
+### **Tính năng trung cấp**
+
+#### 1. environment
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Thiết lập biến môi trường toàn cục hoặc theo từng stage, hỗ trợ ràng buộc credentials.
+</Aside>
+
+**Ví dụ:**
+
+```groovy
+environment {
+    CC = 'clang'  // Gán biến
+    AWS_CREDS = credentials('aws-secret-key-id')  // Gán giá trị bí mật
+}
+```
+
+- Truy cập biến qua `$CC` trong bước shell hoặc `${env.CC}` trong Groovy.
+
+#### 2. tools
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Tự động cài đặt công cụ như Maven hoặc JDK và thêm vào PATH.
+</Aside>
+
+
+**Ví dụ:**
+
+```groovy
+tools {
+    maven 'Maven 3.9'
+}
+steps {
+    sh 'mvn --version'
+}
+```
+
+#### 3. parameters
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Yêu cầu người dùng nhập khi kích hoạt build (chuỗi, boolean, v.v.).
+</Aside>
+
+
+**Ví dụ:**
+
+```groovy
+parameters {
+    string(name: 'PERSON', defaultValue: 'Jenkins', description: 'Tên người chào')
+}
+steps {
+    echo "Hello ${params.PERSON}"
+}
+```
+
+#### 4. triggers
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Tự động hóa build (ví dụ: cron, pollSCM).
+</Aside>
+
+
+**Ví dụ:**
+
+```groovy
+triggers {
+    cron('H */4 * * 1-5')  // Chạy mỗi 4 giờ vào ngày trong tuần
+}
+```
+
+#### 5. post
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Chạy step sau khi pipeline hoặc stage kết thúc, tùy điều kiện (`always`, `success`, `failure`).
+</Aside>
+
+**Ví dụ:**
+
+```groovy
+post {
+    always {
+        echo 'Dọn dẹp hoàn tất!'
+    }
+    failure {
+        mail to: 'team@example.com', subject: 'Build Failed'
+    }
+}
+```
+
+#### 6. when
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Điều kiện để chạy stage.
+</Aside>
+
+**Ví dụ:**
+
+```groovy
+stage('Deploy') {
+    when {
+        branch 'main'  // Chỉ chạy ở nhánh main
+    }
+    steps {
+        echo 'Đang triển khai...'
+    }
+}
+```
+
+### Tính năng nâng cao
+
+#### 1. input
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Tạm dừng để chờ người dùng phê duyệt.
+</Aside>
+
+```groovy
+input {
+    message "Phê duyệt triển khai?"
+    ok "Đồng ý"
+}
+```
+
+#### 2. parallel
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Chạy stage hoặc step song song để tăng tốc độ.
+</Aside>
+
+```groovy
+stage('Tests') {
+    parallel {
+        stage('Unit') { steps { echo 'Unit tests' } }
+        stage('Integration') { steps { echo 'Integration tests' } }
+    }
+}
+```
+
+#### 3. matrix
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Chạy stage trên nhiều tổ hợp trục (ví dụ: OS và trình duyệt).
+</Aside>
+
+```groovy
+stage('Test') {
+    matrix {
+        axes {
+            axis {
+                name 'PLATFORM'
+                values 'linux', 'windows'
+            }
+        }
+        stages {
+            stage('Build') {
+                steps {
+                    echo "Building on $PLATFORM"
+                }
+            }
+        }
+    }
+}
+```
+
+#### 4. libraries
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Tải thư viện chia sẻ để tái sử dụng code.
+</Aside>
+
+```groovy
+libraries {
+    lib('my-shared-library@master')
+}
+```
+
+#### 5. options
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Cấu hình hành vi của pipeline (timeout, retry, v.v.).
+</Aside>
+
+```groovy
+options {
+    timeout(time: 1, unit: 'HOURS')
+}
+```
+
+#### 6. Multi-Agent Pipelines
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Sử dụng nhiều agent cho các stage khác nhau, truyền file bằng `stash` / `unstash`.
+</Aside>
+
+```groovy
+pipeline {
+    agent none
+    stages {
+        stage('Build') {
+            agent { label 'builder' }
+            steps {
+                sh 'make'
+                stash 'build-artifacts'
+            }
+        }
+        stage('Test') {
+            agent { label 'tester' }
+            steps {
+                unstash 'build-artifacts'
+                sh 'make test'
+            }
+        }
+    }
+}
+```
+
+---
+
+## Pipeline dạng Scripted: Cơ bản
+
+Cú pháp Scripted linh hoạt hơn và sử dụng đầy đủ các cấu trúc lập trình Groovy (ví dụ: vòng lặp, `try-catch`). Nó ít mang tính khuôn mẫu hơn, nhưng mạnh mẽ cho các logic phức tạp.
+
+### Cấu trúc cơ bản
+
+- Bắt đầu với `node { }` để cấp phát một executor.
+- Có thể dùng `stage` (tùy chọn) để hiển thị trực quan.
+- Các bước (`steps`) là mã Groovy hoặc lời gọi hàm từ plugin.
+
+**Ví dụ:**
+
+```groovy
+node {
+    stage('Build') {
+        checkout scm  // Lấy mã nguồn từ SCM
+        sh 'make'
+    }
+    stage('Test') {
+        try {
+            sh 'make check'
+        } catch (err) {
+            echo "Kiểm thử thất bại: ${err}"
+            throw err
+        } finally {
+            junit '**/target/*.xml'  // Lưu kết quả kiểm thử
+        }
+    }
+}
+```
+
+**Nâng cao**: Có thể dùng Groovy để viết vòng lặp, hàm, hoặc xử lý lỗi phức tạp.
+
+---
+
+### Declarative vs Scripted Pipeline: Khác biệt chính
+
+| Khía cạnh              | Declarative Pipeline                                                                                  | Scripted Pipeline                                                                                                   |
+|------------------------|-------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| **Phong cách cú pháp** | Có cấu trúc, ràng buộc sẵn (ví dụ: `pipeline`, `stages` cố định). Dễ đọc và viết cho quy trình chuẩn. | Mệnh lệnh, linh hoạt hoàn toàn với Groovy (vòng lặp, điều kiện đặt ở bất kỳ đâu). Dài dòng hơn cho tác vụ đơn giản. |
+| **Khối gốc**           | `pipeline { }` (bắt buộc).                                                                            | `node { }` hoặc không có (linh hoạt).                                                                               |
+| **Xử lý lỗi**          | Dùng sẵn `post` và `when` cho điều kiện; hạn chế logic tùy chỉnh.                                     | Dùng đầy đủ `try/catch/finally` để xử lý nâng cao.                                                                  |
+| **Tính linh hoạt**     | Giới hạn ở các directive định nghĩa sẵn; dễ bảo trì.                                                  | Rất linh hoạt, có thể chèn mã Groovy tùy ý nhưng khó debug.                                                         |
+| **Trường hợp dùng**    | CI/CD tiêu chuẩn; phù hợp người mới.                                                                  | Quy trình phức tạp, yêu cầu logic lập trình tùy biến.                                                               |
+| **Ví dụ**              | Xem ví dụ cơ bản của Declarative ở trên.                                                              | Xem ví dụ cơ bản của Scripted ở trên.                                                                               |
+| **Ưu điểm**            | Dễ đọc, tự động kiểm tra cấu trúc, có tính năng sẵn như `parameters`.                                 | Mạnh mẽ cho các trường hợp đặc biệt, không bị giới hạn cú pháp.                                                     |
+| **Nhược điểm**         | Ít linh hoạt cho logic không chuẩn.                                                                   | Dễ mắc lỗi, khó bảo trì.                                                                                            |
+
+**Kết luận**: Nên ưu tiên Declarative trừ khi cần khai thác toàn bộ sức mạnh của Groovy. Cả hai đều dùng chung một hệ thống pipeline bên dưới.
+
+### Chủ đề nâng cao
+
+#### 1. Quản lý Credentials
+
+Sử dụng `credentials()` để gắn kết thông tin bí mật một cách an toàn. Tránh nội suy (interpolation) trong dấu nháy kép để không bị lộ thông tin.
+
+**Ví dụ (Declarative):**
+
+```groovy
+environment {
+    MY_SECRET = credentials('secret-id')
+}
+steps {
+    sh 'echo $MY_SECRET > file.txt'  // Dùng dấu nháy đơn để an toàn
+}
+```
+
+#### 2. Biến môi trường (Environment Variables)
+
+- Truy cập các biến tích hợp sẵn như `env.BUILD_ID`.
+- Có thể gán động thông qua `sh` với `returnStdout`.
+
+#### 3. Thư viện chia sẻ (Shared Libraries)
+
+Mở rộng pipeline với code Groovy tái sử dụng từ repo riêng. Có thể định nghĩa biến toàn cục, step hoặc hàm.
+Tải qua:
+
+```groovy
+@Library('my-lib@master') _
+```
+
+hoặc directive:
+
+```groovy
+libraries {
+    lib('my-lib@master')
+}
+```
+
+#### 4. Xử lý lỗi
+
+- **Declarative**: Dùng `post { failure { ... } }`.
+- **Scripted**: Dùng `try/catch`.
+
+#### 5. Nội suy chuỗi (String Interpolation)
+
+Dùng dấu nháy đơn cho lệnh shell chứa thông tin bí mật để tránh Groovy thực thi nội suy biến.
+
+---
+
+## Các thực tiễn tốt nhất và lỗi thường gặp cần tránh
+
+Dưới đây là danh sách tổng hợp các **best practice**, kèm giải thích và ví dụ minh họa:
+
+### Thực tiễn chung
+
+#### 1. Dùng Groovy như “chất keo”
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Giữ code Groovy ở mức tối thiểu, chuyển phần xử lý nặng sang các step như `sh` để giảm tải cho controller.
+</Aside>
+
+**Ví dụ:**
+
+- **Tốt**:
+    ```groovy
+    sh 'mvn clean install'
+    ```
+- **Không tốt**: Tách thành nhiều step Groovy nhỏ xử lý từng lệnh.
+
+
+#### 2. Gộp nhiều step để giảm overhead
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Kết hợp nhiều lệnh shell trong một step `sh` để tránh tạo nhiều kết nối lặp lại.
+</Aside>
+
+**Ví dụ:**
+
+- **Không tốt**:
+    ```groovy
+    echo 'A'
+    echo 'B'
+    echo 'C'
+    ```
+
+- **Tốt**:
+
+    ```groovy
+    sh 'echo A; echo B; echo C'
+    ```
+
+#### 3. Chạy script shell trong pipeline
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Gom logic phức tạp vào file script riêng để dễ bảo trì.
+</Aside>
+
+#### 4. Dọn dẹp các build cũ
+
+<Aside type="note" title="Mục đích" icon="comment">
+    Giới hạn số lượng build lưu trữ để tiết kiệm tài nguyên
+</Aside>
+
+```groovy
+options {
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+}
+```
+
+#### 5. Tránh thực hiện các tác vụ phức tạp trên controller
+
+- Không parse JSON lớn bằng `JsonSlurper` trong Groovy.
+
+    - **Không tốt:**
+        ```groovy
+        def data = new JsonSlurper().parseText(readFile('large.json'))
+        ```
+
+    - **Tốt:**
+        ```groovy
+        def result = sh(script: 'cat large.json | jq .key', returnStdout: true)
+        ```
+
+- Tránh dùng `HttpRequest` để gọi API bên ngoài; thay bằng `curl` trong `sh`.
+
+
+#### 5. Tránh dùng `Jenkins.getInstance()`
+Lệnh này bỏ qua cơ chế bảo mật; hãy dùng plugin hoặc API an toàn thay thế.
+
+
+### Thực tiễn cho Shared Libraries
+
+- **Không ghi đè step mặc định**: Việc tùy chỉnh các step như `sh` hoặc `timeout` có thể gây lỗi khi Jenkins nâng cấp.
+
+- **Giữ biến toàn cục (Global Vars) ở mức nhỏ gọn**: Chỉ load các biến cần thiết để giảm mức tiêu thụ bộ nhớ.
+
+- **Giới hạn kích thước thư viện**: Thư viện quá lớn sẽ chậm; hãy chia thành nhiều thư viện nhỏ, chuyên biệt.
+
+### Lỗi thường gặp
+
+- Lạm dụng Groovy cho logic chính → gây tốn tài nguyên.
+- Load các file biến lớn mà không cần thiết.
+- Không sử dụng agent hợp lý (chạy tất cả trên controller).
+- Bỏ qua vấn đề bảo mật khi xử lý credentials (nên dùng dấu nháy đơn `' '` để tránh lộ thông tin).
+
+**Kết luận:**: Tuân thủ các nguyên tắc trên sẽ giúp bạn xây dựng pipeline **mạnh mẽ, dễ bảo trì và mở rộng**.
+
+---

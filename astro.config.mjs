@@ -157,6 +157,18 @@ export default defineConfig({
                             ],
                         },
                         {
+                            label: "Jenkins",
+                            items: [
+                                {
+                                    label: "Jenkinsfile là gì?",
+                                    translations: {
+                                        en: "What is a Jenkinsfile?",
+                                    },
+                                    slug: "tools/jenkins/what_is_a_jenkinsfile",
+                                },
+                            ],
+                        },
+                        {
                             label: "Nginx",
                             items: [
                                 {
